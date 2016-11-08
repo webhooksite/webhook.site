@@ -16,6 +16,7 @@ class RequestController extends Controller
         $token = Token::uuid($req->uuid);
 
         $request = Request::create([
+            'token_id' => $req->uuid,
             'ip' => $req->ip(),
             'hostname' => $req->getHost(),
             'method' => $req->getMethod(),
@@ -34,6 +35,11 @@ class RequestController extends Controller
             $statusCode,
             ['Content-Type' => $token->default_content_type]
         );
+    }
+
+    public function all(HttpRequest $request, $uuid)
+    {
+        return Token::findOrFail($uuid)->requests()->paginate(20);
     }
 
 }
