@@ -3,15 +3,18 @@
 <head>
     <title>Webhook Tester</title>
     <!-- Libraries -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
+    <link href="assets/css/libs/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-2.2.2.min.js" async></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="assets/scripts/libs/jquery-2.2.2.min.js" async></script>
+    <script src="assets/scripts/libs/angular.min.js"></script>
 
 
     <!-- App -->
     <script src="assets/scripts/app.js"></script>
     <link href="assets/css/main.css" rel="stylesheet">
+
+    <!-- Pusher -->
+    <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
 </head>
 <body ng-app="app" ng-controller="AppController">
 
@@ -91,10 +94,10 @@
         </div>
     </div>
 </div>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+<script src="assets/scripts/libs/bootstrap.min.js"
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous" async defer></script>
-<script src="https://cdn.jsdelivr.net/clipboard.js/1.5.13/clipboard.min.js"></script>
+<script src="assets/scripts/libs/clipboard.min.js"></script>
 
 </body>
 </html>
