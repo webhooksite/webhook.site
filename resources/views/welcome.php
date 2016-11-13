@@ -38,7 +38,7 @@
 
                     <input id="tokenUrl" type="text" class="form-control click-select"
                            style="width: 400px;"
-                           value="{{ domain }}{{ token.uuid }}">
+                           value="http://{{ domain }}/{{ token.uuid }}">
                 </div>
                 <button class="btn btn-default" id="copyTokenUrl" data-clipboard-target="#tokenUrl">Copy</button>
             </div>

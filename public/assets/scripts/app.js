@@ -9,7 +9,7 @@ angular
         $scope.currentRequestIndex = 0;
         $scope.currentRequest = {};
         $scope.hasRequests = false;
-        $scope.domain = window.location.href;
+        $scope.domain = window.location.hostname;
 
         // Initialize Clipboard copy button
         new Clipboard('#copyTokenUrl');
@@ -50,25 +50,32 @@ angular
             });
         });
 
-        $scope.getToken = (function () {
-            $http.post('token')
-                .then(function(response) {
-                    $scope.token = response.data;
-                    $scope.getRequests(response.data.uuid);
-                });
+        $scope.getToken = (function (tokenId) {
+            if (tokenId == undefined) {
+                $http.post('token')
+                    .then(function(response) {
+                        $scope.token = response.data;
+                        $scope.getRequests(response.data.uuid);
+                    });
+            } else {
+                $http.get('token/' + tokenId)
+                    .then(function(response) {
+                        $scope.token = response.data;
+                        $scope.getRequests(response.data.uuid);
+                    });
+            }
         });
 
 
         // Initialize app. Check whether we need to load a token.
         if (window.location.hash) {
             var uuid = window.location.hash
-                .match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
+                .match('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
 
             if (!uuid) {
                 $scope.getToken();
             } else {
-                $scope.token = uuid[0];
-                $scope.getRequests(uuid[0]);
+                $scope.getToken(uuid[0]);
             }
         } else {
             $scope.getToken();
