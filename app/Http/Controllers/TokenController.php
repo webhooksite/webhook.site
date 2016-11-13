@@ -22,7 +22,7 @@ class TokenController extends Controller
             'user_agent' => $req->header('User-Agent'),
             'default_content' => $req->get('default_content', ''),
             'default_status' => $req->get('default_status', 200),
-            'default_content_type' => $req->get('default_content_type', 'application/json'),
+            'default_content_type' => $req->get('default_content_type', 'text/plain'),
         ]);
 
         $token->save();
