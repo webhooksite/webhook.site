@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Events\NewRequest;
 use App\Requests\Request;
 use App\Tokens\Token;
 use Illuminate\Http\Request as HttpRequest;
@@ -27,6 +28,8 @@ class RequestController extends Controller
         ]);
 
         $request->save();
+
+        broadcast(new NewRequest($request));
 
         $statusCode = (empty($req->statusCode) ? $token->default_status : (int)$req->statusCode);
 

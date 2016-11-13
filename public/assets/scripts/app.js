@@ -3,7 +3,7 @@ angular
     .config(function($logProvider) {
         $logProvider.debugEnabled(true);
     })
-    .controller("AppController", function ($scope, $http) {
+    .controller("AppController", function ($scope, $http, $location) {
         $scope.token = {};
         $scope.requests = [];
         $scope.currentRequestIndex = 0;
@@ -11,29 +11,66 @@ angular
         $scope.hasRequests = false;
         $scope.domain = window.location.href;
 
-        $scope.setCurrentRequest = (function(value) {
-            $scope.currentRequestIndex = value;
-            $scope.currentRequest = $scope.requests.data[value];
-            console.log('Current:', value);
-            console.log($scope.currentRequest);
-        });
-
         // Initialize Clipboard copy button
         new Clipboard('#copyTokenUrl');
 
-        // Let's start by grabbing a token
-        $http.post('token')
-            .then(function(response, status) {
-                $scope.token = response.data;
-                console.log($scope.token.uuid);
-            }, function(response) {
-                console.log('Could not get token: ' + response.data);
-            });
+        // Initialize Pusher
+        var channel = null;
+        var pusher = new Pusher('6bfb8bce49f8d53fbc4a', {
+            cluster: 'eu',
+            encrypted: true
+        });
+        Pusher.logToConsole = true;
 
-        $http.get('/token/b874bafd-67e4-408c-a7b5-bb2c21ad91ba/requests')
-            .then(function (response, status) {
-                $scope.requests = response.data;
-                $scope.setCurrentRequest($scope.currentRequestIndex);
-                $scope.hasRequests = true;
+
+        /**
+         * Controller actions
+         */
+
+        $scope.setCurrentRequest = (function(value) {
+            $scope.currentRequestIndex = value;
+            $scope.currentRequest = $scope.requests.data[value];
+        });
+
+        $scope.getRequests = (function (token) {
+            window.location.hash = token;
+            $http.get('/token/'+ token +'/requests')
+                .then(function (response) {
+                    $scope.requests = response.data;
+                    $scope.setCurrentRequest($scope.currentRequestIndex);
+                    $scope.hasRequests = true;
+                }, function (response) {
+                    alert('requests not found');
+                });
+
+            channel = pusher.subscribe(token);
+            channel.bind('request.new', function(data) {
+                $scope.requests.data.push(data.request);
+                $scope.$apply();
             });
+        });
+
+        $scope.getToken = (function () {
+            $http.post('token')
+                .then(function(response) {
+                    $scope.token = response.data;
+                    $scope.getRequests(response.data.uuid);
+                });
+        });
+
+
+        // Initialize app. Check whether we need to load a token.
+        if (window.location.hash) {
+            var uuid = window.location.hash
+                .match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
+
+            if (!uuid) {
+                $scope.getToken();
+            } else {
+                $scope.token = uuid[0];
+                $scope.getRequests(uuid[0]);
+            }
+        } else {
+            $scope.getToken();
+        }
     });
