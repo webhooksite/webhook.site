@@ -15,6 +15,8 @@
 
     <!-- Pusher -->
     <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+
+    <meta name="description" content="Easily test webhooks with this handy tool that displays requests in realtime.">
 </head>
 <body ng-app="app" ng-controller="AppController">
 
