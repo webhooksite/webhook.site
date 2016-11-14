@@ -49,7 +49,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <p class="sidebar-header">Requests</p>
+            <p ng-show="!hasRequests" class="small">
+                <img src="assets/images/loader.gif"/>
+                &nbsp; Waiting for first request...
+            </p>
+
             <ul class="nav nav-sidebar">
                 <li ng-repeat="(key, value) in requests.data"
                     ng-class="currentRequestIndex === key ? 'active' : ''"

@@ -78,13 +78,7 @@ body {
  */
 
 .main {
-    padding: 20px;
-}
-@media (min-width: 768px) {
-    .main {
-        padding-right: 40px;
-        padding-left: 40px;
-    }
+    padding: 10px;
 }
 .main .page-header {
     margin-top: 0;
@@ -110,3 +104,14 @@ body {
     border-radius: 50%;
 }
 
+/*
+ * Misc. styles
+ */
+
+table.table-borderless tbody td, table.table-borderless tbody th {
+    border: none;
+}
+
+.request-loader {
+    padding-left: 10px;
+}
