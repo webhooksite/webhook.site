@@ -5,7 +5,9 @@ angular
     })
     .controller("AppController", function ($scope, $http, $location) {
         $scope.token = {};
-        $scope.requests = [];
+        $scope.requests = {
+            data: []
+        };
         $scope.currentRequestIndex = 0;
         $scope.currentRequest = {};
         $scope.hasRequests = false;
@@ -20,8 +22,6 @@ angular
             cluster: 'eu',
             encrypted: true
         });
-        Pusher.logToConsole = true;
-
 
         /**
          * Controller actions
@@ -38,7 +38,10 @@ angular
                 .then(function (response) {
                     $scope.requests = response.data;
                     $scope.setCurrentRequest($scope.currentRequestIndex);
-                    $scope.hasRequests = true;
+
+                    if (response.data.data.length > 0) {
+                        $scope.hasRequests = true;
+                    }
                 }, function (response) {
                     alert('requests not found');
                 });
@@ -46,6 +49,10 @@ angular
             channel = pusher.subscribe(token);
             channel.bind('request.new', function(data) {
                 $scope.requests.data.push(data.request);
+                if (!$scope.hasRequests) {
+                    $scope.setCurrentRequest(0);
+                }
+                $scope.hasRequests = true;
                 $scope.$apply();
             });
         });
@@ -65,6 +72,23 @@ angular
                     });
             }
         });
+
+        $scope.getLabel = function (method) {
+            switch (method) {
+                case 'POST':
+                    return 'info';
+                case 'GET':
+                    return 'success';
+                case 'DELETE':
+                    return 'danger';
+                case 'HEAD':
+                    return 'primary';
+                case 'PATCH':
+                    return 'warning';
+                default:
+                    return 'default';
+            }
+        };
 
 
         // Initialize app. Check whether we need to load a token.
