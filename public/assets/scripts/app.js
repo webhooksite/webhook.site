@@ -18,7 +18,7 @@ angular
 
         // Initialize Pusher
         var channel = null;
-        var pusher = new Pusher('6bfb8bce49f8d53fbc4a', {
+        var pusher = new Pusher(AppConfig.PusherToken, {
             cluster: 'eu',
             encrypted: true
         });

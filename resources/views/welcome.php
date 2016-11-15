@@ -12,6 +12,11 @@
     <!-- App -->
     <script src="assets/scripts/app.js"></script>
     <link href="assets/css/main.css" rel="stylesheet">
+    <script>
+        var AppConfig = {
+            PusherToken: "<?=config('broadcasting.connections.pusher.key')?>"
+        };
+    </script>
 
     <!-- Pusher -->
     <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
