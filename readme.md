@@ -9,6 +9,8 @@ Built by Simon Fredsted ([@fredsted](https://twitter.com/fredsted)).
 ## Requirements
 
 * PHP 5.5 or greater
+* Composer (https://getcomposer.org/download/)
+* Web server
 
 ## Installation
 
