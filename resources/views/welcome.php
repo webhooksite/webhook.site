@@ -50,8 +50,9 @@
                 </div>
                 <button class="btn btn-success" id="copyTokenUrl" data-clipboard-target="#tokenUrl">
                     <span class="glyphicon glyphicon-copy"></span> Copy</button>
-                <a class="btn btn-danger" href="/#" onclick="window.location.hash = ''; window.location.reload()">
-                    <span class="glyphicon glyphicon-trash"></span> New URL</a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newUrlModal">
+                    <span class="glyphicon glyphicon-trash"></span> New URL
+                </button>
             </div>
         </div>
     </div>
@@ -126,10 +127,62 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="newUrlModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Configure URL</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="createTokenForm">
+                    <fieldset>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="default_status">Default status code</label>
+                            <div class="col-md-4">
+                                <input id="default_status" name="default_status" type="text" placeholder="200" class="form-control input-md">
+
+                            </div>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="default_content_type">Content Type</label>
+                            <div class="col-md-4">
+                                <input id="default_content_type" name="default_content_type" type="text" placeholder="text/plain" class="form-control input-md">
+
+                            </div>
+                        </div>
+
+                        <!-- Textarea -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="default_content">Response body</label>
+                            <div class="col-md-7">
+                                <textarea class="form-control" id="default_content" name="default_content" rows="5"></textarea>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getCustomToken()">Create</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script src="assets/scripts/libs/bootstrap.min.js"
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous" async defer></script>
 <script src="assets/scripts/libs/clipboard.min.js"></script>
+<script src="assets/scripts/libs/bootstrap-notify.min.js"></script>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

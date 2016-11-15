@@ -115,3 +115,8 @@ table.table-borderless tbody td, table.table-borderless tbody th {
 .request-loader {
     padding-left: 10px;
 }
+
+.alert.alert-info {
+    padding: 7px;
+    width: 20%;
+}

@@ -23,6 +23,18 @@ angular
             encrypted: true
         });
 
+        // Initialize notify.js
+        $.notifyDefaults({
+            placement: {
+                from: "bottom"
+            },
+            animate:{
+                enter: "animated fadeInUp",
+                exit: "animated fadeOutDown"
+            },
+            delay: 1000
+        });
+
         /**
          * Controller actions
          */
@@ -54,6 +66,7 @@ angular
                 }
                 $scope.hasRequests = true;
                 $scope.$apply();
+                $.notify('Request received');
             });
         });
 
@@ -71,6 +84,25 @@ angular
                         $scope.getRequests(response.data.uuid);
                     });
             }
+        });
+
+        $scope.getCustomToken = (function () {
+            var formData = {};
+            $('#createTokenForm')
+                .serializeArray()
+                .map(function(value){
+                    if (value.value != '') {
+                        formData[value.name] = value.value;
+                    }
+                });
+
+            $http.post('token', formData)
+                .then(function(response) {
+                    $scope.hasRequests = false;
+                    $scope.token = response.data;
+                    $scope.getRequests(response.data.uuid);
+                    $.notify('New token created');
+                });
         });
 
         $scope.getLabel = function (method) {
