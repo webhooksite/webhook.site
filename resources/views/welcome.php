@@ -78,14 +78,20 @@
         </div>
         <div id="request" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div ng-show="!hasRequests">
-                <p><strong>Webhook Tester</strong> allows you to easily test webhooks and other types of HTTP requests.</p>
+                <p><strong>Webhook Tester</strong>
+                    allows you to easily test webhooks and other types of HTTP requests.</p>
                 <p>Here's your unique URL:</p>
                 <p>
                     <code>http://{{ domain }}/{{ token.uuid }}</code>
                     <a href="http://{{ domain }}/{{ token.uuid }}" target="_blank">(try it!)</a>
                 </p>
                 <p>Any requests sent to that URL are instantly logged here - you don't even have to refresh.</p>
+                <p>
+                    Append a status code to the url, e.g.: <br/>
+                    <code>http://{{ domain }}/{{ token.uuid }}/404</code>, <br/>
+                    so the URL will respond with a 404 Not Found.</p>
                 <p>You can bookmark this page to go back to the request contents at any time.</p>
+                <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
             </div>
             <div class="table-responsive" ng-show="hasRequests">
                 <table class="table table-borderless">
