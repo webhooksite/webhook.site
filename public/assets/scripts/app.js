@@ -33,7 +33,7 @@ angular
         });
 
         $scope.getRequests = (function (token) {
-            window.location.hash = token;
+            window.location.hash = "/" + token;
             $http.get('/token/'+ token +'/requests')
                 .then(function (response) {
                     $scope.requests = response.data;
