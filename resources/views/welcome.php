@@ -5,9 +5,8 @@
     <!-- Libraries -->
     <link href="assets/css/libs/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <script src="assets/scripts/libs/jquery-2.2.2.min.js" async></script>
+    <script src="assets/scripts/libs/jquery-2.2.2.min.js"></script>
     <script src="assets/scripts/libs/angular.min.js"></script>
-
 
     <!-- App -->
     <script src="assets/scripts/app.js"></script>
