@@ -120,3 +120,15 @@ table.table-borderless tbody td, table.table-borderless tbody th {
     padding: 7px;
     width: 20%;
 }
+
+/*
+ * JSON syntax highlighting
+ */
+
+/* pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; } */
+.string { color: #343333; }
+.number { color: #ba8000; }
+.boolean-true { color: #3cbe17; }
+.boolean-false { color: #bc1233; }
+.null { color: #2428c5; }
+.key { color: #676566; font-weight: bold; }

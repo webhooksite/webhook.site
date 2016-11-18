@@ -12,13 +12,20 @@ angular
         $scope.currentRequest = {};
         $scope.hasRequests = false;
         $scope.domain = window.location.hostname;
+        $scope.pusher = null;
+        $scope.pusherChannel = null;
+
+        /**
+         * App Initialization
+         */
+
 
         // Initialize Clipboard copy button
         new Clipboard('#copyTokenUrl');
 
         // Initialize Pusher
-        var channel = null;
-        var pusher = new Pusher(AppConfig.PusherToken, {
+        $scope.pusherChannel = null;
+        $scope.pusher = new Pusher(AppConfig.PusherToken, {
             cluster: 'eu',
             encrypted: true
         });
@@ -58,8 +65,8 @@ angular
                     alert('requests not found');
                 });
 
-            channel = pusher.subscribe(token);
-            channel.bind('request.new', function(data) {
+            $scope.pusherChannel = $scope.pusher.subscribe(token);
+            $scope.pusherChannel.bind('request.new', function(data) {
                 $scope.requests.data.push(data.request);
                 if (!$scope.hasRequests) {
                     $scope.setCurrentRequest(0);
@@ -120,6 +127,49 @@ angular
                 default:
                     return 'default';
             }
+        };
+
+        /**
+         * JSON formatting
+         */
+
+        $scope.isValidJSON = function (text) {
+            try {
+                JSON.parse(text);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        };
+
+        $scope.formatContent = function (content) {
+            var json = JSON.parse(content);
+            return $scope.highlightJSON(json);
+        };
+
+        // Thanks to http://stackoverflow.com/a/7220510
+        $scope.highlightJSON = function (json) {
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, undefined, 2);
+            }
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/false/.test(match)) {
+                    cls = 'boolean boolean-false';
+                } else if (/true/.test(match)) {
+                    cls = 'boolean boolean-true';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
         };
 
 

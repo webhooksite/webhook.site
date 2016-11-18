@@ -118,9 +118,14 @@
                     </tbody>
                 </table>
                 <p ng-show="hasRequests && currentRequest.content == ''">The request did not have any body content.</p>
-                <pre id="req-content" ng-show="hasRequests && currentRequest.content != ''">
-{{ currentRequest.content }}
-</pre>
+                <p>
+                <button class="btn btn-primary btn-small"
+                        ng-show="hasRequests && currentRequest.content != '' && isValidJSON(currentRequest.content)"
+                        ng-click="currentRequest.content = formatContent(currentRequest.content)">
+                    Format JSON</button>
+                </p>
+
+                <pre id="req-content" ng-show="hasRequests && currentRequest.content != ''" ng-bind="currentRequest.content"></pre>
 
             </div>
         </div>
