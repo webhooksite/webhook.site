@@ -7,6 +7,7 @@
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="assets/scripts/libs/jquery-2.2.2.min.js"></script>
     <script src="assets/scripts/libs/angular.min.js"></script>
+    <script src="assets/scripts/libs/angular-ui-router.js"></script>
 
     <!-- App -->
     <script src="assets/scripts/app.js"></script>
@@ -23,7 +24,7 @@
     <meta name="description" content="Easily test webhooks with this handy tool that displays requests in realtime.">
 </head>
 <body ng-app="app" ng-controller="AppController">
-
+<div ui-view>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -34,7 +35,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Webhook Tester</a>
+            <a class="navbar-brand" href="/" ui-sref="home()">Webhook Tester</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <div class="nav navbar-right navbar-form">
@@ -191,5 +192,6 @@
     ga('create', 'UA-5230636-9', 'auto');
     ga('send', 'pageview');
 </script>
+</div>
 </body>
 </html>

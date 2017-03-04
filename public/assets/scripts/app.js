@@ -1,9 +1,34 @@
 angular
-    .module("app", [])
-    .config(function($logProvider) {
-        $logProvider.debugEnabled(true);
-    })
-    .controller("AppController", function ($scope, $http, $location) {
+    .module("app", [
+        'ui.router'
+    ])
+    .config(['$urlMatcherFactoryProvider', function($urlMatcherFactoryProvider) {
+        var GUID_REGEXP = /^[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}$/i;
+        $urlMatcherFactoryProvider.type('guid', {
+            encode: angular.identity,
+            decode: angular.identity,
+            is: function(item) {
+                return GUID_REGEXP.test(item);
+            }
+        });
+    }])
+    .config(['$stateProvider', '$urlRouterProvider','$locationProvider',
+        function ($stateProvider, $urlRouterProvider, $locationProvider) {
+            // States
+            $stateProvider
+                .state('home', {
+                    url: "/",
+                    controller: 'AppController'
+                })
+                .state('token', {
+                    url: "/{id:guid}",
+                    controller: 'AppController'
+                })
+            ;
+            $urlRouterProvider.otherwise('/');
+        }
+    ])
+    .controller("AppController", ['$scope', '$http', '$stateParams', '$state', function ($scope, $http, $stateParams, $state) {
         $scope.token = {};
         $scope.requests = {
             data: []
@@ -45,7 +70,6 @@ angular
         });
 
         $scope.getRequests = (function (token) {
-            window.location.hash = "/" + token;
             $http.get('/token/'+ token +'/requests')
                 .then(function (response) {
                     $scope.requests = response.data;
@@ -74,8 +98,7 @@ angular
             if (tokenId == undefined) {
                 $http.post('token')
                     .then(function(response) {
-                        $scope.token = response.data;
-                        $scope.getRequests(response.data.uuid);
+                        $state.go('token', {id: response.data.uuid});
                     });
             } else {
                 $http.get('token/' + tokenId)
@@ -122,18 +145,14 @@ angular
             }
         };
 
-
         // Initialize app. Check whether we need to load a token.
-        if (window.location.hash) {
-            var uuid = window.location.hash
-                .match('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
-
-            if (!uuid) {
-                $scope.getToken();
-            } else {
-                $scope.getToken(uuid[0]);
-            }
-        } else {
-            $scope.getToken();
+        if ($scope.$state.$current.name != '') {
+            $scope.getToken($scope.$state.params.id);
         }
-    });
+    }])
+    .run(['$rootScope', '$state', '$stateParams',
+        function ($rootScope, $state, $stateParams) {
+            $rootScope.$state = $state;
+            $rootScope.$stateParams = $stateParams;
+        }]
+    );
