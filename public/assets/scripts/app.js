@@ -12,12 +12,18 @@ angular
             }
         });
     }])
-    .config(['$stateProvider', '$urlRouterProvider','$locationProvider',
-        function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
+        function($stateProvider, $urlRouterProvider, $locationProvider) {
             // States
+            $urlRouterProvider.otherwise('/');
+
             $stateProvider
                 .state('home', {
                     url: "/",
+                    controller: 'AppController'
+                })
+                .state('request', {
+                    url: "/{id:guid}/{offset:int}",
                     controller: 'AppController'
                 })
                 .state('token', {
@@ -25,16 +31,16 @@ angular
                     controller: 'AppController'
                 })
             ;
-            $urlRouterProvider.otherwise('/');
         }
     ])
-    .controller("AppController", ['$scope', '$http', '$stateParams', '$state', function ($scope, $http, $stateParams, $state) {
+    .controller("AppController", ['$scope', '$http', '$stateParams', '$state', '$timeout', function($scope, $http, $stateParams, $state, $timeout) {
         $scope.token = {};
         $scope.requests = {
             data: []
         };
         $scope.currentRequestIndex = 0;
         $scope.currentRequest = {};
+        $scope.currentPage = 1;
         $scope.hasRequests = false;
         $scope.domain = window.location.hostname;
 
@@ -53,7 +59,7 @@ angular
             placement: {
                 from: "bottom"
             },
-            animate:{
+            animate: {
                 enter: "animated fadeInUp",
                 exit: "animated fadeOutDown"
             },
@@ -67,19 +73,31 @@ angular
         $scope.setCurrentRequest = (function(value) {
             $scope.currentRequestIndex = value;
             $scope.currentRequest = $scope.requests.data[value];
+
+            // Change the state url so it may be copied from address bar
+            // and linked somewhere else
+            $state.go('request', {id: $scope.token.uuid, offset: value}, {notify: false});
         });
 
-        $scope.getRequests = (function (token) {
-            $http.get('/token/'+ token +'/requests')
-                .then(function (response) {
+        $scope.getRequests = (function(token, offset) {
+            $http.get('/token/' + token + '/requests')
+                .then(function(response) {
                     $scope.requests = response.data;
-                    $scope.setCurrentRequest($scope.currentRequestIndex);
 
                     if (response.data.data.length > 0) {
                         $scope.hasRequests = true;
+                    } else {
+                        $scope.hasRequests = false;
                     }
-                }, function (response) {
-                    alert('requests not found');
+
+                    // Circuit breaker: don't keep loading after 10 pages (50*10 items)
+                    if (offset && offset < 500) {
+                        $scope.findOffset(token, offset);
+                    } else {
+                        $scope.setCurrentRequest($scope.currentRequestIndex);
+                    }
+                }, function(response) {
+                    $.notify('Requests not found - invalid ID');
                 });
 
             channel = pusher.subscribe(token);
@@ -94,7 +112,33 @@ angular
             });
         });
 
-        $scope.getToken = (function (tokenId) {
+        $scope.findOffset = (function(token, offset) {
+            $scope.$watch('requests', function() {
+                if (offset < $scope.requests.data.length) {
+                    $scope.setCurrentRequest(offset);
+                } else if ($scope.requests.next_page_url) {
+                    // Keep loading the next page until we find our offset
+                    $scope.getNextPage(token);
+                    $timeout(function() { $scope.findOffset(token, offset); }, 500);
+                }
+            });
+        });
+
+        $scope.getNextPage = (function(token) {
+            // Increment page count
+            $scope.currentPage += 1;
+
+            $http({
+                url: '/token/' + token + '/requests',
+                params: {page: $scope.currentPage}
+            }).success(function(data, status, headers, config) {
+                // We use next_page_url to keep track of whether we should load more pages.
+                $scope.requests.next_page_url = data.next_page_url;
+                $scope.requests.data = $scope.requests.data.concat(data.data);
+            });
+        });
+
+        $scope.getToken = (function(tokenId, offset) {
             if (tokenId == undefined) {
                 $http.post('token')
                     .then(function(response) {
@@ -104,16 +148,18 @@ angular
                 $http.get('token/' + tokenId)
                     .then(function(response) {
                         $scope.token = response.data;
-                        $scope.getRequests(response.data.uuid);
+                        $scope.getRequests(response.data.uuid, offset);
+                    }, function(response) {
+                        $.notify('Requests not found - invalid ID');
                     });
             }
         });
 
-        $scope.getCustomToken = (function () {
+        $scope.getCustomToken = (function() {
             var formData = {};
             $('#createTokenForm')
                 .serializeArray()
-                .map(function(value){
+                .map(function(value) {
                     if (value.value != '') {
                         formData[value.name] = value.value;
                     }
@@ -121,14 +167,12 @@ angular
 
             $http.post('token', formData)
                 .then(function(response) {
-                    $scope.hasRequests = false;
-                    $scope.token = response.data;
-                    $scope.getRequests(response.data.uuid);
-                    $.notify('New token created');
+                    $state.go('token', {id: response.data.uuid});
+                    $.notify('New URL created');
                 });
         });
 
-        $scope.getLabel = function (method) {
+        $scope.getLabel = function(method) {
             switch (method) {
                 case 'POST':
                     return 'info';
@@ -146,12 +190,12 @@ angular
         };
 
         // Initialize app. Check whether we need to load a token.
-        if ($scope.$state.$current.name != '') {
-            $scope.getToken($scope.$state.params.id);
+        if ($state.current.name) {
+            $scope.getToken($stateParams.id, $stateParams.offset);
         }
     }])
     .run(['$rootScope', '$state', '$stateParams',
-        function ($rootScope, $state, $stateParams) {
+        function($rootScope, $state, $stateParams) {
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
         }]

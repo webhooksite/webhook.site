@@ -69,13 +69,14 @@
             <ul class="nav nav-sidebar">
                 <li ng-repeat="(key, value) in requests.data"
                     ng-class="currentRequestIndex === key ? 'active' : ''">
-                    <a ng-click="setCurrentRequest(key)" class="prevent-default" style="cursor: pointer">
+                    <a ng-click="setCurrentRequest(key)">
                         #{{ key }} <span class="label label-{{ getLabel(value.method) }}">{{ value.method }}</span> {{
                         value.ip }} <br/>
                         <small>{{ value.created_at }}</small>
                     </a>
                 </li>
             </ul>
+            <a ng-show="requests.next_page_url" ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
         </div>
         <div id="request" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div ng-show="!hasRequests">
@@ -126,6 +127,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="newUrlModal">
@@ -192,6 +194,5 @@
     ga('create', 'UA-5230636-9', 'auto');
     ga('send', 'pageview');
 </script>
-</div>
 </body>
 </html>

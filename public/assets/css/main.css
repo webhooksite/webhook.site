@@ -120,3 +120,7 @@ table.table-borderless tbody td, table.table-borderless tbody th {
     padding: 7px;
     width: 20%;
 }
+
+a[ng-click]{
+    cursor: pointer;
+}
