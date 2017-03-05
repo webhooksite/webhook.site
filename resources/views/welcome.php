@@ -41,7 +41,7 @@
             <div class="nav navbar-right navbar-form">
                 <div class="form-group">
                     <label for="tokenUrl" style="color: white">
-                        Send webhooks to: &nbsp;
+                        Your unique URL: &nbsp;
                     </label>
 
                     <input id="tokenUrl" type="text" class="form-control click-select"
@@ -49,9 +49,9 @@
                            value="http://{{ domain }}/{{ token.uuid }}">
                 </div>
                 <button class="btn btn-success" id="copyTokenUrl" data-clipboard-target="#tokenUrl">
-                    <span class="glyphicon glyphicon-copy"></span> Copy</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newUrlModal">
-                    <span class="glyphicon glyphicon-trash"></span> New URL
+                    <span class="glyphicon glyphicon-copy"></span> Copy</button> &nbsp; 
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newUrlModal">
+                    <span class="glyphicon glyphicon-new-window"></span> New URL
                 </button>
             </div>
         </div>
