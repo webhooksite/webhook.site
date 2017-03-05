@@ -7,6 +7,7 @@
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="assets/scripts/libs/jquery-2.2.2.min.js"></script>
     <script src="assets/scripts/libs/angular.min.js"></script>
+    <script src="assets/scripts/libs/angular-ui-router.js"></script>
 
     <!-- App -->
     <script src="assets/scripts/app.js"></script>
@@ -23,7 +24,7 @@
     <meta name="description" content="Easily test webhooks with this handy tool that displays requests in realtime.">
 </head>
 <body ng-app="app" ng-controller="AppController">
-
+<div ui-view>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -34,13 +35,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Webhook Tester</a>
+            <a class="navbar-brand" href="/" ui-sref="home()">Webhook Tester</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <div class="nav navbar-right navbar-form">
                 <div class="form-group">
                     <label for="tokenUrl" style="color: white">
-                        Send webhooks to: &nbsp;
+                        Your unique URL: &nbsp;
                     </label>
 
                     <input id="tokenUrl" type="text" class="form-control click-select"
@@ -48,9 +49,9 @@
                            value="http://{{ domain }}/{{ token.uuid }}">
                 </div>
                 <button class="btn btn-success" id="copyTokenUrl" data-clipboard-target="#tokenUrl">
-                    <span class="glyphicon glyphicon-copy"></span> Copy</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newUrlModal">
-                    <span class="glyphicon glyphicon-trash"></span> New URL
+                    <span class="glyphicon glyphicon-copy"></span> Copy</button> &nbsp; 
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newUrlModal">
+                    <span class="glyphicon glyphicon-new-window"></span> New URL
                 </button>
             </div>
         </div>
@@ -68,13 +69,14 @@
             <ul class="nav nav-sidebar">
                 <li ng-repeat="(key, value) in requests.data"
                     ng-class="currentRequestIndex === key ? 'active' : ''">
-                    <a ng-click="setCurrentRequest(key)" class="prevent-default" style="cursor: pointer">
+                    <a ng-click="setCurrentRequest(key)">
                         #{{ key }} <span class="label label-{{ getLabel(value.method) }}">{{ value.method }}</span> {{
                         value.ip }} <br/>
                         <small>{{ value.created_at }}</small>
                     </a>
                 </li>
             </ul>
+            <a ng-show="requests.next_page_url" ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
         </div>
         <div id="request" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div ng-show="!hasRequests">
@@ -131,6 +133,7 @@
         </div>
     </div>
 </div>
+</div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="newUrlModal">
     <div class="modal-dialog" role="document">
@@ -141,6 +144,9 @@
                 <h4 class="modal-title">Configure URL</h4>
             </div>
             <div class="modal-body">
+                <p>You have the ability to customize how your URL will respond by changing the
+                    status code, content-type header and the content.</p>
+                <hr>
                 <form class="form-horizontal" id="createTokenForm">
                     <fieldset>
 

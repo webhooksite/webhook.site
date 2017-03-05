@@ -21,7 +21,7 @@ class RequestController extends Controller
             'ip' => $req->ip(),
             'hostname' => $req->getHost(),
             'method' => $req->getMethod(),
-            'user_agent' => $req->header('User-Agent'),
+            'user_agent' => $req->header('User-Agent', 'n/a'),
             'content' => file_get_contents('php://input'),
             'headers' => $req->headers->all(),
             'url' => $req->fullUrl(),
@@ -42,7 +42,7 @@ class RequestController extends Controller
 
     public function all(HttpRequest $request, $uuid)
     {
-        return Token::findOrFail($uuid)->requests()->paginate(20);
+        return Token::findOrFail($uuid)->requests()->paginate(50);
     }
 
 }

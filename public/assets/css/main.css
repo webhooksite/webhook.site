@@ -121,6 +121,10 @@ table.table-borderless tbody td, table.table-borderless tbody th {
     width: 20%;
 }
 
+a[ng-click]{
+    cursor: pointer;
+}
+
 /*
  * JSON syntax highlighting
  */
