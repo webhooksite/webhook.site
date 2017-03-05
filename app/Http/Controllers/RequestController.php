@@ -42,7 +42,7 @@ class RequestController extends Controller
 
     public function all(HttpRequest $request, $uuid)
     {
-        return Token::findOrFail($uuid)->requests()->paginate(20);
+        return Token::findOrFail($uuid)->requests()->paginate(50);
     }
 
 }
