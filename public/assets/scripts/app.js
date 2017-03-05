@@ -209,34 +209,12 @@ angular
             return true;
         };
 
-        $scope.formatContent = function (content) {
+        $scope.formatContentJson = function (content) {
             var json = JSON.parse(content);
-            return $scope.highlightJSON(json);
-        };
-
-        // Thanks to http://stackoverflow.com/a/7220510
-        $scope.highlightJSON = function (json) {
             if (typeof json != 'string') {
                 json = JSON.stringify(json, undefined, 2);
             }
-            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                var cls = 'number';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) {
-                        cls = 'key';
-                    } else {
-                        cls = 'string';
-                    }
-                } else if (/false/.test(match)) {
-                    cls = 'boolean boolean-false';
-                } else if (/true/.test(match)) {
-                    cls = 'boolean boolean-true';
-                } else if (/null/.test(match)) {
-                    cls = 'null';
-                }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
+            return json;
         };
 
         // Initialize app. Check whether we need to load a token.

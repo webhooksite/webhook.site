@@ -8,10 +8,10 @@
     <script src="assets/scripts/libs/jquery-2.2.2.min.js"></script>
     <script src="assets/scripts/libs/angular.min.js"></script>
     <script src="assets/scripts/libs/angular-ui-router.js"></script>
-
+    
     <!-- App -->
     <script src="assets/scripts/app.js"></script>
-    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
     <script>
         var AppConfig = {
             PusherToken: "<?=config('broadcasting.connections.pusher.key')?>"
@@ -49,7 +49,7 @@
                            value="http://{{ domain }}/{{ token.uuid }}">
                 </div>
                 <button class="btn btn-success" id="copyTokenUrl" data-clipboard-target="#tokenUrl">
-                    <span class="glyphicon glyphicon-copy"></span> Copy</button> &nbsp; 
+                    <span class="glyphicon glyphicon-copy"></span> Copy</button> &nbsp;
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newUrlModal">
                     <span class="glyphicon glyphicon-new-window"></span> New URL
                 </button>
@@ -95,39 +95,67 @@
                 <p>You can bookmark this page to go back to the request contents at any time.</p>
                 <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
             </div>
-            <div class="table-responsive" ng-show="hasRequests">
-                <table class="table table-borderless">
-                    <tbody>
-                    <tr>
-                        <td style="width:100px;"><b>URL</b></td>
-                        <td id="req-url">{{ currentRequest.url }}</td>
-                    </tr>
-                    <tr>
-                        <td><b>IP/Host</b></td>
-                        <td id="req-ip">{{ currentRequest.hostname }} ({{ currentRequest.ip }})</td>
-                    </tr>
-                    <tr>
-                        <td><b>Headers</b></td>
-                        <td colspan="2" id="req-headers">
-                            <span ng-repeat="(headerName, values) in currentRequest.headers">
-                                <strong>{{ headerName }}:</strong>
-                                <code ng-repeat="value in values">{{ (value == '' ? '(empty)' : value) }}{{$last ? '' : ', '}}</code>
-                                <br/>
-                            </span>
+            <div ng-show="hasRequests">
+                <div class="container-fluid">
+                    <div class="row" id="requestDetails">
+                        <div class="col-md-6">
+                            <table class="table table-borderless table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th colspan="2">Request Details</th>
+                                    </tr>
+                                    <tr>
+                                        <td width="25%">URL</td>
+                                        <td id="req-url">{{ currentRequest.url }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Host</td>
+                                        <td id="req-ip">{{ currentRequest.ip }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Time and date</td>
+                                        <td id="req-ip">{{ currentRequest.created_at }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Method</td>
+                                        <td id="req-ip">{{ currentRequest.method }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Link</td>
+                                        <td id="req-ip">http://{{ domain }}/{{ token.uuid }}/{{ currentRequestIndex }}</td>
+                                    </tr>
+                                    <tr ng-show="hasRequests && currentRequest.content != '' && isValidJSON(currentRequest.content)">
+                                        <td>Options</td>
+                                        <td>
+                                                <a class=""
+                                                        ng-click="currentRequest.content = formatContentJson(currentRequest.content)"
+                                                        style="">
+                                                    Format JSON</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-borderless table-striped">
+                                <tbody>
+                                <tr>
+                                    <th colspan="2">Headers</th>
+                                </tr>
+                                <tr ng-repeat="(headerName, values) in currentRequest.headers">
+                                    <td width="25%">{{ headerName }}</td>
+                                    <td><code ng-repeat="value in values">{{ (value == '' ? '(empty)' : value) }}{{$last ? '' : ', '}}</code></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
                 <p ng-show="hasRequests && currentRequest.content == ''">The request did not have any body content.</p>
-                <p>
-                <button class="btn btn-primary btn-small"
-                        ng-show="hasRequests && currentRequest.content != '' && isValidJSON(currentRequest.content)"
-                        ng-click="currentRequest.content = formatContent(currentRequest.content)">
-                    Format JSON</button>
-                </p>
 
-                <pre id="req-content" ng-show="hasRequests && currentRequest.content != ''" ng-bind="currentRequest.content"></pre>
+                <pre id="req-content" ng-show="hasRequests && currentRequest.content != ''"
+                     ng-bind="currentRequest.content"></pre>
 
             </div>
         </div>
