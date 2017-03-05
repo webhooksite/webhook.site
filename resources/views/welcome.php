@@ -139,6 +139,9 @@
                 <h4 class="modal-title">Configure URL</h4>
             </div>
             <div class="modal-body">
+                <p>You have the ability to customize how your URL will respond by changing the
+                    status code, content-type header and the content.</p>
+                <hr>
                 <form class="form-horizontal" id="createTokenForm">
                     <fieldset>
 
