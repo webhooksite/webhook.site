@@ -16,6 +16,10 @@ class RequestController extends Controller
     {
         $token = Token::uuid($req->uuid);
 
+        if ($token->timeout) {
+            sleep($token->timeout);
+        }
+
         $request = Request::create([
             'token_id' => $req->uuid,
             'ip' => $req->ip(),

@@ -18,7 +18,7 @@ class Token extends Model
     public $primaryKey = 'uuid';
     protected $table = 'tokens';
     protected $dates = ['deleted_at'];
-    protected $fillable = ['ip', 'user_agent', 'default_content', 'default_status', 'default_content_type'];
+    protected $fillable = ['ip', 'user_agent', 'default_content', 'default_status', 'default_content_type', 'timeout'];
     protected $hidden = ['id', 'user_agent', 'ip'];
 
     public function requests()
