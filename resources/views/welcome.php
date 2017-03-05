@@ -99,7 +99,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <label><input type="checkbox" ng-model="hideDetails"> Hide Request Details</label>
+                            <label style="float: right"><input type="checkbox" ng-model="hideDetails"> Hide Request Details</label>
                         </div>
                     </div>
                     <div class="row" id="requestDetails" ng-show="!hideDetails">
@@ -155,13 +155,18 @@
                             </table>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p ng-show="hasRequests && currentRequest.content == ''">
+                                The request did not have any body content.</p>
+
+                            <pre id="req-content"
+                                 ng-show="hasRequests && currentRequest.content != ''"
+                                 ng-bind="currentRequest.content"></pre>
+                            </div>
+                    </div>
                 </div>
-
-                <p ng-show="hasRequests && currentRequest.content == ''">The request did not have any body content.</p>
-
-                <pre id="req-content" ng-show="hasRequests && currentRequest.content != ''"
-                     ng-bind="currentRequest.content"></pre>
-
             </div>
         </div>
     </div>
