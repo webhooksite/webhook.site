@@ -117,6 +117,9 @@ a[ng-click] {
 #requestDetails .table > thead > tr > th {
   padding: 3px; }
 
+#requestDetails table {
+  font-size: 90%; }
+
 /*
    * JSON syntax highlighting
    */

@@ -97,8 +97,13 @@
             </div>
             <div ng-show="hasRequests">
                 <div class="container-fluid">
-                    <div class="row" id="requestDetails">
-                        <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label><input type="checkbox" ng-model="hideDetails"> Hide Request Details</label>
+                        </div>
+                    </div>
+                    <div class="row" id="requestDetails" ng-show="!hideDetails">
+                        <div class="col-md-4">
                             <table class="table table-borderless table-striped">
                                 <tbody>
                                     <tr>
@@ -136,7 +141,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <table class="table table-borderless table-striped">
                                 <tbody>
                                 <tr>
