@@ -25,6 +25,34 @@
 </head>
 <body ng-app="app" ng-controller="AppController">
 <div ui-view>
+
+    <div data-notify="container" class="col-xs-11 col-sm-4 alert alert-welcome animated fadeInUp" role="alert"
+         data-notify-position="center-center"
+         style="display: inline-block; margin: 0px auto; position: fixed; transition: all 0.5s ease-in-out;
+         z-index: 1031; left: 0px; right: 0px; animation-iteration-count: 1;">
+        <button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>
+        <span data-notify="icon"></span> <span data-notify="title"></span> <span data-notify="message">
+
+    <p style="font-size: 200%; font-weight: bold;">Welcome to Webhook Tester</p>
+    <p><strong>Webhook Tester</strong>
+        allows you to easily test webhooks and other types of HTTP requests.</p>
+    <p>Here's your unique URL:</p>
+    <p>
+        <code>http://{{ domain }}/{{ token.uuid }}</code>
+        <a href="http://{{ domain }}/{{ token.uuid }}" target="_blank">(try it!)</a>
+    </p>
+    <p>Any requests sent to that URL are instantly logged here - you don't even have to refresh.</p>
+    <p>
+        Append a status code to the url, e.g.: <br/>
+        <code>http://{{ domain }}/{{ token.uuid }}/404</code>, <br/>
+        so the URL will respond with a 404 Not Found.</p>
+    <p>You can bookmark this page to go back to the request contents at any time.</p>
+    <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
+
+
+        </span><a
+            href="#" target="_blank" data-notify="url"></a></div>
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -79,22 +107,6 @@
             <a ng-show="requests.next_page_url" ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
         </div>
         <div id="request" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <div ng-show="!hasRequests">
-                <p><strong>Webhook Tester</strong>
-                    allows you to easily test webhooks and other types of HTTP requests.</p>
-                <p>Here's your unique URL:</p>
-                <p>
-                    <code>http://{{ domain }}/{{ token.uuid }}</code>
-                    <a href="http://{{ domain }}/{{ token.uuid }}" target="_blank">(try it!)</a>
-                </p>
-                <p>Any requests sent to that URL are instantly logged here - you don't even have to refresh.</p>
-                <p>
-                    Append a status code to the url, e.g.: <br/>
-                    <code>http://{{ domain }}/{{ token.uuid }}/404</code>, <br/>
-                    so the URL will respond with a 404 Not Found.</p>
-                <p>You can bookmark this page to go back to the request contents at any time.</p>
-                <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
-            </div>
             <div ng-show="hasRequests">
                 <div class="container-fluid">
                     <div class="row">

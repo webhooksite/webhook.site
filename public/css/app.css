@@ -143,4 +143,33 @@ a[ng-click] {
   color: #676566;
   font-weight: bold; }
 
+/*
+#welcome {
+  height: 80%;
+  width: 80%;
+  position: fixed;
+  z-index: 90000;
+  top: 0;
+  left: 0;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0, 0.9);
+  overflow-y: hidden;
+  transition: 0.5s;
+}
+
+#welcome div {
+  padding: 200px;
+  text-align: center;
+}*/
+.alert-welcome {
+  background-color: #eee;
+  border-color: #ccc;
+  color: black;
+  max-width: 600px;
+  margin-top: 20px !important; }
+  .alert-welcome hr {
+    border-top-color: #bfbfbf; }
+  .alert-welcome .alert-link {
+    color: black; }
+
 /*# sourceMappingURL=app.css.map */
