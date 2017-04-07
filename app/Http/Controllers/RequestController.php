@@ -16,6 +16,10 @@ class RequestController extends Controller
     {
         $token = Token::uuid($req->uuid);
 
+        if ($token->requests()->count() >= 500) {
+            return new Response('Too many requests, please create a new URL/token.', Response::HTTP_TOO_MANY_REQUESTS);
+        }
+
         if ($token->timeout) {
             sleep($token->timeout);
         }
@@ -44,7 +48,7 @@ class RequestController extends Controller
         );
     }
 
-    public function all(HttpRequest $request, $uuid)
+    public function all($uuid)
     {
         return Token::findOrFail($uuid)->requests()->paginate(50);
     }
