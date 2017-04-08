@@ -16,5 +16,6 @@ Route::group(['middleware' => ['api']], function () {
 
     Route::post('token', 'TokenController@create');
     Route::get('token/{uuid}', 'TokenController@find');
+    Route::put('token/{uuid}', 'TokenController@update');
     Route::delete('token/{uuid}', 'TokenController@delete');
 });

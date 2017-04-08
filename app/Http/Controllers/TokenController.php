@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTokenRequest;
+use App\Http\Requests\UpdateTokenRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Tokens\Token;
@@ -28,7 +29,25 @@ class TokenController extends Controller
         $token->save();
 
         return new JsonResponse($token);
+    }
 
+    /**
+     * @param UpdateTokenRequest $req
+     * @return JsonResponse
+     */
+    public function update(UpdateTokenRequest $req)
+    {
+        $token = Token::uuid($req->uuid)
+            ->update([
+                'ip' => $req->ip(),
+                'user_agent' => $req->header('User-Agent'),
+                'default_content' => $req->get('default_content', ''),
+                'default_status' => $req->get('default_status', 200),
+                'default_content_type' => $req->get('default_content_type', 'text/plain'),
+                'timeout' => $req->get('timeout', null),
+            ]);
+
+        return new JsonResponse($token);
     }
 
     /**
