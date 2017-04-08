@@ -125,7 +125,7 @@
                                     </tr>
                                     <tr>
                                         <td width="25%">URL</td>
-                                        <td id="req-url">{{ currentRequest.url }}</td>
+                                        <td id="req-url"><a href="{{ currentRequest.url }}">{{ currentRequest.url }}</a></td>
                                     </tr>
                                     <tr>
                                         <td>Host</td>
@@ -133,15 +133,16 @@
                                     </tr>
                                     <tr>
                                         <td>Time and date</td>
-                                        <td id="req-ip">{{ currentRequest.created_at }}</td>
+                                        <td id="req-date">{{ currentRequest.created_at }}</td>
                                     </tr>
                                     <tr>
                                         <td>Method</td>
-                                        <td id="req-ip">{{ currentRequest.method }}</td>
+                                        <td id="req-method">{{ currentRequest.method }}</td>
                                     </tr>
                                     <tr>
                                         <td>Link</td>
-                                        <td id="req-ip">http://{{ domain }}/{{ token.uuid }}/{{ currentRequestIndex }}</td>
+                                        <td id="req-direct-link">
+                                            <a href="http://{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}">Direct link to request</a></td>
                                     </tr>
                                     <tr ng-show="hasRequests && currentRequest.content != '' && isValidJSON(currentRequest.content)">
                                         <td>Options</td>
