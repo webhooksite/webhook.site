@@ -8,6 +8,7 @@
     <script src="assets/scripts/libs/jquery-2.2.2.min.js"></script>
     <script src="assets/scripts/libs/angular.min.js"></script>
     <script src="assets/scripts/libs/angular-ui-router.js"></script>
+    <script src="assets/scripts/libs/ng-infinite-scroll.min.js"></script>
     
     <!-- App -->
     <script src="assets/scripts/app.js"></script>
@@ -74,23 +75,32 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <p ng-show="!hasRequests" class="small">
-                <img src="assets/images/loader.gif"/>
-                &nbsp; Waiting for first request...
-            </p>
+        <div class="col-sm-3 col-md-2 sidebar" id="sidebar" infinite-scroll="getNextPage(token.uuid)">
+            <div infinite-scroll="getNextPage(token.uuid)"
+                 infinite-scroll-container="'#sidebar'"
+                 infinite-scroll-immediate-check="false"
+                 infinite-scroll-parent
+                 infinite-scroll-distance="1"
+            >
+                <p ng-show="!hasRequests" class="small">
+                    <img src="assets/images/loader.gif"/>
+                    &nbsp; Waiting for first request...
+                </p>
 
-            <ul class="nav nav-sidebar">
-                <li ng-repeat="(key, value) in requests.data"
-                    ng-class="currentRequestIndex === key ? 'active' : ''">
-                    <a ng-click="setCurrentRequest(key)">
-                        #{{ key }} <span class="label label-{{ getLabel(value.method) }}">{{ value.method }}</span> {{
-                        value.ip }} <br/>
-                        <small>{{ value.created_at }}</small>
-                    </a>
-                </li>
-            </ul>
-            <a ng-show="requests.next_page_url" ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
+                <ul class="nav nav-sidebar">
+                    <li ng-repeat="(key, value) in requests.data"
+                        ng-class="currentRequestIndex === key ? 'active' : ''">
+                        <a ng-click="setCurrentRequest(key)">
+                            #{{ key }} <span class="label label-{{ getLabel(value.method) }}">{{ value.method }}</span> {{
+                            value.ip }} <br/>
+                            <small>{{ value.created_at }}</small>
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-show="requests.next_page_url" ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div id="request" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div ng-show="!hasRequests">
