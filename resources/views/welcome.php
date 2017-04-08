@@ -21,7 +21,7 @@
     <!-- Pusher -->
     <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
 
-    <meta name="description" content="Easily test webhooks with this handy tool that displays requests in realtime.">
+    <meta name="description" content="Easily test webhooks and HTTP requests with this handy tool that displays requests in realtime.">
 </head>
 <body ng-app="app" ng-controller="AppController">
 <div ui-view>
@@ -38,7 +38,21 @@
             <a class="navbar-brand" href="/" ui-sref="home()">Webhook Tester</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <div class="nav navbar-right navbar-form">
+            <div class="nav navbar-left navbar-form">
+                <a href="https://github.com/fredsted/webhook.site" target="_blank"
+                   style="margin-top: 7px"
+                   class="btn btn-xs btn-link">
+                    Github Page</a>
+                <a href="https://twitter.com/fredsted" target="_blank"
+                   style="margin-top: 7px"
+                   class="btn btn-xs btn-link">
+                    @fredsted</a>
+                <button style="margin-top: 7px"
+                   class="btn btn-xs btn-link"
+                   data-toggle="modal" data-target="#helpModal">
+                    Help</button>
+            </div>
+            <div class="nav navbar-right navbar-form">&nbsp;
                 <div class="form-group">
                     <label for="tokenUrl" style="color: white">
                         Your unique URL: &nbsp;
@@ -172,6 +186,34 @@
     </div>
 </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="helpModal" ui-view>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">What is Webhook Tester?</h4>
+            </div>
+            <div class="modal-body">
+                <p><strong>Webhook Tester</strong>
+                    allows you to easily test webhooks and other types of HTTP requests.</p>
+                <p>Here's your unique URL:</p>
+                <p>
+                    <code>http://{{ domain }}/{{ token.uuid }}</code>
+                    <a href="http://{{ domain }}/{{ token.uuid }}" target="_blank">(try it!)</a>
+                </p>
+                <p>Any requests sent to that URL are instantly logged here - you don't even have to refresh.</p>
+                <p>
+                    Append a status code to the url, e.g.: <br/>
+                    <code>http://{{ domain }}/{{ token.uuid }}/404</code>, <br/>
+                    so the URL will respond with a 404 Not Found.</p>
+                <p>You can bookmark this page to go back to the request contents at any time.</p>
+                <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <div class="modal fade" tabindex="-1" role="dialog" id="newUrlModal">
     <div class="modal-dialog" role="document">
