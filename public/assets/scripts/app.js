@@ -23,7 +23,7 @@ angular
                     controller: 'AppController'
                 })
                 .state('request', {
-                    url: "/{id:guid}/{offset:int}",
+                    url: "/{id:guid}/{offset:guid}/{page:int}",
                     controller: 'AppController'
                 })
                 .state('token', {
@@ -43,8 +43,6 @@ angular
         $scope.currentPage = 1;
         $scope.hasRequests = false;
         $scope.domain = window.location.hostname;
-        $scope.pusher = null;
-        $scope.pusherChannel = null;
 
         /**
          * App Initialization
@@ -77,31 +75,38 @@ angular
          * Controller actions
          */
 
-        $scope.setCurrentRequest = (function(value) {
-            $scope.currentRequestIndex = value;
-            $scope.currentRequest = $scope.requests.data[value];
+        $scope.setCurrentRequest = (function(request) {
+            $scope.currentRequestIndex = request.uuid;
+            $scope.currentRequest = request;
 
             // Change the state url so it may be copied from address bar
             // and linked somewhere else
-            $state.go('request', {id: $scope.token.uuid, offset: value}, {notify: false});
+            $state.go('request', {id: $scope.token.uuid, offset: request.uuid, page: $scope.requests.current_page}, {notify: false});
         });
 
-        $scope.getRequests = (function(token, offset) {
-            $http.get('/token/' + token + '/requests')
+        $scope.getRequests = (function(token, offset, page) {
+            if (!page) {
+                page = 0;
+            }
+
+            $http.get('/token/' + token + '/requests?page=' + page)
                 .then(function(response) {
                     $scope.requests = response.data;
 
                     if (response.data.data.length > 0) {
                         $scope.hasRequests = true;
+
+                        var activeRequest = 0;
+
+                        for (var requestOffset in $scope.requests.data) {
+                            if ($scope.requests.data[requestOffset].uuid == offset) {
+                                activeRequest = requestOffset;
+                            }
+                        }
+
+                        $scope.setCurrentRequest($scope.requests.data[activeRequest]);
                     } else {
                         $scope.hasRequests = false;
-                    }
-
-                    // Circuit breaker: don't keep loading after 10 pages (50*10 items)
-                    if (offset && offset < 500) {
-                        $scope.findOffset(token, offset);
-                    } else {
-                        $scope.setCurrentRequest($scope.currentRequestIndex);
                     }
                 }, function(response) {
                     $.notify('Requests not found - invalid ID');
@@ -110,43 +115,27 @@ angular
             $scope.pusherChannel = $scope.pusher.subscribe(token);
             $scope.pusherChannel.bind('request.new', function(data) {
                 $scope.requests.data.push(data.request);
-                if (!$scope.hasRequests) {
-                    $scope.setCurrentRequest(0);
-                }
+
                 $scope.hasRequests = true;
                 $scope.$apply();
                 $.notify('Request received');
             });
         });
 
-        $scope.findOffset = (function(token, offset) {
-            $scope.$watch('requests', function() {
-                if (offset < $scope.requests.data.length) {
-                    $scope.setCurrentRequest(offset);
-                } else if ($scope.requests.next_page_url) {
-                    // Keep loading the next page until we find our offset
-                    $scope.getNextPage(token);
-                    $timeout(function() { $scope.findOffset(token, offset); }, 500);
-                }
-            });
-        });
-
         $scope.getNextPage = (function(token) {
-            // Increment page count
-            $scope.currentPage += 1;
-
             $http({
                 url: '/token/' + token + '/requests',
-                params: {page: $scope.currentPage}
+                params: {page: $scope.requests.current_page + 1}
             }).success(function(data, status, headers, config) {
                 // We use next_page_url to keep track of whether we should load more pages.
                 $scope.requests.next_page_url = data.next_page_url;
+                $scope.requests.current_page = data.current_page;
                 $scope.requests.data = $scope.requests.data.concat(data.data);
             });
         });
 
-        $scope.getToken = (function(tokenId, offset) {
-            if (tokenId == undefined) {
+        $scope.getToken = (function(tokenId, offset, page) {
+            if (!tokenId) {
                 $http.post('token')
                     .then(function(response) {
                         $state.go('token', {id: response.data.uuid});
@@ -155,7 +144,7 @@ angular
                 $http.get('token/' + tokenId)
                     .then(function(response) {
                         $scope.token = response.data;
-                        $scope.getRequests(response.data.uuid, offset);
+                        $scope.getRequests(response.data.uuid, offset, page);
                     }, function(response) {
                         $.notify('Requests not found - invalid ID');
                     });
