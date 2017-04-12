@@ -81,16 +81,18 @@
             </p>
 
             <ul class="nav nav-sidebar">
-                <li ng-repeat="(key, value) in requests.data"
-                    ng-class="currentRequestIndex === key ? 'active' : ''">
-                    <a ng-click="setCurrentRequest(key)">
-                        #{{ key }} <span class="label label-{{ getLabel(value.method) }}">{{ value.method }}</span> {{
-                        value.ip }} <br/>
-                        <small>{{ value.created_at }}</small>
+                <li ng-repeat="(key, request) in requests.data"
+                    ng-class="currentRequestIndex === request.uuid ? 'active' : ''">
+                    <a ng-click="setCurrentRequest(request)">
+                        <span class="label label-{{ getLabel(request.method) }}">{{ request.method }}</span>
+                        #{{ request.uuid.substring(0,5) }} {{ request.ip }} <br/>
+                        <small>{{ request.created_at }}</small>
                     </a>
                 </li>
+                <li>
+                    <a ng-show="requests.next_page_url" ng-click="getNextPage(token.uuid)" class="prevent-default"></a>
+                </li>
             </ul>
-            <a ng-show="requests.next_page_url" ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
         </div>
         <div id="request" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div ng-show="!hasRequests">
