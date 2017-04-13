@@ -14,7 +14,8 @@
     <link href="css/app.css" rel="stylesheet">
     <script>
         var AppConfig = {
-            PusherToken: "<?=config('broadcasting.connections.pusher.key')?>"
+            PusherToken: "<?=config('broadcasting.connections.pusher.key')?>",
+            Initialized: false,
         };
     </script>
 
@@ -89,8 +90,8 @@
                         <small>{{ request.created_at }}</small>
                     </a>
                 </li>
-                <li>
-                    <a ng-show="requests.next_page_url" ng-click="getNextPage(token.uuid)" class="prevent-default"></a>
+                <li ng-show="requests.next_page_url">
+                    <a ng-click="getNextPage(token.uuid)" class="prevent-default"></a>
                 </li>
             </ul>
         </div>

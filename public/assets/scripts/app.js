@@ -2,18 +2,17 @@ angular
     .module("app", [
         'ui.router'
     ])
-    .config(['$urlMatcherFactoryProvider', function($urlMatcherFactoryProvider) {
-        var GUID_REGEXP = /^[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}$/i;
-        $urlMatcherFactoryProvider.type('guid', {
-            encode: angular.identity,
-            decode: angular.identity,
-            is: function(item) {
-                return GUID_REGEXP.test(item);
-            }
-        });
-    }])
-    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
-        function($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider',
+        function($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider) {
+            var GUID_REGEXP = /^[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}$/i;
+            $urlMatcherFactoryProvider.type('guid', {
+                encode: angular.identity,
+                decode: angular.identity,
+                is: function(item) {
+                    return GUID_REGEXP.test(item);
+                }
+            });
+
             // States
             $urlRouterProvider.otherwise('/');
 
@@ -116,6 +115,10 @@ angular
             $scope.pusherChannel.bind('request.new', function(data) {
                 $scope.requests.data.push(data.request);
 
+                if ($scope.currentRequestIndex == 0) {
+                    $scope.setCurrentRequest($scope.requests.data[0]);
+                }
+
                 $scope.hasRequests = true;
                 $scope.$apply();
                 $.notify('Request received');
@@ -207,8 +210,9 @@ angular
         };
 
         // Initialize app. Check whether we need to load a token.
-        if ($state.current.name) {
-            $scope.getToken($stateParams.id, $stateParams.offset);
+        if (!AppConfig.Initialized && $state.current.name) {
+            AppConfig.Initialized = true;
+            $scope.getToken($stateParams.id, $stateParams.offset, $stateParams.page);
         }
     }])
     .run(['$rootScope', '$state', '$stateParams',
