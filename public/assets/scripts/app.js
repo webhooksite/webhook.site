@@ -70,6 +70,14 @@ angular
             delay: 1000
         });
 
+        // Hack to open modals inside that are nested inside divs
+        // Since the modals need to be placed inside the ui-view div
+        $('.openModal').click(function (e) {
+            $($(this).data('modal')).modal();
+            $('.modal-backdrop').appendTo('.mainView');
+            $('body').removeClass();
+        });
+
         /**
          * Controller actions
          */

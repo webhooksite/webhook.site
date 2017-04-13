@@ -15,7 +15,6 @@
     <script>
         var AppConfig = {
             PusherToken: "<?=config('broadcasting.connections.pusher.key')?>",
-            Initialized: false,
         };
     </script>
 
@@ -25,7 +24,7 @@
     <meta name="description" content="Easily test webhooks and HTTP requests with this handy tool that displays requests in realtime.">
 </head>
 <body>
-<div ui-view>
+<div class="mainView" ui-view>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -49,8 +48,8 @@
                    class="btn btn-xs btn-link">
                     @fredsted</a>
                 <button style="margin-top: 7px"
-                   class="btn btn-xs btn-link"
-                   data-toggle="modal" data-target="#helpModal">
+                   class="openModal btn btn-xs btn-link"
+                   data-modal="#helpModal">
                     Help</button>
             </div>
             <div class="nav navbar-right navbar-form">&nbsp;
@@ -65,7 +64,7 @@
                 </div>
                 <button class="btn btn-success" id="copyTokenUrl" data-clipboard-target="#tokenUrl">
                     <span class="glyphicon glyphicon-copy"></span> Copy</button> &nbsp;
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newUrlModal">
+                <button type="button" class="btn btn-primary openModal" data-modal="#newUrlModal">
                     <span class="glyphicon glyphicon-new-window"></span> New URL
                 </button>
             </div>
@@ -145,7 +144,7 @@
                                     <tr>
                                         <td>Link</td>
                                         <td id="req-direct-link">
-                                            <a href="http://{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}">Direct link to request</a></td>
+                                            <a href="http://{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}/{{ currentPage }}">Direct link to request</a></td>
                                     </tr>
                                     <tr ng-show="hasRequests && currentRequest.content != '' && isValidJSON(currentRequest.content)">
                                         <td>Options</td>
@@ -188,7 +187,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="helpModal">
@@ -296,5 +294,6 @@
     ga('create', 'UA-5230636-9', 'auto');
     ga('send', 'pageview');
 </script>
+</div>
 </body>
 </html>
