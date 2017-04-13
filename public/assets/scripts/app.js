@@ -210,8 +210,7 @@ angular
         };
 
         // Initialize app. Check whether we need to load a token.
-        if (!AppConfig.Initialized && $state.current.name) {
-            AppConfig.Initialized = true;
+        if ($state.current.name) {
             $scope.getToken($stateParams.id, $stateParams.offset, $stateParams.page);
         }
     }])

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app" ng-controller="AppController">
 <head>
     <title>Webhook Tester</title>
     <!-- Libraries -->
@@ -24,7 +24,7 @@
 
     <meta name="description" content="Easily test webhooks and HTTP requests with this handy tool that displays requests in realtime.">
 </head>
-<body ng-app="app" ng-controller="AppController">
+<body>
 <div ui-view>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -191,7 +191,7 @@
 </div>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="helpModal" ui-view>
+<div class="modal fade" tabindex="-1" role="dialog" id="helpModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
