@@ -60,7 +60,7 @@
             <div class="nav navbar-right navbar-form">&nbsp;
                 <div class="form-group">
                     <label for="tokenUrl" style="color: white">
-                        Your unique URL: &nbsp;
+                        Send requests to: &nbsp;
                     </label>
 
                     <input id="tokenUrl" type="text" class="form-control click-select"
@@ -251,7 +251,6 @@
                             <label class="col-md-4 control-label" for="default_content_type">Content Type</label>
                             <div class="col-md-4">
                                 <input id="default_content_type" name="default_content_type" type="text" placeholder="text/plain" class="form-control input-md">
-
                             </div>
                         </div>
 
