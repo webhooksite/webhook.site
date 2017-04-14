@@ -217,6 +217,18 @@ angular
             return json;
         };
 
+        /**
+         * cURL Commands
+         */
+
+        $scope.generateCurlCommand = function (request) {
+            var options = url.parse(request.url);
+            options.method = request.method;
+            //options.headers = request.headers;
+
+            $scope.curlCommand = curl.cmd(options);
+        };
+
         // Initialize app. Check whether we need to load a token.
         if ($state.current.name) {
             $scope.getToken($stateParams.id, $stateParams.offset, $stateParams.page);

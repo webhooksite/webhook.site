@@ -16,6 +16,7 @@
     
     <!-- App -->
     <script src="assets/scripts/app.js"></script>
+    <script src="js/main.js"></script>
     <link href="css/app.css" rel="stylesheet">
     <script>
         var AppConfig = {
@@ -151,14 +152,22 @@
                                         <td id="req-direct-link">
                                             <a href="http://{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}/{{ currentPage }}">Direct link to request</a></td>
                                     </tr>
-                                    <tr ng-show="hasRequests && currentRequest.content != '' && isValidJSON(currentRequest.content)">
+                                    <tr>
                                         <td>Options</td>
                                         <td>
-                                                <a class=""
-                                                        ng-click="currentRequest.content = formatContentJson(currentRequest.content)"
-                                                        style="">
-                                                    Format JSON</a>
+                                            <a ng-show="hasRequests && currentRequest.content != '' && isValidJSON(currentRequest.content)"
+                                               ng-click="currentRequest.content = formatContentJson(currentRequest.content)">
+                                                Format JSON
+                                            </a>
+                                            <a ng-click="generateCurlCommand(currentRequest)" data-toggle="modal" data-target="#curlCommandModal">
+                                                Get cURL command
+                                            </a>
+
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Curl command</td>
+                                        <td><code>{{ curlCommand }}</code></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -217,6 +226,26 @@
                     so the URL will respond with a 404 Not Found.</p>
                 <p>You can bookmark this page to go back to the request contents at any time.</p>
                 <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
+                <code>{{ curlCommand }}</code>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="curlCommandModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">cURL Command</h4>
+            </div>
+            <div class="modal-body">
+                <textarea class="form-control" style="height: 300px; font-family: monospace" ng-bind="curlCommand">default</textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="copyCurlCommand()">Copy</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
