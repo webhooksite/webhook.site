@@ -259,9 +259,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="timeout">Timeout before response</label>
                             <div class="col-md-4">
-                                {{ timeout || "0" }} seconds
-                                <input ng-model="timeout" id="timeout" name="timeout" type="range" max="10" min="0" placeholder="0" value="0" class="form-control input-md">
-
+                                <input id="timeout" name="timeout" type="number" max="10" min="0" placeholder="0" value="0" class="form-control input-md">
                             </div>
                         </div>
 
