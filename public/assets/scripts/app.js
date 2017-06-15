@@ -120,7 +120,7 @@ angular
                 });
 
             $scope.pusherChannel = $scope.pusher.subscribe(token);
-            $scope.pusherChannel.bind('request.new', function(data) {
+            $scope.pusherChannel.bind('request.created', function(data) {
                 $scope.requests.data.push(data.request);
 
                 if ($scope.currentRequestIndex == 0) {

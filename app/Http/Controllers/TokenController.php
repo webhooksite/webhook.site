@@ -25,32 +25,28 @@ class TokenController extends Controller
             'timeout' => $req->get('timeout', null),
         ]);
 
-        $token->save();
-
         return new JsonResponse($token);
 
     }
 
     /**
-     * @param Request $req
+     * @param string $uuid
      * @return JsonResponse
      */
-    public function find(Request $req)
+    public function find($uuid)
     {
-        $token = Token::uuid($req->uuid);
-
-        return new JsonResponse($token);
+        return new JsonResponse(Token::uuid($uuid));
     }
 
     /**
-     * @param Request $req
+     * @param string $uuid
      * @return JsonResponse
      */
-    public function delete(Request $req)
+    public function delete($uuid)
     {
-        $status = Token::uuid($req->uuid)->delete();
-
-        return new JsonResponse(['status' => $status]);
+        return new JsonResponse([
+            'status' => Token::uuid($uuid)->delete()
+        ]);
     }
 
 }

@@ -2,7 +2,6 @@
 
 namespace App\Requests;
 
-
 use App\Foundation\UuidModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +13,7 @@ class Request extends Model
     public $incrementing = false;
     public $primaryKey = 'uuid';
     protected $table = 'requests';
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
     protected $fillable = [
         'ip',
         'user_agent',
@@ -25,7 +24,6 @@ class Request extends Model
         'headers',
         'token_id',
     ];
-    protected $hidden = ['id'];
     protected $casts = [
         'headers' => 'array',
     ];

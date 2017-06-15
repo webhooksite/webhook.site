@@ -7,7 +7,7 @@ Route::pattern('statusCode', '[1-5][0-9][0-9]');
 Route::pattern('any', '.*');
 
 
-Route::get('/', 'HomeController@index');
+Route::get('/', function () { return view('app'); });
 
 Route::group(['middleware' => ['api']], function () {
     Route::any('{uuid}/{statusCode?}', 'RequestController@create');

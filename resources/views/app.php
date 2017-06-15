@@ -139,8 +139,8 @@
                                         <td id="req-ip">{{ currentRequest.ip }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Time and date</td>
-                                        <td id="req-date">{{ currentRequest.created_at }}</td>
+                                        <td>Date</td>
+                                        <td id="req-date">{{ currentRequest.created_at | date:'shortTime' : 'UTC' }}</td>
                                     </tr>
                                     <tr>
                                         <td>Method</td>
