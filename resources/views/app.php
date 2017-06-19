@@ -59,15 +59,11 @@
             </div>
             <div class="nav navbar-right navbar-form">&nbsp;
                 <div class="form-group">
-                    <label for="tokenUrl" style="color: white">
-                        Send requests to: &nbsp;
-                    </label>
-
                     <input id="tokenUrl" type="text" class="form-control click-select"
                            style="width: 200px;"
                            value="http://{{ domain }}/{{ token.uuid }}">
                 </div>
-                <button class="btn btn-success" id="copyTokenUrl" data-clipboard-target="#tokenUrl">
+                <button class="btn btn-success copyTokenUrl" data-clipboard-target="#tokenUrl">
                     <span class="glyphicon glyphicon-copy"></span> Copy</button> &nbsp;
                 <button type="button" class="btn btn-primary openModal" data-modal="#newUrlModal">
                     <span class="glyphicon glyphicon-plus-sign"></span> New URL
@@ -108,20 +104,21 @@
             <div ng-show="!hasRequests">
                 <p><strong>Webhook Tester</strong>
                     allows you to easily test webhooks and other types of HTTP requests.</p>
+                <p>Any requests sent to that URL are logged here instantly
+                    &mdash; you don't even have to refresh!</p>
                 <hr>
                 <p>Here's your unique URL that was created just now:</p>
                 <p>
                     <code>http://{{ domain }}/{{ token.uuid }}</code>
+                    <a class="btn btn-xs btn-link copyTokenUrl" data-clipboard-target="#tokenUrl">Copy</a>
                     <a class="btn btn-xs btn-link"
                        href="http://{{ domain }}/{{ token.uuid }}"
                        target="_blank">
                         <span class="glyphicon glyphicon-new-window"></span> Open in new tab</a>
                 </p>
-                <p>Any requests sent to that URL are logged here instantly
-                    &mdash; you don't even have to refresh!</p>
                 <hr>
-                <p>You can bookmark this page to go back to the request contents at any time.</p>
-                <p>For more info, click <b>Help</b> above.</p>
+                <p>Bookmark this page to go back to the requests at any time.
+                    For more info, click <b>Help</b>.</p>
                 <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
             </div>
             <div ng-show="hasRequests">

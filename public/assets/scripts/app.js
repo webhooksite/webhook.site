@@ -49,7 +49,7 @@ angular
 
 
         // Initialize Clipboard copy button
-        new Clipboard('#copyTokenUrl');
+        new Clipboard('.copyTokenUrl');
 
         // Initialize Pusher
         $scope.pusherChannel = null;
