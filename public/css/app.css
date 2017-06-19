@@ -58,6 +58,21 @@ body {
   color: #fff;
   background-color: #428bca; }
 
+.nav-sidebar .delete {
+  display: none;
+  position: absolute;
+  padding: 2px 5px;
+  right: 10px;
+  top: 20px;
+  z-index: 1;
+  background: #d9534f;
+  color: white;
+  font-size: 10px; }
+
+.select:hover + .delete, .delete:hover {
+  display: block;
+  background: #d9534f !important; }
+
 .sidebar-header {
   text-transform: uppercase;
   font-weight: bold;

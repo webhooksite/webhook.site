@@ -80,6 +80,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
+            <p class="sidebar-header">Requests ({{ requests.data.length }})</p>
+
             <p ng-show="!hasRequests" class="small">
                 <img src="assets/images/loader.gif"/>
                 &nbsp; Waiting for first request...
@@ -88,10 +90,13 @@
             <ul class="nav nav-sidebar">
                 <li ng-repeat="(key, request) in requests.data"
                     ng-class="currentRequestIndex === request.uuid ? 'active' : ''">
-                    <a ng-click="setCurrentRequest(request)">
+                    <a ng-click="setCurrentRequest(request)" class="select">
                         <span class="label label-{{ getLabel(request.method) }}">{{ request.method }}</span>
                         #{{ request.uuid.substring(0,5) }} {{ request.ip }} <br/>
                         <small>{{ request.created_at }}</small>
+                    </a>
+                    <a ng-click="deleteRequest(request, key)" class="btn btn-danger delete">
+                        X
                     </a>
                 </li>
                 <li ng-show="requests.next_page_url">

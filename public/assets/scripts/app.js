@@ -91,6 +91,13 @@ angular
             $state.go('request', {id: $scope.token.uuid, offset: request.uuid, page: $scope.requests.current_page}, {notify: false});
         });
 
+        $scope.deleteRequest = (function (request, requestIndex) {
+            $http.delete('/token/' + request.token_id + '/request/' + request.uuid);
+
+            // Remove from view
+            $scope.requests.data.splice(requestIndex, 1);
+        });
+
         $scope.getRequests = (function(token, offset, page) {
             if (!page) {
                 page = 0;

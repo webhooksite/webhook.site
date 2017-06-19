@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\RequestCreated;
 use App\Requests\Request;
 use App\Tokens\Token;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\Response;
 
@@ -52,6 +53,20 @@ class RequestController extends Controller
     public function all($uuid)
     {
         return Token::findOrFail($uuid)->requests()->paginate(50);
+    }
+
+    /**
+     * @param string $tokenId
+     * @param string $requestId
+     * @return JsonResponse
+     */
+    public function delete($tokenId, $requestId)
+    {
+        return new JsonResponse([
+            'status' => Request::where('token_id', $tokenId)
+                ->findOrFail($requestId)
+                ->delete()
+        ]);
     }
 
 }
