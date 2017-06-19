@@ -96,7 +96,7 @@
                     </a>
                 </li>
                 <li ng-show="requests.next_page_url">
-                    <a ng-click="getNextPage(token.uuid)" class="prevent-default"></a>
+                    <a ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
                 </li>
             </ul>
         </div>
