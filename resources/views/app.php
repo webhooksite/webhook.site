@@ -70,7 +70,7 @@
                 <button class="btn btn-success" id="copyTokenUrl" data-clipboard-target="#tokenUrl">
                     <span class="glyphicon glyphicon-copy"></span> Copy</button> &nbsp;
                 <button type="button" class="btn btn-primary openModal" data-modal="#newUrlModal">
-                    <span class="glyphicon glyphicon-new-window"></span> New URL
+                    <span class="glyphicon glyphicon-plus-sign"></span> New URL
                 </button>
             </div>
         </div>
@@ -108,17 +108,20 @@
             <div ng-show="!hasRequests">
                 <p><strong>Webhook Tester</strong>
                     allows you to easily test webhooks and other types of HTTP requests.</p>
-                <p>Here's your unique URL:</p>
+                <hr>
+                <p>Here's your unique URL that was created just now:</p>
                 <p>
                     <code>http://{{ domain }}/{{ token.uuid }}</code>
-                    <a href="http://{{ domain }}/{{ token.uuid }}" target="_blank">(try it!)</a>
+                    <a class="btn btn-xs btn-link"
+                       href="http://{{ domain }}/{{ token.uuid }}"
+                       target="_blank">
+                        <span class="glyphicon glyphicon-new-window"></span> Open in new tab</a>
                 </p>
-                <p>Any requests sent to that URL are instantly logged here - you don't even have to refresh.</p>
-                <p>
-                    Append a status code to the url, e.g.: <br/>
-                    <code>http://{{ domain }}/{{ token.uuid }}/404</code>, <br/>
-                    so the URL will respond with a 404 Not Found.</p>
+                <p>Any requests sent to that URL are logged here instantly
+                    &mdash; you don't even have to refresh!</p>
+                <hr>
                 <p>You can bookmark this page to go back to the request contents at any time.</p>
+                <p>For more info, click <b>Help</b> above.</p>
                 <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
             </div>
             <div ng-show="hasRequests">
