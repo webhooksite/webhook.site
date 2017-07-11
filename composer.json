@@ -8,7 +8,8 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.3.*",
         "webpatser/laravel-uuid": "^2.0",
-        "pusher/pusher-php-server": "^2.6"
+        "pusher/pusher-php-server": "^2.6",
+        "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
