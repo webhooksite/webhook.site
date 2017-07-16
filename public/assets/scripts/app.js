@@ -186,6 +186,53 @@ angular
                 });
         });
 
+        $scope.downloadHarFile = (function (request) {
+            console.log(request);
+
+            var harHeaders = [];
+
+            for (var header in request.headers) {
+                harHeaders.push({
+                    name: header,
+                    value: request.headers[header][0]
+                });
+            }
+
+            var harContent = {
+                "log": {
+                    "version": "1.2",
+                    "creator": {
+                        "name": "webhook.site",
+                        "version": "1.0"
+                    },
+                    "pages": [
+
+                    ],
+                    "entries": [
+                        {
+                            "startedDateTime": request.created_at,
+                            "time": 1,
+                            "cache": {},
+                            "timings": {},
+                            "request": {
+                                "method": request.method,
+                                "url": request.url,
+                                "httpVersion": "HTTP/1.1",
+                                "headers": harHeaders
+                            }
+                        }
+                    ]
+                }
+            };
+
+            var file = 'data:application/json;charset=utf-8,'
+                + encodeURIComponent(JSON.stringify(harContent, undefined, 2));
+
+            $.notify('HAR File generated. <a download="har.json" href="' + file + '">Download</a>', {
+                delay: 60000 // 60 seconds
+            });
+        });
+
         $scope.getLabel = function(method) {
             switch (method) {
                 case 'POST':

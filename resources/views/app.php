@@ -156,13 +156,18 @@
                                         <td id="req-direct-link">
                                             <a href="http://{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}/{{ currentPage }}">Direct link to request</a></td>
                                     </tr>
-                                    <tr ng-show="hasRequests && currentRequest.content != '' && isValidJSON(currentRequest.content)">
+                                    <tr ng-show="hasRequests">
                                         <td>Options</td>
                                         <td>
-                                                <a class=""
-                                                        ng-click="currentRequest.content = formatContentJson(currentRequest.content)"
-                                                        style="">
-                                                    Format JSON</a>
+                                                <a ng-show="isValidJSON(currentRequest.content)"
+                                                   ng-click="currentRequest.content = formatContentJson(currentRequest.content)"
+                                                   style="">
+                                                    Format JSON
+                                                </a>
+
+                                                <a ng-click="downloadHarFile(currentRequest)">
+                                                    Download HAR
+                                                </a>
                                         </td>
                                     </tr>
                                 </tbody>
