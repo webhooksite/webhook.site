@@ -129,14 +129,22 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-9">
-                                <a class="btn btn-xs btn-link prevent-default"
+                                <a class="btn btn-xs btn-link"
+                                   ng-click="setCurrentRequest(requests.data[0])"
+                                   ng-class="requests.data.indexOf(currentRequest) !== 0 ? '' : 'disabled'">
+                                    First</a>
+                                <a class="btn btn-xs btn-link"
                                    ng-class="requests.data.indexOf(currentRequest) <= requests.data.length && requests.data.indexOf(currentRequest) !== 0 ? '' : 'disabled'"
                                    ng-click="setCurrentRequest(requests.data[requests.data.indexOf(currentRequest) - 1])">
                                     &leftarrow; Previous</a>
-                                <a class="btn btn-xs btn-link prevent-default"
+                                <a class="btn btn-xs btn-link"
                                    ng-class="requests.data.indexOf(currentRequest) !== requests.data.length-1 ? '' : 'disabled'"
                                    ng-click="setCurrentRequest(requests.data[requests.data.indexOf(currentRequest) + 1])">
                                     Next &rightarrow;</a>
+                                <a class="btn btn-xs btn-link"
+                                   ng-class="requests.data.indexOf(currentRequest) !== requests.data.length-1 ? '' : 'disabled'"
+                                   ng-click="setCurrentRequest(requests.data[requests.data.count()])">
+                                Last</a>
                             </div>
                             <div class="col-md-3">
                                 <label style="float: right"><input type="checkbox" ng-model="hideDetails"> Hide Request
