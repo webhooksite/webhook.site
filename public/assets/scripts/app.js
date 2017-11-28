@@ -41,6 +41,7 @@ angular
         $scope.currentRequest = {};
         $scope.currentPage = 1;
         $scope.hasRequests = false;
+        $scope.protocol = window.location.protocol;
         $scope.domain = window.location.hostname;
 
         /**
