@@ -35,6 +35,7 @@ angular
     .controller("AppController", ['$scope', '$http', '$stateParams', '$state', '$timeout', function($scope, $http, $stateParams, $state, $timeout) {
         $scope.token = {};
         $scope.requests = {
+            total: 0,
             data: []
         };
         $scope.currentRequestIndex = 0;
@@ -43,11 +44,11 @@ angular
         $scope.hasRequests = false;
         $scope.protocol = window.location.protocol;
         $scope.domain = window.location.hostname;
+        $scope.appConfig = window.AppConfig;
 
         /**
          * App Initialization
          */
-
 
         // Initialize Clipboard copy button
         new Clipboard('.copyTokenUrl');
@@ -130,6 +131,7 @@ angular
             $scope.pusherChannel = $scope.pusher.subscribe(token);
             $scope.pusherChannel.bind('request.created', function(data) {
                 $scope.requests.data.push(data.request);
+                $scope.requests.total = data.total;
 
                 if ($scope.currentRequestIndex == 0) {
                     $scope.setCurrentRequest($scope.requests.data[0]);

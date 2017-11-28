@@ -1,6 +1,16 @@
 <?php
 
 return [
+  
+    /*
+    |--------------------------------------------------------------------------
+    | Webhook Tester-specific Configuration
+    |--------------------------------------------------------------------------
+    */
+    
+    // How many requests each URL will log before returning a 410 Gone, and the user
+    // will have to create a new URL.
+    'max_requests' => env('WEBHOOK_MAX_REQUESTS', 500),
 
     /*
     |--------------------------------------------------------------------------

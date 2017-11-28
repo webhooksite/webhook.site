@@ -12,6 +12,11 @@ class RequestCreated implements ShouldBroadcast
      * @var Request
      */
     public $request;
+    
+    /**
+     * @var int
+     */
+    public $total = 0;
 
     /**
      * NewRequest constructor.
@@ -20,6 +25,8 @@ class RequestCreated implements ShouldBroadcast
     public function __construct(Request $request)
     {
         $this->request = $request;
+        
+        $this->total = Request::where('token_id', $request->token_id)->count();
     }
 
     /**

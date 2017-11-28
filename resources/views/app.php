@@ -21,6 +21,7 @@
     <script>
         AppConfig = {
             PusherToken: "<?=config('broadcasting.connections.pusher.key')?>",
+            MaxRequests: <?=config('app.max_requests')?>
         };
     </script>
 
@@ -80,7 +81,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
-                <p class="sidebar-header">Requests ({{ requests.data.length }})</p>
+                <p class="sidebar-header">Requests ({{ requests.total || 0 }})</p>
 
                 <p ng-show="!hasRequests" class="small">
                     <img src="assets/images/loader.gif"/>
@@ -105,6 +106,13 @@
                 </ul>
             </div>
             <div id="request" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div id="rate-limit-warning" 
+                     class="alert alert-warning" 
+                     ng-show="hasRequests && requests.total >= appConfig.MaxRequests">
+                      <p><strong>This URL received over {{ appConfig.MaxRequests }} requests and can't accept more webhooks.</strong></p>
+                      <p>New requests sent to this URL will return HTTP status code 410 Gone and 
+                          won't be logged. Please create a new URL to continue.</p>
+                </div>
                 <div ng-show="!hasRequests">
                     <p><strong>Webhook Tester</strong>
                         allows you to easily test webhooks and other types of HTTP requests.</p>
