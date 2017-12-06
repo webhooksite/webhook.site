@@ -151,7 +151,7 @@
                                     Next &rightarrow;</a>
                                 <a class="btn btn-xs btn-link"
                                    ng-class="requests.data.indexOf(currentRequest) !== requests.data.length-1 ? '' : 'disabled'"
-                                   ng-click="setCurrentRequest(requests.data[requests.data.count()])">
+                                   ng-click="setCurrentRequest(requests.data[requests.data.length-1])">
                                 Last</a>
                             </div>
                             <div class="col-md-3">
