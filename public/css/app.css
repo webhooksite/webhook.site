@@ -121,6 +121,10 @@ table.table-borderless tbody td, table.table-borderless tbody th {
 a[ng-click] {
   cursor: pointer; }
 
+code {
+  background: #EEE;
+  color: #333; }
+
 /*
  * Request Details Table
  */
@@ -134,6 +138,9 @@ a[ng-click] {
 
 #requestDetails table {
   font-size: 90%; }
+
+#noContent {
+  color: #ccc; }
 
 /*
    * JSON syntax highlighting

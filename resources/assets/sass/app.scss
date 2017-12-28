@@ -144,6 +144,11 @@ a[ng-click]{
   cursor: pointer;
 }
 
+code {
+  background: #EEE;
+  color: #333;
+}
+
 /*
  * Request Details Table
  */
@@ -161,6 +166,10 @@ a[ng-click]{
   table {
     font-size: 90%;
   }
+}
+
+#noContent {
+  color: #ccc;
 }
 
   /*

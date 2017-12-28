@@ -154,9 +154,21 @@
                                    ng-click="setCurrentRequest(requests.data[requests.data.length-1])">
                                 Last</a>
                             </div>
-                            <div class="col-md-3">
-                                <label style="float: right"><input type="checkbox" ng-model="hideDetails"> Hide Request
-                                    Details</label>
+                            <div class="col-md-8" style="padding-bottom: 10px">
+                                <!-- Redirection -->
+                                <label class="small" title="Redirect incoming requests to another URL via XHR"
+                                       ng-disabled="!redirectUrl">
+                                    <input type="checkbox" ng-model="redirectEnable"
+                                           ng-disabled="!redirectUrl" /> Auto redirect</label>
+                                <a href class="openModal btn btn-xs" data-modal="#redirectModal">Settings...</a>
+                                <a ng-click="redirect(currentRequest, redirectUrl, redirectMethod)"
+                                   class="btn btn-xs" ng-class="redirectUrl ? '' : 'disabled'">Redirect Now</a>&emsp;&emsp;
+
+                                <!-- Auto-JSON -->
+                                <label class="small" title="Automatically applies easy to read JSON formatting on valid requests">
+                                    <input type="checkbox" ng-model="formatJsonEnable"/> Format JSON</label>
+
+                                <label class="small" style="float: right"><input type="checkbox" ng-model="hideDetails"> Hide Details</label>
                             </div>
                         </div>
                         <div class="row" id="requestDetails" ng-show="!hideDetails">
@@ -164,40 +176,23 @@
                                 <table class="table table-borderless table-striped">
                                     <tbody>
                                     <tr>
-                                        <th colspan="2">Request Details</th>
+                                        <th colspan="2">
+                                            Request Details
+                                            <a class="pull-right small"
+                                               href="{{ protocol }}//{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}/{{ currentPage }}">
+                                                permalink</a>
+                                        </th>
                                     </tr>
                                     <tr>
                                         <td width="25%">URL</td>
-                                        <td id="req-url"><a href="{{ currentRequest.url }}">{{ currentRequest.url }}</a>
+                                        <td id="req-url">
+                                            <span class="label label-{{ getLabel(currentRequest.method) }}">{{ currentRequest.method }}</span>
+                                            <a href="{{ currentRequest.url }}">{{ currentRequest.url }}</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Host</td>
                                         <td id="req-ip">{{ currentRequest.ip }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Date</td>
-                                        <td id="req-date">{{ currentRequest.created_at | date:'shortTime' : 'UTC' }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Method</td>
-                                        <td id="req-method">{{ currentRequest.method }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Link</td>
-                                        <td id="req-direct-link">
-                                            <a href="{{ protocol }}//{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}/{{ currentPage }}">Direct
-                                                link to request</a></td>
-                                    </tr>
-                                    <tr ng-show="hasRequests && currentRequest.content != '' && isValidJSON(currentRequest.content)">
-                                        <td>Options</td>
-                                        <td>
-                                            <a class=""
-                                               ng-click="currentRequest.content = formatContentJson(currentRequest.content)"
-                                               style="">
-                                                Format JSON</a>
-                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -210,8 +205,8 @@
                                     </tr>
                                     <tr ng-repeat="(headerName, values) in currentRequest.headers">
                                         <td width="25%">{{ headerName }}</td>
-                                        <td><code ng-repeat="value in values">{{ (value == '' ? '(empty)' : value)
-                                                }}{{$last ? '' : ', '}}</code></td>
+                                        <td><code ng-repeat="value in values">
+                                                {{ value == '' ? '(empty)' : value }}{{ $last ? '' : ', ' }}</code></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -220,12 +215,12 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <p ng-show="hasRequests && currentRequest.content == ''">
-                                    The request did not have any body content.</p>
+                                <p id="noContent" ng-show="hasRequests && currentRequest.content == ''">
+                                    (no body content)</p>
 
                                 <pre id="req-content"
                                      ng-show="hasRequests && currentRequest.content != ''"
-                                     ng-bind="currentRequest.content"></pre>
+                                     ng-bind="formatJsonEnable ? formatContentJson(currentRequest.content) : currentRequest.content"></pre>
                             </div>
                         </div>
                     </div>
@@ -233,6 +228,58 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="redirectModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Redirection Settings</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="redirectForm">
+                        <fieldset>
+                            <div class="form-group">
+                                <div class="container-fluid">
+                                    <p>Redirection allows you to automatically, or with a click, send incoming
+                                        requests to another URL via XHR. The content will be redirected, and you can choose
+                                        a static method to use.</p>
+                                    <p>Since XHR is used, there might be issues with Cross-Domain Requests.</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="redirectUrl">Redirect to</label>
+                                <div class="col-md-7">
+                                    <input id="redirectUrl" ng-model="redirectUrl"
+                                           placeholder="http://localhost"
+                                           class="form-control input-md">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="redirectUrl">HTTP Method</label>
+                                <div class="col-md-5">
+                                    <select class="form-control input-md" ng-model="redirectMethod">
+                                        <option value="">Default (use request method)</option>
+                                        <option value="GET">GET</option>
+                                        <option value="POST">POST</option>
+                                        <option value="PUT">PUT</option>
+                                        <option value="DELETE">DELETE</option>
+                                        <option value="PATCH">PATCH</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <div class="modal fade" tabindex="-1" role="dialog" id="helpModal">
         <div class="modal-dialog" role="document">
@@ -327,7 +374,6 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
 
     <script>
         (function (i, s, o, g, r, a, m) {

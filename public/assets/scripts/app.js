@@ -140,18 +140,10 @@ angular
                 $scope.hasRequests = true;
                 $scope.$apply();
                 $.notify('Request received');
-            });
-        });
 
-        $scope.getNextPage = (function(token) {
-            $http({
-                url: '/token/' + token + '/requests',
-                params: {page: $scope.requests.current_page + 1}
-            }).success(function(data, status, headers, config) {
-                // We use next_page_url to keep track of whether we should load more pages.
-                $scope.requests.next_page_url = data.next_page_url;
-                $scope.requests.current_page = data.current_page;
-                $scope.requests.data = $scope.requests.data.concat(data.data);
+                if ($scope.redirectEnable) {
+                    $scope.redirect(data.request, $scope.redirectUrl, $scope.redirectMethod);
+                }
             });
         });
 
@@ -187,6 +179,39 @@ angular
                     $state.go('token', {id: response.data.uuid});
                     $.notify('New URL created');
                 });
+        });
+
+        $scope.getNextPage = (function(token) {
+            $http({
+                url: '/token/' + token + '/requests',
+                params: {page: $scope.requests.current_page + 1}
+            }).success(function(data, status, headers, config) {
+                // We use next_page_url to keep track of whether we should load more pages.
+                $scope.requests.next_page_url = data.next_page_url;
+                $scope.requests.current_page = data.current_page;
+                $scope.requests.data = $scope.requests.data.concat(data.data);
+            });
+        });
+
+        $scope.redirect = (function (request, url, method) {
+            $http({
+                'method': (!method ? request.method : method),
+                'url': url,
+                'content': request.content
+            }).then(
+                function ok(response) {
+                    $.notify('Redirected request to ' + url + '<br>Status: ' + response.statusText);
+                },
+                function error(response) {
+                    $.notify(
+                        'Error redirecting request to ' + url + '<br>Status: ' + response.statusText,
+                        {
+                            delay: 5000,
+                            type: 'danger'
+                        }
+                    );
+                }
+            );
         });
 
         $scope.getLabel = function(method) {
