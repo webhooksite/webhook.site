@@ -80,7 +80,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div class="col-sm-3 col-md-2 sidebar" id="sidebar">
                 <p class="sidebar-header">Requests ({{ requests.total || 0 }})</p>
 
                 <p ng-show="!hasRequests" class="small">
@@ -89,7 +89,8 @@
                 </p>
 
                 <ul class="nav nav-sidebar">
-                    <li ng-repeat="(key, request) in requests.data"
+                    <li class="request" ng-repeat="(key, request) in requests.data"
+                        id="{{ currentRequestIndex === request.uuid ? 'currentRequest' : '' }}"
                         ng-class="currentRequestIndex === request.uuid ? 'active' : ''">
                         <a ng-click="setCurrentRequest(request)" class="select">
                             <span class="label label-{{ getLabel(request.method) }}">{{ request.method }}</span>
@@ -106,12 +107,13 @@
                 </ul>
             </div>
             <div id="request" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div id="rate-limit-warning" 
-                     class="alert alert-warning" 
+                <div id="rate-limit-warning"
+                     class="alert alert-warning"
                      ng-show="hasRequests && requests.total >= appConfig.MaxRequests">
-                      <p><strong>This URL received over {{ appConfig.MaxRequests }} requests and can't accept more webhooks.</strong></p>
-                      <p>New requests sent to this URL will return HTTP status code 410 Gone and 
-                          won't be logged. Please create a new URL to continue.</p>
+                    <p><strong>This URL received over {{ appConfig.MaxRequests }} requests and can't accept more
+                            webhooks.</strong></p>
+                    <p>New requests sent to this URL will return HTTP status code 410 Gone and
+                        won't be logged. Please create a new URL to continue.</p>
                 </div>
                 <div ng-show="!hasRequests">
                     <p><strong>Webhook Tester</strong>
@@ -136,23 +138,23 @@
                 <div ng-show="hasRequests">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-9">
-                                <a class="btn btn-xs btn-link"
-                                   ng-click="setCurrentRequest(requests.data[0])"
+                            <div class="col-md-4">
+                                <button class="btn btn-xs btn-link"
+                                   ng-click="gotoFirstRequest()"
                                    ng-class="requests.data.indexOf(currentRequest) !== 0 ? '' : 'disabled'">
-                                    First</a>
-                                <a class="btn btn-xs btn-link"
+                                    First</button>
+                                <button class="btn btn-xs btn-link"
                                    ng-class="requests.data.indexOf(currentRequest) <= requests.data.length && requests.data.indexOf(currentRequest) !== 0 ? '' : 'disabled'"
-                                   ng-click="setCurrentRequest(requests.data[requests.data.indexOf(currentRequest) - 1])">
-                                    &leftarrow; Previous</a>
-                                <a class="btn btn-xs btn-link"
+                                   ng-click="gotoPrevRequest()">
+                                    &leftarrow; Previous</button>
+                                <button class="btn btn-xs btn-link"
                                    ng-class="requests.data.indexOf(currentRequest) !== requests.data.length-1 ? '' : 'disabled'"
-                                   ng-click="setCurrentRequest(requests.data[requests.data.indexOf(currentRequest) + 1])">
-                                    Next &rightarrow;</a>
-                                <a class="btn btn-xs btn-link"
+                                   ng-click="gotoNextRequest()">
+                                    Next &rightarrow;</button>
+                                <button class="btn btn-xs btn-link"
                                    ng-class="requests.data.indexOf(currentRequest) !== requests.data.length-1 ? '' : 'disabled'"
-                                   ng-click="setCurrentRequest(requests.data[requests.data.length-1])">
-                                Last</a>
+                                   ng-click="gotoLastRequest()">
+                                    Last</button>
                             </div>
                             <div class="col-md-8" style="padding-bottom: 10px">
                                 <!-- Redirection -->

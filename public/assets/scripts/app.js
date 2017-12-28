@@ -181,6 +181,43 @@ angular
                 });
         });
 
+        $scope.gotoNextRequest = (function () {
+            $scope.setCurrentRequest($scope.requests.data[$scope.requests.data.indexOf($scope.currentRequest) + 1]);
+
+            var currentNum = $scope.requests.data.indexOf($scope.currentRequest);
+            var requestCount =  $scope.requests.data.length - 1;
+
+            if ($scope.requests.total > requestCount && currentNum === requestCount) {
+                $scope.getNextPage($scope.token.uuid);
+            }
+
+            $scope.syncRequestsScrollbar();
+        });
+
+        $scope.gotoPrevRequest = (function () {
+            $scope.setCurrentRequest($scope.requests.data[$scope.requests.data.indexOf($scope.currentRequest) - 1]);
+
+            $scope.syncRequestsScrollbar();
+        });
+
+        $scope.gotoFirstRequest = (function () {
+            $scope.setCurrentRequest($scope.requests.data[0]);
+
+            $scope.syncRequestsScrollbar();
+        });
+
+        $scope.gotoLastRequest = (function () {
+            $scope.setCurrentRequest($scope.requests.data[$scope.requests.data.length-1]);
+
+            $scope.syncRequestsScrollbar();
+        });
+
+        $scope.syncRequestsScrollbar = (function () {
+            document.getElementById('currentRequest').scrollIntoView(
+                {behavior: "smooth", block: "center", inline: "center"}
+            );
+        });
+
         $scope.getNextPage = (function(token) {
             $http({
                 url: '/token/' + token + '/requests',
