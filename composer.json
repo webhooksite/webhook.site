@@ -9,7 +9,8 @@
         "laravel/framework": "5.3.*",
         "webpatser/laravel-uuid": "^2.0",
         "pusher/pusher-php-server": "^2.6",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
