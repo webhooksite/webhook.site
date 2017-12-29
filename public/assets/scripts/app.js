@@ -33,7 +33,40 @@ angular
         }
     ])
     .controller("AppController", ['$scope', '$http', '$stateParams', '$state', '$timeout', function($scope, $http, $stateParams, $state, $timeout) {
-        $scope.token = {};
+        /**
+         * Settings handling
+         */
+
+        // Array of scope variables to automatically save
+        var settings = ['redirectEnable', 'redirectUrl', 'redirectContentType', 'redirectMethod', 'token', 'formatJsonEnable'];
+
+        $scope.saveSettings = (function () {
+            for (var setting in settings) {
+                window.localStorage.setItem(
+                    settings[setting],
+                    JSON.stringify($scope[settings[setting]])
+                );
+            }
+        });
+
+        $scope.getSetting = (function (name, defaultValue) {
+            var value = window.localStorage.getItem(name);
+
+            if (!value || typeof(value) === 'undefined' || value === 'undefined') {
+                if (typeof(defaultValue) === 'undefined') {
+                    return null;
+                }
+                return defaultValue;
+            }
+
+            return JSON.parse(value);
+        });
+
+        /**
+         * App Initialization
+         */
+
+        $scope.token = $scope.getSetting('token');
         $scope.requests = {
             total: 0,
             data: []
@@ -46,9 +79,11 @@ angular
         $scope.domain = window.location.hostname;
         $scope.appConfig = window.AppConfig;
 
-        /**
-         * App Initialization
-         */
+        $scope.formatJsonEnable = $scope.getSetting('formatJsonEnable', false);
+        $scope.redirectEnable = $scope.getSetting('redirectEnable', false);
+        $scope.redirectMethod = $scope.getSetting('redirectMethod', '');
+        $scope.redirectUrl = $scope.getSetting('redirectUrl', null);
+        $scope.redirectContentType = $scope.getSetting('redirectContentType', 'text/plain');
 
         // Initialize Clipboard copy button
         new Clipboard('.copyTokenUrl');
@@ -79,6 +114,9 @@ angular
             $('.modal-backdrop').appendTo('.mainView');
             $('body').removeClass();
         });
+
+        // Automatically save settings
+        $scope.$watch($scope.saveSettings);
 
         /**
          * Controller actions
@@ -197,7 +235,10 @@ angular
             $http({
                 'method': (!method ? request.method : method),
                 'url': url,
-                'content': request.content
+                'data': request.content,
+                'headers': {
+                    'Content-Type': 'text/plain'
+                }
             }).then(
                 function ok(response) {
                     $.notify('Redirected request to ' + url + '<br>Status: ' + response.statusText);
@@ -254,7 +295,11 @@ angular
 
         // Initialize app. Check whether we need to load a token.
         if ($state.current.name) {
-            $scope.getToken($stateParams.id, $stateParams.offset, $stateParams.page);
+            if ($scope.getSetting('token') && !$stateParams.id) {
+                $state.go('token', {id: $scope.getSetting('token').uuid});
+            } else {
+                $scope.getToken($stateParams.id, $stateParams.offset, $stateParams.page);
+            }
         }
     }])
     .run(['$rootScope', '$state', '$stateParams',
