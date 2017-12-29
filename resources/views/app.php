@@ -136,7 +136,7 @@
                 <div ng-show="hasRequests">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-4">
                                 <a class="btn btn-xs btn-link"
                                    ng-click="setCurrentRequest(requests.data[0])"
                                    ng-class="requests.data.indexOf(currentRequest) !== 0 ? '' : 'disabled'">
@@ -259,6 +259,14 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-md-4 control-label" for="redirectContentType">Content Type</label>
+                                <div class="col-md-7">
+                                    <input id="redirectContentType" ng-model="redirectContentType"
+                                           class="form-control input-md">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-md-4 control-label" for="redirectUrl">HTTP Method</label>
                                 <div class="col-md-5">
                                     <select class="form-control input-md" ng-model="redirectMethod">
@@ -275,7 +283,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" ng-click="saveSettings()" data-dismiss="modal">Close</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
