@@ -68,12 +68,12 @@
                                value="{{ protocol }}//{{ domain }}/{{ token.uuid }}">
                     </div>
                     <button class="btn btn-success copyTokenUrl" data-clipboard-target="#tokenUrl"
-                            ga-event-category="URLCopy" ga-event-action="copy-nav">
+                            ga-on="click" ga-event-category="URLCopy" ga-event-action="copy-nav">
                         <span class="glyphicon glyphicon-copy"></span> Copy
                     </button> &nbsp;
                     <button type="button" class="btn btn-primary openModal" data-modal="#newUrlModal">
                         <span class="glyphicon glyphicon-plus-sign"
-                              ga-event-category="Request" ga-event-action="click-newurl"></span> New URL
+                              ga-on="click" ga-event-category="Request" ga-event-action="click-newurl"></span> New URL
                     </button>
                 </div>
             </div>
@@ -125,7 +125,7 @@
                     <p>
                         <code>{{ protocol }}//{{ domain }}/{{ token.uuid }}</code>
                         <a class="btn btn-xs btn-link copyTokenUrl" data-clipboard-target="#tokenUrl"
-                           ga-event-category="URLCopy" ga-event-action="copy-welcome">Copy</a>
+                           ga-on="click" ga-event-category="URLCopy" ga-event-action="copy-welcome">Copy</a>
                         <a class="btn btn-xs btn-link"
                            href="{{ protocol }}//{{ domain }}/{{ token.uuid }}"
                            target="_blank">
@@ -135,7 +135,7 @@
                     <p>Bookmark this page to go back to the requests at any time.
                         For more info, click <b>Help</b>.</p>
                     <p><a href="https://github.com/fredsted/webhook.site"
-                          ga-event-category="Nav" ga-event-action="click-github">Fork this on GitHub</a></p>
+                          ga-on="click" ga-event-category="Nav" ga-event-action="click-github">Fork this on GitHub</a></p>
                 </div>
                 <div ng-show="hasRequests">
                     <div class="container-fluid">
@@ -164,13 +164,13 @@
                                        ng-disabled="!redirectUrl">
                                     <input type="checkbox" ng-model="redirectEnable"
                                            ng-disabled="!redirectUrl"
-                                           ga-event-category="AutoRedirect" ga-event-action="toggle"/> Auto redirect
+                                           ga-on="click" ga-event-category="AutoRedirect" ga-event-action="toggle"/> Auto redirect
                                 </label>
                                 <a href class="openModal btn btn-xs" data-modal="#redirectModal"
-                                   ga-event-category="AutoRedirect" ga-event-action="settings">Settings...</a>
+                                   ga-on="click" ga-event-category="AutoRedirect" ga-event-action="settings">Settings...</a>
                                 <a ng-click="redirect(currentRequest, redirectUrl, redirectMethod)"
                                    class="btn btn-xs" ng-class="redirectUrl ? '' : 'disabled'"
-                                   ga-event-category="AutoRedirect" ga-event-action="redir-now">Redirect Now</a>&emsp;&emsp;
+                                   ga-on="click" ga-event-category="AutoRedirect" ga-event-action="redir-now">Redirect Now</a>&emsp;&emsp;
 
                                 <!-- Auto-JSON -->
                                 <label class="small" title="Automatically applies easy to read JSON formatting on valid requests">
@@ -384,7 +384,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getCustomToken()"
-                            ga-event-category="Request" ga-event-action="create">
+                            ga-on="click" ga-event-category="Request" ga-event-action="create">
                         Create
                     </button>
                 </div>
@@ -400,6 +400,7 @@
         ga('require', 'urlChangeTracker');
         ga('require', 'pageVisibilityTracker');
         ga('send', 'pageview');
+        ga('send', 'event', 'Test', 'Test1');
     </script>
     <script async src="https://www.google-analytics.com/analytics.js"></script>
     <script async src="/assets/scripts/libs/autotrack.js"></script>
