@@ -67,11 +67,13 @@
                                style="width: 200px;"
                                value="{{ protocol }}//{{ domain }}/{{ token.uuid }}">
                     </div>
-                    <button class="btn btn-success copyTokenUrl" data-clipboard-target="#tokenUrl">
+                    <button class="btn btn-success copyTokenUrl" data-clipboard-target="#tokenUrl"
+                            ga-event-category="URLCopy" ga-event-action="copy-nav">
                         <span class="glyphicon glyphicon-copy"></span> Copy
                     </button> &nbsp;
                     <button type="button" class="btn btn-primary openModal" data-modal="#newUrlModal">
-                        <span class="glyphicon glyphicon-plus-sign"></span> New URL
+                        <span class="glyphicon glyphicon-plus-sign"
+                              ga-event-category="Request" ga-event-action="click-newurl"></span> New URL
                     </button>
                 </div>
             </div>
@@ -122,7 +124,8 @@
                     <p>Here's your unique URL that was created just now:</p>
                     <p>
                         <code>{{ protocol }}//{{ domain }}/{{ token.uuid }}</code>
-                        <a class="btn btn-xs btn-link copyTokenUrl" data-clipboard-target="#tokenUrl">Copy</a>
+                        <a class="btn btn-xs btn-link copyTokenUrl" data-clipboard-target="#tokenUrl"
+                           ga-event-category="URLCopy" ga-event-action="copy-welcome">Copy</a>
                         <a class="btn btn-xs btn-link"
                            href="{{ protocol }}//{{ domain }}/{{ token.uuid }}"
                            target="_blank">
@@ -131,7 +134,8 @@
                     <hr>
                     <p>Bookmark this page to go back to the requests at any time.
                         For more info, click <b>Help</b>.</p>
-                    <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
+                    <p><a href="https://github.com/fredsted/webhook.site"
+                          ga-event-category="Nav" ga-event-action="click-github">Fork this on GitHub</a></p>
                 </div>
                 <div ng-show="hasRequests">
                     <div class="container-fluid">
@@ -159,10 +163,14 @@
                                 <label class="small" title="Redirect incoming requests to another URL via XHR"
                                        ng-disabled="!redirectUrl">
                                     <input type="checkbox" ng-model="redirectEnable"
-                                           ng-disabled="!redirectUrl" /> Auto redirect</label>
-                                <a href class="openModal btn btn-xs" data-modal="#redirectModal">Settings...</a>
+                                           ng-disabled="!redirectUrl"
+                                           ga-event-category="AutoRedirect" ga-event-action="toggle"/> Auto redirect
+                                </label>
+                                <a href class="openModal btn btn-xs" data-modal="#redirectModal"
+                                   ga-event-category="AutoRedirect" ga-event-action="settings">Settings...</a>
                                 <a ng-click="redirect(currentRequest, redirectUrl, redirectMethod)"
-                                   class="btn btn-xs" ng-class="redirectUrl ? '' : 'disabled'">Redirect Now</a>&emsp;&emsp;
+                                   class="btn btn-xs" ng-class="redirectUrl ? '' : 'disabled'"
+                                   ga-event-category="AutoRedirect" ga-event-action="redir-now">Redirect Now</a>&emsp;&emsp;
 
                                 <!-- Auto-JSON -->
                                 <label class="small" title="Automatically applies easy to read JSON formatting on valid requests">
@@ -375,7 +383,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getCustomToken()">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getCustomToken()"
+                            ga-event-category="Request" ga-event-action="create">
                         Create
                     </button>
                 </div>
