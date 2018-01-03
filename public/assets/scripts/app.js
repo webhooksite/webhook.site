@@ -286,6 +286,10 @@ angular
         };
 
         $scope.formatContentJson = function (content) {
+            if (!content) {
+                return '';
+            }
+
             var json = JSON.parse(content);
             if (typeof json != 'string') {
                 json = JSON.stringify(json, undefined, 2);
