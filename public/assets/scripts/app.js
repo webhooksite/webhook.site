@@ -195,7 +195,7 @@ angular
                 $scope.setCurrentRequest($scope.requests.data[$scope.requests.data.length - 1]);
             }
             if ($scope.redirectEnable) {
-                $scope.redirect(request, $scope.redirectUrl, $scope.redirectMethod);
+                $scope.redirect(request, $scope.redirectUrl, $scope.redirectMethod, $scope.redirectContentType);
             }
 
             $scope.hasRequests = true;
@@ -266,13 +266,13 @@ angular
             });
         });
 
-        $scope.redirect = (function (request, url, method) {
+        $scope.redirect = (function (request, url, method, contentType) {
             $http({
                 'method': (!method ? request.method : method),
                 'url': url,
                 'data': request.content,
                 'headers': {
-                    'Content-Type': 'text/plain'
+                    'Content-Type': (!contentType ? 'text/plain' : contentType)
                 }
             }).then(
                 function ok(response) {

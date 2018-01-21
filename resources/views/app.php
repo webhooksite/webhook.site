@@ -172,7 +172,7 @@
                                 <a href class="openModal btn btn-xs" data-modal="#redirectModal"
                                    ga-on="click" ga-event-category="AutoRedirect"
                                    ga-event-action="settings">Settings...</a>
-                                <a ng-click="redirect(currentRequest, redirectUrl, redirectMethod)"
+                                <a ng-click="redirect(currentRequest, redirectUrl, redirectMethod, redirectContentType)"
                                    class="btn btn-xs" ng-class="redirectUrl ? '' : 'disabled'"
                                    ga-on="click" ga-event-category="AutoRedirect" ga-event-action="redir-now">Redirect
                                     Now</a>&emsp;&emsp;
