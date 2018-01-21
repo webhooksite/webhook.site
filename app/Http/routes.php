@@ -13,6 +13,7 @@ Route::group(['middleware' => ['api']], function () {
     Route::any('{uuid}/{statusCode?}', 'RequestController@create');
     Route::any('{uuid}/{any}', 'RequestController@create');
     Route::get('token/{uuid}/requests', 'RequestController@all');
+    Route::get('token/{tokenId}/request/{requestId}', 'RequestController@find');
     Route::delete('token/{tokenId}/request/{requestId}', 'RequestController@delete');
 
     // Tokens

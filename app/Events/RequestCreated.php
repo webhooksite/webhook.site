@@ -19,13 +19,27 @@ class RequestCreated implements ShouldBroadcast
     public $total = 0;
 
     /**
+     * @var bool
+     */
+    public $truncated = false;
+
+    /**
      * NewRequest constructor.
      * @param Request $request
      */
     public function __construct(Request $request)
     {
         $this->request = $request;
-        
+
+        if (mb_strlen($this->request->toJson()) > 10000) {
+            unset(
+                $this->request->content,
+                $this->request->headers,
+                $this->request->user_agent
+            );
+            $this->truncated = true;
+        }
+
         $this->total = Request::where('token_id', $request->token_id)->count();
     }
 

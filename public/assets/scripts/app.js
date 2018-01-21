@@ -38,7 +38,15 @@ angular
          */
 
         // Array of scope variables to automatically save
-        var settings = ['redirectEnable', 'redirectUrl', 'redirectContentType', 'redirectMethod', 'token', 'formatJsonEnable'];
+        var settings = [
+            'redirectEnable',
+            'redirectUrl',
+            'redirectContentType',
+            'redirectMethod',
+            'token',
+            'formatJsonEnable',
+            'autoNavEnable'
+        ];
 
         $scope.saveSettings = (function () {
             for (var setting in settings) {
@@ -79,7 +87,9 @@ angular
         $scope.domain = window.location.hostname;
         $scope.appConfig = window.AppConfig;
 
+        // Load settings
         $scope.formatJsonEnable = $scope.getSetting('formatJsonEnable', false);
+        $scope.autoNavEnable = $scope.getSetting('autoNavEnable', false);
         $scope.redirectEnable = $scope.getSetting('redirectEnable', false);
         $scope.redirectMethod = $scope.getSetting('redirectMethod', '');
         $scope.redirectUrl = $scope.getSetting('redirectUrl', null);
@@ -138,6 +148,13 @@ angular
             $scope.requests.data.splice(requestIndex, 1);
         });
 
+        $scope.getRequest = (function (tokenId, requestId) {
+            return $http.get('/token/' + tokenId + '/request/' + requestId)
+                .then(function (response) {
+                    return response.data;
+                });
+        });
+
         $scope.getRequests = (function(token, offset, page) {
             if (!page) {
                 page = 0;
@@ -165,23 +182,39 @@ angular
                 }, function(response) {
                     $.notify('Requests not found - invalid ID');
                 });
+        });
 
+        $scope.appendRequest = (function (request) {
+            $scope.requests.data.push(request);
+
+            if ($scope.currentRequestIndex === 0) {
+                $scope.setCurrentRequest($scope.requests.data[0]);
+            }
+            if ($scope.autoNavEnable) {
+                $scope.setCurrentRequest($scope.requests.data[$scope.requests.data.length - 1]);
+            }
+            if ($scope.redirectEnable) {
+                $scope.redirect(request, $scope.redirectUrl, $scope.redirectMethod);
+            }
+
+            $scope.hasRequests = true;
+            $.notify('Request received');
+        });
+
+        $scope.pusherSubscribe = (function (token) {
             $scope.pusherChannel = $scope.pusher.subscribe(token);
             $scope.pusherChannel.bind('request.created', function(data) {
-                $scope.requests.data.push(data.request);
+                // Pusher only supports messages less than 10240 bytes, so if we had to truncate,
+                // the request is fetched directly from the API instead.
+                if (data.truncated) {
+                    $scope.getRequest(data.request.token_id, data.request.uuid).then(function (response) {
+                        $scope.appendRequest(response);
+                    });
+                } else {
+                    $scope.appendRequest(data.request);
+                }
+
                 $scope.requests.total = data.total;
-
-                if ($scope.currentRequestIndex == 0) {
-                    $scope.setCurrentRequest($scope.requests.data[0]);
-                }
-
-                $scope.hasRequests = true;
-                $scope.$apply();
-                $.notify('Request received');
-
-                if ($scope.redirectEnable) {
-                    $scope.redirect(data.request, $scope.redirectUrl, $scope.redirectMethod);
-                }
             });
         });
 
@@ -196,6 +229,7 @@ angular
                     .then(function(response) {
                         $scope.token = response.data;
                         $scope.getRequests(response.data.uuid, offset, page);
+                        $scope.pusherSubscribe(tokenId);
                     }, function(response) {
                         $.notify('Requests not found - invalid ID');
                     });
@@ -290,9 +324,13 @@ angular
                 return '';
             }
 
-            var json = JSON.parse(content);
-            if (typeof json != 'string') {
-                json = JSON.stringify(json, undefined, 2);
+            try {
+                var json = JSON.parse(content);
+                if (typeof json != 'string') {
+                    json = JSON.stringify(json, undefined, 2);
+                }
+            } catch (e) {
+                return content;
             }
             return json;
         };

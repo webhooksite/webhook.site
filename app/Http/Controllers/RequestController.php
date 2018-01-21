@@ -28,7 +28,7 @@ class RequestController extends Controller
             sleep($token->timeout);
         }
 
-        Request::create([
+        $request = Request::create([
             'token_id' => $req->uuid,
             'ip' => $req->ip(),
             'hostname' => $req->getHost(),
@@ -42,7 +42,10 @@ class RequestController extends Controller
         return new Response(
             $token->default_content,
             empty($req->statusCode) ? $token->default_status : (int)$req->statusCode,
-            ['Content-Type' => $token->default_content_type]
+            [
+                'Content-Type' => $token->default_content_type,
+                'X-Request-Id' => $request->uuid
+            ]
         );
     }
 
@@ -53,6 +56,16 @@ class RequestController extends Controller
     public function all($uuid)
     {
         return Token::findOrFail($uuid)->requests()->paginate(50);
+    }
+
+    /**
+     * @param $tokenId
+     * @param $requestId
+     * @return mixed
+     */
+    public function find($tokenId, $requestId)
+    {
+        return Request::where('token_id', $tokenId)->findOrFail($requestId);
     }
 
     /**
