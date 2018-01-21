@@ -10,7 +10,9 @@
         "webpatser/laravel-uuid": "^2.0",
         "pusher/pusher-php-server": "^2.6",
         "doctrine/dbal": "^2.5",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "sentry/sentry": "^1.8",
+        "sentry/sentry-laravel": "^0.8.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

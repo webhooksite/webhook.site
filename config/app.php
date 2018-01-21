@@ -167,6 +167,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
 
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
+
     ],
 
     /*

@@ -108,12 +108,13 @@
                 </ul>
             </div>
             <div id="request" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div id="rate-limit-warning" 
-                     class="alert alert-warning" 
+                <div id="rate-limit-warning"
+                     class="alert alert-warning"
                      ng-show="hasRequests && requests.total >= appConfig.MaxRequests">
-                      <p><strong>This URL received over {{ appConfig.MaxRequests }} requests and can't accept more webhooks.</strong></p>
-                      <p>New requests sent to this URL will return HTTP status code 410 Gone and 
-                          won't be logged. Please create a new URL to continue.</p>
+                    <p><strong>This URL received over {{ appConfig.MaxRequests }} requests and can't accept more
+                            webhooks.</strong></p>
+                    <p>New requests sent to this URL will return HTTP status code 410 Gone and
+                        won't be logged. Please create a new URL to continue.</p>
                 </div>
                 <div ng-show="!hasRequests">
                     <p><strong>Webhook Tester</strong>
@@ -135,7 +136,8 @@
                     <p>Bookmark this page to go back to the requests at any time.
                         For more info, click <b>Help</b>.</p>
                     <p><a href="https://github.com/fredsted/webhook.site"
-                          ga-on="click" ga-event-category="Nav" ga-event-action="click-github">Fork this on GitHub</a></p>
+                          ga-on="click" ga-event-category="Nav" ga-event-action="click-github">Fork this on GitHub</a>
+                    </p>
                 </div>
                 <div ng-show="hasRequests">
                     <div class="container-fluid">
@@ -156,7 +158,7 @@
                                 <a class="btn btn-xs btn-link"
                                    ng-class="requests.data.indexOf(currentRequest) !== requests.data.length-1 ? '' : 'disabled'"
                                    ng-click="setCurrentRequest(requests.data[requests.data.length-1])">
-                                Last</a>
+                                    Last</a>
                             </div>
                             <div class="col-md-8" style="padding-bottom: 10px">
                                 <!-- Redirection -->
@@ -164,19 +166,31 @@
                                        ng-disabled="!redirectUrl">
                                     <input type="checkbox" ng-model="redirectEnable"
                                            ng-disabled="!redirectUrl"
-                                           ga-on="click" ga-event-category="AutoRedirect" ga-event-action="toggle"/> Auto redirect
+                                           ga-on="click" ga-event-category="AutoRedirect" ga-event-action="toggle"/>
+                                    Auto redirect
                                 </label>
                                 <a href class="openModal btn btn-xs" data-modal="#redirectModal"
-                                   ga-on="click" ga-event-category="AutoRedirect" ga-event-action="settings">Settings...</a>
+                                   ga-on="click" ga-event-category="AutoRedirect"
+                                   ga-event-action="settings">Settings...</a>
                                 <a ng-click="redirect(currentRequest, redirectUrl, redirectMethod)"
                                    class="btn btn-xs" ng-class="redirectUrl ? '' : 'disabled'"
-                                   ga-on="click" ga-event-category="AutoRedirect" ga-event-action="redir-now">Redirect Now</a>&emsp;&emsp;
+                                   ga-on="click" ga-event-category="AutoRedirect" ga-event-action="redir-now">Redirect
+                                    Now</a>&emsp;&emsp;
 
                                 <!-- Auto-JSON -->
-                                <label class="small" title="Automatically applies easy to read JSON formatting on valid requests">
-                                    <input type="checkbox" ng-model="formatJsonEnable"/> Format JSON</label>
+                                <label class="small"
+                                       title="Automatically applies easy to read JSON formatting on valid requests">
+                                    <input type="checkbox" ng-model="formatJsonEnable"
+                                           ga-on="click" ga-event-category="JSONFormat" ga-event-action="toggle"/> Format JSON</label> &emsp;
 
-                                <label class="small" style="float: right"><input type="checkbox" ng-model="hideDetails"> Hide Details</label>
+                                <!-- Auto Navigate -->
+                                <label class="small"
+                                       title="Automatically select and go to the latest incoming webhook request">
+                                    <input type="checkbox" ng-model="autoNavEnable"
+                                           ga-on="click" ga-event-category="AutoNav" ga-event-action="toggle"/> Auto navigate</label>
+
+                                <label class="small" style="float: right"><input type="checkbox" ng-model="hideDetails">
+                                    Hide Details</label>
                             </div>
                         </div>
                         <div class="row" id="requestDetails" ng-show="!hideDetails">
@@ -251,7 +265,8 @@
                             <div class="form-group">
                                 <div class="container-fluid">
                                     <p>Redirection allows you to automatically, or with a click, send incoming
-                                        requests to another URL via XHR. The content will be redirected, and you can choose
+                                        requests to another URL via XHR. The content will be redirected, and you can
+                                        choose
                                         a static method to use.</p>
                                     <p>Since XHR is used, there might be issues with Cross-Domain Requests.</p>
                                 </div>
@@ -291,7 +306,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="saveSettings()" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" ng-click="saveSettings()" data-dismiss="modal">Close
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -400,7 +416,6 @@
         ga('require', 'urlChangeTracker');
         ga('require', 'pageVisibilityTracker');
         ga('send', 'pageview');
-        ga('send', 'event', 'Test', 'Test1');
     </script>
     <script async src="https://www.google-analytics.com/analytics.js"></script>
     <script async src="/assets/scripts/libs/autotrack.js"></script>
