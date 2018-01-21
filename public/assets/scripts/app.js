@@ -186,6 +186,7 @@ angular
 
         $scope.appendRequest = (function (request) {
             $scope.requests.data.push(request);
+            $scope.$apply();
 
             if ($scope.currentRequestIndex === 0) {
                 $scope.setCurrentRequest($scope.requests.data[0]);
