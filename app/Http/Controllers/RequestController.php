@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\RequestCreated;
 use App\Requests\Request;
 use App\Tokens\Token;
+use Illuminate\Cache\Repository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\Response;
@@ -13,15 +13,29 @@ class RequestController extends Controller
 {
 
     /**
+     * @var Repository
+     */
+    private $cache;
+
+    public function __construct(Repository $cache)
+    {
+        $this->cache = $cache;
+    }
+
+    /**
      * @param HttpRequest $req
+     * @param Repository $cache
      * @return Response
      */
-    public function create(HttpRequest $req)
+    public function create(HttpRequest $req, Repository $cache)
     {
+        $this->guardOverQuota($req->uuid);
+
+        /** @var Token $token */
         $token = Token::uuid($req->uuid);
 
         if ($token->requests()->count() >= config('app.max_requests')) {
-            return new Response('Too many requests, please create a new URL/token.', Response::HTTP_GONE);
+            $this->cacheOverQuota($req->uuid);
         }
 
         if ($token->timeout) {
@@ -47,6 +61,25 @@ class RequestController extends Controller
                 'X-Request-Id' => $request->uuid
             ]
         );
+    }
+
+    /**
+     * @param $uuid
+     */
+    private function cacheOverQuota($uuid)
+    {
+        $this->cache->forever(sprintf('quota:%s', $uuid), 1);
+    }
+
+    /**
+     * @param $uuid
+     * @return void
+     */
+    private function guardOverQuota($uuid)
+    {
+        if ($this->cache->has(sprintf('quota:%s', $uuid))) {
+            abort(Response::HTTP_GONE, 'Too many requests, please create a new URL/token');
+        }
     }
 
     /**

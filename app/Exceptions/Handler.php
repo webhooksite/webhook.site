@@ -59,7 +59,11 @@ class Handler extends ExceptionHandler
         {
             $json = $this->renderJson($request, $e);
 
-            return response()->json($json, 400);
+            if ($e instanceof HttpException) {
+                return response()->json($json, $e->getStatusCode());
+            }
+
+            return response()->json($json, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return parent::render($request, $e);
@@ -67,10 +71,16 @@ class Handler extends ExceptionHandler
 
     private function renderJson($request, Exception $e)
     {
+        $message = 'An internal error occurred';
+
+        if ($e instanceof HttpException) {
+            $message = $e->getMessage();
+        }
+
         $response = [
             'success' => false,
             'error' => [
-                'message' => 'An internal error occurred',
+                'message' => $message,
                 'id' => $this->sentryId,
             ],
         ];
