@@ -115,6 +115,11 @@ return [
             'database' => 0,
         ],
 
+        'unix_socket' => [
+            'scheme' => 'unix',
+            'path' => env('REDIS_UNIX_SOCKET', '/var/run/redis/redis.sock')
+        ]
+
     ],
 
 ];
