@@ -51,6 +51,10 @@
                        style="margin-top: 7px"
                        class="btn btn-xs btn-link">
                         Github Page</a>
+                    <a href="https://github.com/fredsted/webhook.site#donate" target="_blank"
+                       style="margin-top: 7px"
+                       class="btn btn-xs btn-link">
+                        Donate</a>
                     <a href="https://twitter.com/fredsted" target="_blank"
                        style="margin-top: 7px"
                        class="btn btn-xs btn-link">
