@@ -37,3 +37,11 @@ The app was built with Laravel for the API and Angular.js for the frontend SPA.
 Thanks to [Pusher](https://pusher.com) for sponsoring a plan with a higher connection limit!
 
 Thanks to [da-n](https://github.com/da-n) for creating the Docker image.
+
+## Donate
+
+Keeping the server running https://webhook.site requires funds.
+
+* Bitcoin address: 1Maf64K9Wkpy7oBGEtqEda8H1H2drLSUuF
+* Paypal: https://paypal.me/fredsted
+
