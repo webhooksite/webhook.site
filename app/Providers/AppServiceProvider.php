@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(Storage\RequestStore::class, Storage\Redis\RequestStore::class);
         $this->app->bind(Storage\TokenStore::class, Storage\Redis\TokenStore::class);
     }
 

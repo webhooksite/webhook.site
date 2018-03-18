@@ -2,7 +2,9 @@
 
 namespace App\Storage;
 
-abstract class Entity
+use Illuminate\Contracts\Support\Arrayable;
+
+abstract class Entity implements Arrayable
 {
     private $attributes = [];
 
@@ -22,6 +24,11 @@ abstract class Entity
     }
 
     public function attributes()
+    {
+        return $this->attributes;
+    }
+
+    public function toArray()
     {
         return $this->attributes;
     }

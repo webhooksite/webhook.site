@@ -6,7 +6,7 @@ interface TokenStore
 {
     /**
      * @param string $tokenId
-     * @return mixed
+     * @return Token
      */
     public function find($tokenId);
 
