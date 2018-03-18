@@ -106,6 +106,8 @@ return [
 
     'redis' => [
 
+        'connection' => env('REDIS_CACHE_CONNECTION', 'default'),
+
         'cluster' => false,
 
         'default' => [
