@@ -3,49 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTokenRequest;
+use App\Storage\Token;
+use App\Storage\TokenStore;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use App\Tokens\Token;
 
 class TokenController extends Controller
 {
+    /**
+     * @var TokenStore
+     */
+    private $tokens;
 
     /**
-     * @param CreateTokenRequest $req
+     * TokenController constructor.
+     * @param TokenStore $tokens
+     */
+    public function __construct(TokenStore $tokens)
+    {
+        $this->tokens = $tokens;
+    }
+
+    /**
+     * @param CreateTokenRequest $request
      * @return JsonResponse
      */
-    public function create(CreateTokenRequest $req)
+    public function create(CreateTokenRequest $request)
     {
-        $token = Token::create([
-            'ip' => $req->ip(),
-            'user_agent' => $req->header('User-Agent'),
-            'default_content' => $req->get('default_content', ''),
-            'default_status' => $req->get('default_status', 200),
-            'default_content_type' => $req->get('default_content_type', 'text/plain'),
-            'timeout' => $req->get('timeout', null),
-        ]);
+        $token = Token::createFromRequest($request);
+
+        $this->tokens->store($token);
 
         return new JsonResponse($token);
-
     }
 
     /**
-     * @param string $uuid
+     * @param string $tokenId
      * @return JsonResponse
      */
-    public function find($uuid)
+    public function find($tokenId)
     {
-        return new JsonResponse(Token::uuid($uuid));
+        $token = $this->tokens->find($tokenId);
+
+        return new JsonResponse($token);
     }
 
     /**
-     * @param string $uuid
+     * @param string $tokenId
      * @return JsonResponse
      */
-    public function delete($uuid)
+    public function delete($tokenId)
     {
+        $token = $this->tokens->find($tokenId);
+
         return new JsonResponse([
-            'status' => Token::uuid($uuid)->delete()
+            'status' => (bool)$this->tokens->delete($token)
         ]);
     }
 
