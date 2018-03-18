@@ -90,7 +90,7 @@ class Handler extends ExceptionHandler
         }
 
         if (config('app.debug')) {
-            $response['error']['exception'] = $e->getMessage();
+            $response['error']['exception'] = sprintf('[%s] %s', get_class($e), $e->getMessage());
             $response['error']['trace'] = $e->getTrace();
             $response['error']['file'] = $e->getFile();
             $response['error']['line'] = $e->getLine();
