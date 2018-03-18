@@ -31,7 +31,7 @@ class RequestCreated implements ShouldBroadcast
     {
         $this->request = $request;
 
-        if (mb_strlen($this->request->toJson()) > 10000) {
+        if (mb_strlen($this->request->toJson()) > 1000 * 1000) {
             unset(
                 $this->request->content,
                 $this->request->headers,
