@@ -6,7 +6,7 @@ Route::pattern('statusCode', '[1-5][0-9][0-9]');
 Route::pattern('any', '.*');
 
 // SPA view
-Route::get('/', function () { return view('app'); });
+Route::get('/', 'IndexController');
 
 Route::group(['middleware' => ['api']], function () {
     // Requests
