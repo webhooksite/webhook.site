@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\RequestCreated;
 use App\Storage\Request;
 use App\Storage\RequestStore;
+use App\Storage\Token;
 use App\Storage\TokenStore;
-use App\Tokens\Token;
-use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Redis;
-use Psy\Util\Json;
-use Ramsey\Uuid\Uuid;
 
 class RequestController extends Controller
 {
-
     /**
      * @var Repository
      */
@@ -50,7 +46,7 @@ class RequestController extends Controller
      */
     public function create(HttpRequest $httpRequest, $tokenId)
     {
-        $token = $this->tokens->find($httpRequest->tokenId);
+        $token = $this->tokens->find($tokenId);
 
         $this->guardOverQuota($token);
 
@@ -62,6 +58,8 @@ class RequestController extends Controller
 
         $this->requests->store($token, $request);
 
+        broadcast(new RequestCreated($token, $request));
+
         return new Response(
             $token->default_content,
             $httpRequest->statusCode ?? $token->default_status,
@@ -72,7 +70,6 @@ class RequestController extends Controller
             ]
         );
     }
-
 
     /**
      * @param Token $token
@@ -86,16 +83,27 @@ class RequestController extends Controller
     }
 
     /**
+     * @param HttpRequest $httpRequest
      * @param string $tokenId
-     * @param int $page
-     * @param int $perPage
      * @return JsonResponse
      */
-    public function all($tokenId, $page = 0, $perPage = 50)
+    public function all(HttpRequest $httpRequest, $tokenId)
     {
         $token = $this->tokens->find($tokenId);
+        $page = (int)$httpRequest->get('page', 0);
+        $perPage = (int)$httpRequest->get('per_page', 50);
+        $requests = $this->requests->all($token, $page, $perPage);
+        $total = $this->tokens->countRequests($token);
 
-        return new JsonResponse($this->requests->all($token, $page, $perPage));
+        return new JsonResponse([
+            'data' => $requests,
+            'total' => $total,
+            'per_page' => $perPage,
+            'current_page' => $page,
+            'is_last_page' => ($requests->count() + ($page * $perPage)) >= $total,
+            'from' => $page * $perPage + 1,
+            'to' => $requests->count() + ($page * $perPage),
+        ]);
     }
 
     /**
@@ -125,5 +133,4 @@ class RequestController extends Controller
             'status' => $this->requests->delete($token, $request)
         ]);
     }
-
 }

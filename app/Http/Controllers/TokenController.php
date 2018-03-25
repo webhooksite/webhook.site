@@ -59,5 +59,4 @@ class TokenController extends Controller
             'status' => (bool)$this->tokens->delete($token)
         ]);
     }
-
 }

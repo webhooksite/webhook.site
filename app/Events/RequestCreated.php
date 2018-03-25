@@ -2,7 +2,9 @@
 
 namespace App\Events;
 
-use App\Requests\Request;
+use App\Storage\Request;
+use App\Storage\Token;
+use App\Storage\TokenStore;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
@@ -25,9 +27,10 @@ class RequestCreated implements ShouldBroadcast
 
     /**
      * NewRequest constructor.
+     * @param Token $token
      * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct(Token $token, Request $request)
     {
         $this->request = $request;
 
@@ -40,7 +43,7 @@ class RequestCreated implements ShouldBroadcast
             $this->truncated = true;
         }
 
-        $this->total = Request::where('token_id', $request->token_id)->count();
+        $this->total = app(TokenStore::class)->countRequests($token);
     }
 
     /**
