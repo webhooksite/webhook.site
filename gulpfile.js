@@ -1,4 +1,5 @@
 var elixir = require('laravel-elixir');
+require("laravel-elixir-webpack");
 
 /*
  |--------------------------------------------------------------------------
@@ -13,4 +14,5 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix.sass('app.scss');
+    mix.js(['echo.js', 'app.js']);
 });

@@ -35,6 +35,8 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_CLUSTER', 'eu'),
+                'host' => 'localhost',
+                'port' => 6001,
             ],
         ],
 

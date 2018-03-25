@@ -1,3 +1,10 @@
+import Echo from "laravel-echo"
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'your-pusher-key-here'
+});
+
 angular
     .module("app", [
         'ui.router'
@@ -99,11 +106,13 @@ angular
         new Clipboard('.copyTokenUrl');
 
         // Initialize Pusher
-        $scope.pusherChannel = null;
-        $scope.pusher = new Pusher(AppConfig.PusherToken, {
-            cluster: 'eu',
-            encrypted: true
-        });
+        // $scope.pusherChannel = null;
+        // $scope.pusher = new Pusher(AppConfig.PusherToken, {
+        //     cluster: 'eu',
+        //     encrypted: true
+        // });
+
+        var socket = io('http://localhost:6001/');
 
         // Initialize notify.js
         $.notifyDefaults({
@@ -203,20 +212,37 @@ angular
         });
 
         $scope.pusherSubscribe = (function (token) {
-            $scope.pusherChannel = $scope.pusher.subscribe(token);
-            $scope.pusherChannel.bind('request.created', function(data) {
-                // Pusher only supports messages less than 10240 bytes, so if we had to truncate,
-                // the request is fetched directly from the API instead.
-                if (data.truncated) {
-                    $scope.getRequest(data.request.token_id, data.request.uuid).then(function (response) {
-                        $scope.appendRequest(response);
-                    });
-                } else {
-                    $scope.appendRequest(data.request);
-                }
-
-                $scope.requests.total = data.total;
+            console.log('SUBSCRIBED');
+            socket.on('request.created', function (data) {
+                console.log('DATA');
+                console.log(data);
+                socket.emit('my other event', { my: 'data' });
             });
+            //socket.on(token, function (data) {
+            //    console.log('DATA');
+            //    console.log(data);
+            //    socket.emit('my other event', { my: 'data' });
+            //});
+            socket.on('connection', function(socket){
+                socket.join(token);
+                console.log('JOIN');
+                console.log(socket);
+            });
+//
+            //$scope.pusherChannel = $scope.pusher.subscribe(token);
+            //$scope.pusherChannel.bind('request.created', function(data) {
+            //    // Pusher only supports messages less than 10240 bytes, so if we had to truncate,
+            //    // the request is fetched directly from the API instead.
+            //    if (data.truncated) {
+            //        $scope.getRequest(data.request.token_id, data.request.uuid).then(function (response) {
+            //            $scope.appendRequest(response);
+            //        });
+            //    } else {
+            //        $scope.appendRequest(data.request);
+            //    }
+
+            //    $scope.requests.total = data.total;
+            //});
         });
 
         $scope.getToken = (function(tokenId, offset, page) {
@@ -259,8 +285,8 @@ angular
                 url: '/token/' + token + '/requests',
                 params: {page: $scope.requests.current_page + 1}
             }).success(function(data, status, headers, config) {
-                // We use next_page_url to keep track of whether we should load more pages.
-                $scope.requests.next_page_url = data.next_page_url;
+                // We use is_last_page to keep track of whether we should load more pages.
+                $scope.requests.is_last_page = data.is_last_page;
                 $scope.requests.current_page = data.current_page;
                 $scope.requests.data = $scope.requests.data.concat(data.data);
             });
@@ -351,3 +377,4 @@ angular
             $rootScope.$stateParams = $stateParams;
         }]
     );
+//# sourceMappingURL=all.js.map

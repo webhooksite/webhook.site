@@ -16,7 +16,8 @@
     <script src="assets/scripts/libs/bootstrap-notify.min.js"></script>
 
     <!-- App -->
-    <script src="assets/scripts/app.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="//localhost:6001/socket.io/socket.io.js"></script>
     <link href="css/app.css" rel="stylesheet">
     <script>
         AppConfig = {
