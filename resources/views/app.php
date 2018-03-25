@@ -102,7 +102,7 @@
                             X
                         </a>
                     </li>
-                    <li ng-show="requests.next_page_url">
+                    <li ng-show="!requests.is_last_page">
                         <a ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
                     </li>
                 </ul>

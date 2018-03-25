@@ -39,14 +39,18 @@ class RequestStore implements \App\Storage\RequestStore
     {
         $keys = array_reverse(
             array_slice(
-                $this->redis->hkeys(Request::getIdentifier($token->uuid)),
+                (array) $this->redis->hkeys(Request::getIdentifier($token->uuid)),
                 $page * $perPage,
                 $perPage
             )
         );
 
+        if (empty($keys)) {
+            return Collection::make();
+        }
+
         /** @var Collection $result */
-        $result = Collection::make(
+        return Collection::make(
             array_map(
                 function ($item) {
                     return new Request(json_decode($item, true));
@@ -57,8 +61,6 @@ class RequestStore implements \App\Storage\RequestStore
                 )
             )
         );
-
-        return $result;
     }
 
     public function store(Token $token, Request $request)
