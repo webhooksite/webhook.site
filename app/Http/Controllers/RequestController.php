@@ -88,7 +88,7 @@ class RequestController extends Controller
      */
     public function all($uuid)
     {
-        return Token::findOrFail($uuid)->requests()->paginate(50);
+        return Token::findOrFail($uuid)->requests()->orderBy('created_at', 'desc')->paginate(50);
     }
 
     /**
