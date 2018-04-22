@@ -1,0 +1,33 @@
+{
+  "authHost": "http://webhook.test",
+  "authEndpoint": "/broadcasting/auth",
+  "clients": [
+    {
+      "appId": "a60bbb116f7f2462",
+      "key": "d952cbdfb22723e675d309440e9047e9"
+    }
+  ],
+  "database": "redis",
+  "databaseConfig": {
+    "redis": {
+      "path": "/tmp/redis.sock"
+    }
+  },
+  "devMode": true,
+  "host": null,
+  "port": "6001",
+  "protocol": "http",
+  "socketio": {
+    "wsEngine": "uws"
+  },
+  "sslCertPath": "",
+  "sslKeyPath": "",
+  "sslCertChainPath": "",
+  "sslPassphrase": "",
+  "apiOriginAllow": {
+    "allowCors": true,
+    "allowOrigin": "webhook.test",
+    "allowMethods": "*",
+    "allowHeaders": "*"
+  }
+}

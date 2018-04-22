@@ -98,15 +98,6 @@ angular
         // Initialize Clipboard copy button
         new Clipboard('.copyTokenUrl');
 
-        // Initialize Pusher
-        // $scope.pusherChannel = null;
-        // $scope.pusher = new Pusher(AppConfig.PusherToken, {
-        //     cluster: 'eu',
-        //     encrypted: true
-        // });
-
-        var socket = io('http://localhost:6001/');
-
         // Initialize notify.js
         $.notifyDefaults({
             placement: {
@@ -204,38 +195,18 @@ angular
             $.notify('Request received');
         });
 
-        $scope.pusherSubscribe = (function (token) {
-            console.log('SUBSCRIBED');
-            socket.on('request.created', function (data) {
-                console.log('DATA');
-                console.log(data);
-                socket.emit('my other event', { my: 'data' });
-            });
-            //socket.on(token, function (data) {
-            //    console.log('DATA');
-            //    console.log(data);
-            //    socket.emit('my other event', { my: 'data' });
-            //});
-            socket.on('connection', function(socket){
-                socket.join(token);
-                console.log('JOIN');
-                console.log(socket);
-            });
-//
-            //$scope.pusherChannel = $scope.pusher.subscribe(token);
-            //$scope.pusherChannel.bind('request.created', function(data) {
-            //    // Pusher only supports messages less than 10240 bytes, so if we had to truncate,
-            //    // the request is fetched directly from the API instead.
-            //    if (data.truncated) {
-            //        $scope.getRequest(data.request.token_id, data.request.uuid).then(function (response) {
-            //            $scope.appendRequest(response);
-            //        });
-            //    } else {
-            //        $scope.appendRequest(data.request);
-            //    }
-
-            //    $scope.requests.total = data.total;
-            //});
+        $scope.pushSubscribe = (function (token) {
+            Echo.channel(token)
+                .listen('.request.created', function (data) {
+                    if (data.truncated) {
+                        $scope.getRequest(data.request.token_id, data.request.uuid).then(function (response) {
+                            $scope.appendRequest(response);
+                        });
+                    } else {
+                        $scope.appendRequest(data.request);
+                    }
+                    $scope.requests.total = data.total;
+                });
         });
 
         $scope.getToken = (function(tokenId, offset, page) {
@@ -249,7 +220,7 @@ angular
                     .then(function(response) {
                         $scope.token = response.data;
                         $scope.getRequests(response.data.uuid, offset, page);
-                        $scope.pusherSubscribe(tokenId);
+                        $scope.pushSubscribe(tokenId);
                     }, function(response) {
                         $.notify('Requests not found - invalid ID');
                     });

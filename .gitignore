@@ -5,3 +5,4 @@ Homestead.yaml
 Homestead.json
 .env
 .idea/workspace.xml
+laravel-echo-server.json

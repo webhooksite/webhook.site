@@ -35,14 +35,12 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_CLUSTER', 'eu'),
-                'host' => 'localhost',
-                'port' => 6001,
             ],
         ],
 
         'redis' => [
             'driver' => 'redis',
-            'connection' => 'default',
+            'connection' => env('REDIS_BROADCAST_CONNECTION', 'default'),
         ],
 
         'log' => [
