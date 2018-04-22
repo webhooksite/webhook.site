@@ -130,7 +130,7 @@ class RequestController extends Controller
         $request = $this->requests->find($token, $requestId);
 
         return new JsonResponse([
-            'status' => $this->requests->delete($token, $request)
+            'status' => (bool)$this->requests->delete($token, $request)
         ]);
     }
 }
