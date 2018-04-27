@@ -40,7 +40,7 @@ return [
 
         'redis' => [
             'driver' => 'redis',
-            'connection' => 'default',
+            'connection' => env('REDIS_BROADCAST_CONNECTION', 'default'),
         ],
 
         'log' => [

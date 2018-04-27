@@ -16,12 +16,13 @@
     <script src="assets/scripts/libs/bootstrap-notify.min.js"></script>
 
     <!-- App -->
-    <script src="assets/scripts/app.js"></script>
+    <script src="/js/bundle.js"></script>
     <link href="css/app.css" rel="stylesheet">
     <script>
         AppConfig = {
+            Broadcaster: "<?=config('broadcasting.default') == 'redis' ? 'socket.io' : 'pusher' ?>",
             PusherToken: "<?=config('broadcasting.connections.pusher.key')?>",
-            MaxRequests: <?=config('app.max_requests')?>
+            MaxRequests: <?=config('app.max_requests')?>,
         };
     </script>
 
