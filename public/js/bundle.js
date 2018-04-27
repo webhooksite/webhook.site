@@ -8897,15 +8897,6 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
     // Initialize Clipboard copy button
     new Clipboard('.copyTokenUrl');
 
-    // Initialize Pusher
-    // $scope.pusherChannel = null;
-    // $scope.pusher = new Pusher(AppConfig.PusherToken, {
-    //     cluster: 'eu',
-    //     encrypted: true
-    // });
-
-    //var socket = io('http://localhost:6001/');
-
     // Initialize notify.js
     $.notifyDefaults({
         placement: {
@@ -9001,7 +8992,7 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
         $.notify('Request received');
     };
 
-    $scope.pusherSubscribe = function (token) {
+    $scope.pushSubscribe = function (token) {
         Echo.channel(token).listen('.request.created', function (data) {
             if (data.truncated) {
                 $scope.getRequest(data.request.token_id, data.request.uuid).then(function (response) {
@@ -9023,7 +9014,7 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
             $http.get('token/' + tokenId).then(function (response) {
                 $scope.token = response.data;
                 $scope.getRequests(response.data.uuid, offset, page);
-                $scope.pusherSubscribe(tokenId);
+                $scope.pushSubscribe(tokenId);
             }, function (response) {
                 $.notify('Requests not found - invalid ID');
             });
@@ -9134,9 +9125,9 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
 }]);
 
 },{}],57:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _laravelEcho = require("laravel-echo");
+var _laravelEcho = require('laravel-echo');
 
 var _laravelEcho2 = _interopRequireDefault(_laravelEcho);
 
@@ -9146,8 +9137,8 @@ window.io = require('socket.io-client');
 
 window.Echo = new _laravelEcho2.default({
     broadcaster: AppConfig.Broadcaster,
-    key: AppConfig.PusherToken === "" ? null : AppConfig.PusherToken,
-    host: window.location.hostname + ':6001'
+    key: AppConfig.PusherToken === '' ? null : AppConfig.PusherToken,
+    host: { path: '/socket.io' }
 });
 
 },{"laravel-echo":32,"socket.io-client":38}]},{},[57,56]);
