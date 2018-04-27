@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Requests\Request;
 use App\Requests\RequestObserver;
+use App\Storage;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Request::observe(RequestObserver::class);
+
+        //DB::listen(function ($query) {
+        //    dump([$query->sql, $query->bindings, $query->time]);
+        //});
     }
 
     /**
@@ -25,6 +30,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(Storage\RequestStore::class, Storage\Redis\RequestStore::class);
+        $this->app->bind(Storage\TokenStore::class, Storage\Redis\TokenStore::class);
+    }
+
+    /**
+     * @return array
+     */
+    public function provides()
+    {
+        return [
+            Storage\RequestStore::class,
+            Storage\TokenStore::class
+        ];
     }
 }

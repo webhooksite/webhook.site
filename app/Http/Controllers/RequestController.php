@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Requests\Request;
-use App\Tokens\Token;
+use App\Events\RequestCreated;
+use App\Storage\Request;
+use App\Storage\RequestStore;
+use App\Storage\Token;
+use App\Storage\TokenStore;
 use Illuminate\Cache\Repository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request as HttpRequest;
@@ -11,84 +14,96 @@ use Illuminate\Http\Response;
 
 class RequestController extends Controller
 {
-
     /**
      * @var Repository
      */
     private $cache;
+    /**
+     * @var TokenStore
+     */
+    private $tokens;
+    /**
+     * @var RequestStore
+     */
+    private $requests;
 
-    public function __construct(Repository $cache)
+    /**
+     * RequestController constructor.
+     * @param Repository $cache
+     * @param TokenStore $tokens
+     * @param RequestStore $requests
+     */
+    public function __construct(Repository $cache, TokenStore $tokens, RequestStore $requests)
     {
         $this->cache = $cache;
+        $this->tokens = $tokens;
+        $this->requests = $requests;
     }
 
     /**
-     * @param HttpRequest $req
-     * @param Repository $cache
+     * @param HttpRequest $httpRequest
      * @return Response
      */
-    public function create(HttpRequest $req, Repository $cache)
+    public function create(HttpRequest $httpRequest, $tokenId)
     {
-        $this->guardOverQuota($req->uuid);
+        $token = $this->tokens->find($tokenId);
 
-        /** @var Token $token */
-        $token = Token::uuid($req->uuid);
-
-        if ($token->requests()->count() >= config('app.max_requests')) {
-            $this->cacheOverQuota($req->uuid);
-        }
+        $this->guardOverQuota($token);
 
         if ($token->timeout) {
             sleep($token->timeout);
         }
 
-        $request = Request::create([
-            'token_id' => $req->uuid,
-            'ip' => $req->ip(),
-            'hostname' => $req->getHost(),
-            'method' => $req->getMethod(),
-            'user_agent' => $req->header('User-Agent'),
-            'content' => file_get_contents('php://input'),
-            'headers' => $req->headers->all(),
-            'url' => $req->fullUrl(),
-        ]);
+        $request = Request::createFromRequest($httpRequest);
+
+        $this->requests->store($token, $request);
+
+        broadcast(new RequestCreated($token, $request));
 
         return new Response(
             $token->default_content,
-            empty($req->statusCode) ? $token->default_status : (int)$req->statusCode,
+            $httpRequest->statusCode ?? $token->default_status,
             [
                 'Content-Type' => $token->default_content_type,
-                'X-Request-Id' => $request->uuid
+                'X-Request-Id' => $request->uuid,
+                'X-Token-Id' => $token->uuid,
             ]
         );
     }
 
     /**
-     * @param $uuid
-     */
-    private function cacheOverQuota($uuid)
-    {
-        $this->cache->forever(sprintf('quota:%s', $uuid), 1);
-    }
-
-    /**
-     * @param $uuid
+     * @param Token $token
      * @return void
      */
-    private function guardOverQuota($uuid)
+    private function guardOverQuota($token)
     {
-        if ($this->cache->has(sprintf('quota:%s', $uuid))) {
+        if ($this->tokens->countRequests($token) >= config('app.max_requests')) {
             abort(Response::HTTP_GONE, 'Too many requests, please create a new URL/token');
         }
     }
 
     /**
-     * @param string $uuid
-     * @return Token
+     * @param HttpRequest $httpRequest
+     * @param string $tokenId
+     * @return JsonResponse
      */
-    public function all($uuid)
+    public function all(HttpRequest $httpRequest, $tokenId)
     {
-        return Token::findOrFail($uuid)->requests()->paginate(50);
+        $token = $this->tokens->find($tokenId);
+        $page = (int)$httpRequest->get('page', 0);
+        $perPage = (int)$httpRequest->get('per_page', 50);
+        $requests = $this->requests->all($token, $page, $perPage);
+        $total = $this->tokens->countRequests($token);
+
+        return new JsonResponse([
+            'data' => $requests,
+            'total' => $total,
+            'per_page' => $perPage,
+            'current_page' => $page,
+            'is_last_page' => ($requests->count() + ($page * $perPage)) >= $total,
+            'from' => $page * $perPage + 1,
+            'to' => $requests->count() + ($page * $perPage),
+        ]);
     }
 
     /**
@@ -98,7 +113,10 @@ class RequestController extends Controller
      */
     public function find($tokenId, $requestId)
     {
-        return Request::where('token_id', $tokenId)->findOrFail($requestId);
+        $token = $this->tokens->find($tokenId);
+        $request = $this->requests->find($token, $requestId);
+
+        return new JsonResponse($request);
     }
 
     /**
@@ -108,11 +126,11 @@ class RequestController extends Controller
      */
     public function delete($tokenId, $requestId)
     {
+        $token = $this->tokens->find($tokenId);
+        $request = $this->requests->find($token, $requestId);
+
         return new JsonResponse([
-            'status' => Request::where('token_id', $tokenId)
-                ->findOrFail($requestId)
-                ->delete()
+            'status' => (bool)$this->requests->delete($token, $request)
         ]);
     }
-
 }
