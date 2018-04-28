@@ -16,7 +16,6 @@
     <script src="assets/scripts/libs/bootstrap-notify.min.js"></script>
 
     <!-- App -->
-    <script src="/js/bundle.js"></script>
     <link href="css/app.css" rel="stylesheet">
     <script>
         AppConfig = {
@@ -25,6 +24,7 @@
             MaxRequests: <?=config('app.max_requests')?>,
         };
     </script>
+    <script src="/js/bundle.js"></script>
 
     <!-- Pusher -->
     <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
