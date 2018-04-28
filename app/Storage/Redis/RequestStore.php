@@ -24,6 +24,11 @@ class RequestStore implements \App\Storage\RequestStore
         $this->redis = Redis::connection(config('database.redis.connection'));
     }
 
+    /**
+     * @param Token $token
+     * @param string $requestId
+     * @return Request
+     */
     public function find(Token $token, $requestId)
     {
         $result = $this->redis->hget(Request::getIdentifier($token->uuid), $requestId);
@@ -32,9 +37,17 @@ class RequestStore implements \App\Storage\RequestStore
             throw new NotFoundHttpException('Request not found');
         }
 
+        $this->redis->expire(Request::getIdentifier($token->uuid), config('app.expiry'));
+
         return new Request(json_decode($result, true));
     }
 
+    /**
+     * @param Token $token
+     * @param int $page
+     * @param int $perPage
+     * @return Collection|static
+     */
     public function all(Token $token, $page = 0, $perPage = 50)
     {
         $keys = array_reverse(
@@ -63,17 +76,31 @@ class RequestStore implements \App\Storage\RequestStore
         );
     }
 
+    /**
+     * @param Token $token
+     * @param Request $request
+     * @return Request
+     */
     public function store(Token $token, Request $request)
     {
-        return $this
+        $result = $this
             ->redis
             ->hmset(
                 Request::getIdentifier($token->uuid),
                 $request->uuid,
                 json_encode($request->attributes())
             );
+
+        $this->redis->expire(Request::getIdentifier($token->uuid), config('app.expiry'));
+
+        return $result;
     }
 
+    /**
+     * @param Token $token
+     * @param Request $request
+     * @return Request
+     */
     public function delete(Token $token, Request $request)
     {
         return $this

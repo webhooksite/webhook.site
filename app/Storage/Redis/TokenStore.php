@@ -34,14 +34,19 @@ class TokenStore implements \App\Storage\TokenStore
             throw new NotFoundHttpException('Token not found');
         }
 
+        $this->redis->expire(Token::getIdentifier($tokenId), config('app.expiry'));
+
         return new Token(json_decode($result, true));
     }
 
+    /**
+     * @param Token $token
+     * @return int
+     */
     public function countRequests(Token $token)
     {
         return $this->redis->hlen(Request::getIdentifier($token->uuid));
     }
-
 
     /**
      * @param Token $token

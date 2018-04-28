@@ -84,6 +84,8 @@ class MigrateToRedis extends Command
         $requestsKey = sprintf('%s:%s', $tokenKey, 'requests');
 
         if ($this->redis->exists($tokenKey)) {
+            $this->redis->expire($tokenKey, config('app.expiry'));
+            $this->redis->expire($requestsKey, config('app.expiry'));
             return;
         }
 
@@ -99,6 +101,9 @@ class MigrateToRedis extends Command
                 $this->insertRequest($requestsKey, $request);
             }
         });
+
+        $this->redis->expire($tokenKey, config('app.expiry'));
+        $this->redis->expire($requestsKey, config('app.expiry'));
     }
 
     /**
