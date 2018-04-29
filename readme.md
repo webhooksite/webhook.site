@@ -9,22 +9,21 @@ Built by Simon Fredsted ([@fredsted](https://twitter.com/fredsted)).
 ## Requirements
 
 * PHP 7
+* Redis
 * Composer
 * Web server
+
+Version 1.1 switched to using Redis for storage. If you want to use SQLite, you can use version 1.0.
 
 ## Installation
 
 ### Web Server
 
 1. Run the following commands:
-   1. `cp .env.example .env`
+   1. `cp .env.example .env` - adjust settings as needed
    2. `php artisan key:generate`
    3. `composer install`
-   4. `touch database/database.sqlite`
-   5. `php artisan migrate`
 2. Setup virtual host pointing to the /public folder.
-
-The above will setup Webhook Tester to use SQLite as a database. If you want to use another database type, take a look in the `config/database.php` file (SQLite will work just fine, even under heavy load.)
 
 ### Docker
 
@@ -33,8 +32,6 @@ A Dockerfile is available at hub.docker.com: https://hub.docker.com/r/dahyphenn/
 ## Acknowledgements
 
 The app was built with Laravel for the API and Angular.js for the frontend SPA.
-
-Thanks to [Pusher](https://pusher.com) for sponsoring a plan with a higher connection limit!
 
 Thanks to [da-n](https://github.com/da-n) for creating the Docker image.
 
