@@ -6,6 +6,17 @@ Upon visiting the app, you get a random URL to send your requests and webhooks t
 
 Built by Simon Fredsted ([@fredsted](https://twitter.com/fredsted)).
 
+## Acknowledgements
+
+The app was built with Laravel for the API and Angular.js for the frontend SPA.
+
+Thanks to [da-n](https://github.com/da-n) for creating the Docker image.
+
+## Donate
+
+* Bitcoin address: 1Maf64K9Wkpy7oBGEtqEda8H1H2drLSUuF
+* Paypal: https://paypal.me/fredsted
+
 ## Requirements
 
 * PHP 7
@@ -29,14 +40,19 @@ Version 1.1 switched to using Redis for storage. If you want to use SQLite, you 
 
 A Dockerfile is available at hub.docker.com: https://hub.docker.com/r/dahyphenn/webhook.site/. 
 
-## Acknowledgements
+### Push functionality
 
-The app was built with Laravel for the API and Angular.js for the frontend SPA.
+You can use [laravel-echo-server](https://github.com/tlaverdure/laravel-echo-server) or Pusher to enable realtime updates. Take a look at the `.env.example` on how to configure it.
 
-Thanks to [da-n](https://github.com/da-n) for creating the Docker image.
+For laravel-echo-server, the app expects socket.io to be available at the `/socket.io` path. This can be done with nginx like so:
 
-## Donate
-
-* Bitcoin address: 1Maf64K9Wkpy7oBGEtqEda8H1H2drLSUuF
-* Paypal: https://paypal.me/fredsted
-
+```
+    location /socket.io {
+        proxy_pass http://127.0.0.1:6001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+```
