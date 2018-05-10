@@ -25,10 +25,7 @@
         };
     </script>
     <script src="/js/bundle.js"></script>
-
-    <!-- Pusher -->
-    <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
-
+    
     <meta name="description"
           content="Easily test webhooks and HTTP requests with this handy tool that displays requests in realtime.">
 </head>
