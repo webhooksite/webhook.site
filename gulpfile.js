@@ -14,5 +14,18 @@ require("laravel-elixir-webpack");
 
 elixir(function(mix) {
     mix.sass('app.scss');
-    mix.browserify(['echo.js', 'app.js']);
+    mix.browserify([
+        // external dependencies
+        'jquery-2.2.2.min.js',
+        'angular.min.js',
+        'angular-ui-router.js',
+        'autotrack.js',
+        'bootstrap.min.js',
+        'bootstrap-notify.min.js',
+        'clipboard.min.js',
+
+        // application code
+        'echo.js',
+        'app.js',
+    ]);
 });

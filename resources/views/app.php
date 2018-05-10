@@ -6,14 +6,6 @@
     <!-- Libraries -->
     <link href="assets/css/libs/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <script src="assets/scripts/libs/jquery-2.2.2.min.js"></script>
-    <script src="assets/scripts/libs/angular.min.js"></script>
-    <script src="assets/scripts/libs/angular-ui-router.js"></script>
-    <script src="assets/scripts/libs/bootstrap.min.js"
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-            crossorigin="anonymous" async defer></script>
-    <script src="assets/scripts/libs/clipboard.min.js"></script>
-    <script src="assets/scripts/libs/bootstrap-notify.min.js"></script>
 
     <!-- App -->
     <link href="css/app.css" rel="stylesheet">
@@ -25,9 +17,6 @@
         };
     </script>
     <script src="/js/bundle.js"></script>
-
-    <!-- Pusher -->
-    <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
 
     <meta name="description"
           content="Easily test webhooks and HTTP requests with this handy tool that displays requests in realtime.">
@@ -423,7 +412,6 @@
         ga('send', 'pageview');
     </script>
     <script async src="https://www.google-analytics.com/analytics.js"></script>
-    <script async src="/assets/scripts/libs/autotrack.js"></script>
 </div>
 </body>
 </html>
