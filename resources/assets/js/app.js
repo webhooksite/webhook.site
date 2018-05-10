@@ -222,7 +222,9 @@ angular
                         $scope.getRequests(response.data.uuid, offset, page);
                         $scope.pushSubscribe(tokenId);
                     }, function(response) {
-                        $.notify('Requests not found - invalid ID');
+                        $scope.token = null;
+                        $.notify('Requests not found - invalid ID', { delay: 5000 });
+                        $("#newUrlModal").modal('show');
                     });
             }
         });

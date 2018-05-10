@@ -355,6 +355,12 @@
                     <h4 class="modal-title">Configure URL</h4>
                 </div>
                 <div class="modal-body">
+                    <div id="rate-limit-warning"
+                         class="alert alert-warning"
+                         ng-show="token === null">
+                        <p>This URL could not be found. It might have been automatically deleted.<br/>
+                            Please create a new URL.</p>
+                    </div>
                     <p>You have the ability to customize how your URL will respond by changing the
                         status code, content-type header and the content.</p>
                     <hr>
