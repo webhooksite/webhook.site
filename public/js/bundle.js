@@ -9049,18 +9049,34 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
         });
     };
 
+    $scope.parseUrl = function (url) {
+        var parser = document.createElement('a');
+        parser.href = url;
+        return parser;
+    };
+
     $scope.redirect = function (request, url, method, contentType) {
+        var parser = $scope.parseUrl(request.url);
+        var path = parser.pathname.match('\/[A-Za-z0-9-]+(/.*)');
+        if (path === null) {
+            path = '';
+        } else {
+            path = path[1];
+        }
+
+        var redirectUrl = url + path + parser.search;
+
         $http({
             'method': !method ? request.method : method,
-            'url': url,
+            'url': redirectUrl,
             'data': request.content,
             'headers': {
                 'Content-Type': !contentType ? 'text/plain' : contentType
             }
         }).then(function ok(response) {
-            $.notify('Redirected request to ' + url + '<br>Status: ' + response.statusText);
+            $.notify('Redirected request to ' + redirectUrl + '<br>Status: ' + response.statusText);
         }, function error(response) {
-            $.notify('Error redirecting request to ' + url + '<br>Status: ' + response.statusText, {
+            $.notify('Error redirecting request to ' + redirectUrl + '<br>Status: ' + response.statusText, {
                 delay: 5000,
                 type: 'danger'
             });
