@@ -31,10 +31,10 @@ Version 1.1 switched to using Redis for storage. If you want to use SQLite, you 
 ### Web Server
 
 1. Run the following commands:
-   1. `cp .env.example .env` - adjust settings as needed
-   2. `php artisan key:generate`
-   3. `composer install`
-2. Setup virtual host pointing to the /public folder.
+   1. `composer install`
+   2. `cp .env.example .env` - adjust settings as needed
+   3. `php artisan key:generate`
+2. Setup virtual host pointing to the /public folder. DigitalOcean has a guide on [how to configure nginx](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-laravel-application-with-nginx-on-ubuntu-16-04#step-5-—-configuring-nginx).
 
 ### Docker
 
