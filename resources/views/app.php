@@ -20,6 +20,7 @@
     <script>
         AppConfig = {
             Broadcaster: "<?=config('broadcasting.default') == 'redis' ? 'socket.io' : 'pusher' ?>",
+            EchoHostMode: "<?=config('broadcasting.echo_host_mode')?>",
             PusherToken: "<?=config('broadcasting.connections.pusher.key')?>",
             MaxRequests: <?=config('app.max_requests')?>,
         };

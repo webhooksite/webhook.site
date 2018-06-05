@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Echo Host Mode
+    |--------------------------------------------------------------------------
+    |
+    | Specify how the frontend will connect to the Echo server.
+    | Can be 'port' (connects to hostname + port 6001),
+    | 'path' (connects to hostname + /socket.io) or 'default'
+    |
+    */
+
+    'echo_host_mode' => env('ECHO_HOST_MODE', 'path'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Broadcast Connections
     |--------------------------------------------------------------------------
     |

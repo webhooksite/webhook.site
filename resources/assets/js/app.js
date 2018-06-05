@@ -223,8 +223,8 @@ angular
                         $scope.pushSubscribe(tokenId);
                     }, function(response) {
                         $scope.token = null;
-                        $.notify('Requests not found - invalid ID', { delay: 5000 });
-                        $("#newUrlModal").modal('show');
+                        $.notify('Requests not found - invalid ID, creating new URL', { delay: 5000 });
+                        $scope.getToken();
                     });
             }
         });

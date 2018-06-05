@@ -9017,8 +9017,8 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
                 $scope.pushSubscribe(tokenId);
             }, function (response) {
                 $scope.token = null;
-                $.notify('Requests not found - invalid ID', { delay: 5000 });
-                $("#newUrlModal").modal('show');
+                $.notify('Requests not found - invalid ID, creating new URL', { delay: 5000 });
+                $scope.getToken();
             });
         }
     };
@@ -9153,11 +9153,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 window.io = require('socket.io-client');
 
-window.Echo = new _laravelEcho2.default({
+var echoConfig = {
     broadcaster: AppConfig.Broadcaster,
-    key: AppConfig.PusherToken === '' ? null : AppConfig.PusherToken,
-    host: { path: '/socket.io' }
-});
+    key: AppConfig.PusherToken === '' ? null : AppConfig.PusherToken
+};
+
+if (AppConfig.EchoHostMode === 'port') {
+    echoConfig.host = window.location.hostname + ':6001';
+} else if (AppConfig.EchoHostMode === 'path') {
+    echoConfig.host = { host: '/socket.io' };
+}
+
+window.Echo = new _laravelEcho2.default(echoConfig);
 
 },{"laravel-echo":32,"socket.io-client":38}]},{},[57,56]);
 
