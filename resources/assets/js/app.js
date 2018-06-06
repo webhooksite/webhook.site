@@ -139,6 +139,7 @@ angular
 
             // Remove from view
             $scope.requests.data.splice(requestIndex, 1);
+            $scope.requests.total = $scope.requests.data.length;
         });
 
         $scope.getRequest = (function (tokenId, requestId) {
