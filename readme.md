@@ -14,6 +14,7 @@ Thanks to [da-n](https://github.com/da-n) for creating the Docker image.
 
 ## Donate
 
+* Patreon: https://www.patreon.com/webhooktester
 * Bitcoin address: 1Maf64K9Wkpy7oBGEtqEda8H1H2drLSUuF
 * Paypal: https://paypal.me/fredsted
 
