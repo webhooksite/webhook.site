@@ -8940,6 +8940,24 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
         $scope.requests.data.splice(requestIndex, 1);
     };
 
+    $scope.deleteAllRequests = function (request) {
+        $http.delete('/token/' + request.token_id + '/request');
+
+        // Remove from view
+        $scope.requests = {
+            total: 0,
+            data: []
+        };
+        $scope.currentRequestIndex = 0;
+        $scope.currentRequest = {};
+        $scope.currentPage = 1;
+        $scope.hasRequests = false;
+
+        $scope.$apply();
+
+        $scope.requests.total = 0;
+    };
+
     $scope.getRequest = function (tokenId, requestId) {
         return $http.get('/token/' + tokenId + '/request/' + requestId).then(function (response) {
             return response.data;

@@ -111,5 +111,15 @@ class RequestStore implements \App\Storage\RequestStore
             );
     }
 
+    /**
+     * @param Token $token
+     * @return Request
+     */
+    public function deleteByToken(Token $token)
+    {
+        return $this
+            ->redis
+            ->del(Request::getIdentifier($token->uuid));
+    }
 
 }

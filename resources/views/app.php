@@ -85,30 +85,40 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div class="col-sm-3 col-md-2 sidebar" style="bottom: 40px">
                 <p class="sidebar-header">Requests ({{ requests.total || 0 }})</p>
-
-                <p ng-show="!hasRequests" class="small">
+                <p ng-show="!hasRequests" class="small" style="padding-top: 20px">
                     <img src="assets/images/loader.gif"/>
                     &nbsp; Waiting for first request...
                 </p>
 
-                <ul class="nav nav-sidebar">
-                    <li ng-repeat="(key, request) in requests.data"
-                        ng-class="currentRequestIndex === request.uuid ? 'active' : ''">
-                        <a ng-click="setCurrentRequest(request)" class="select">
-                            <span class="label label-{{ getLabel(request.method) }}">{{ request.method }}</span>
-                            #{{ request.uuid.substring(0,5) }} {{ request.ip }} <br/>
-                            <small>{{ request.created_at }}</small>
-                        </a>
-                        <a ng-click="deleteRequest(request, key)" class="btn btn-danger delete">
-                            X
-                        </a>
-                    </li>
-                    <li ng-show="!requests.is_last_page">
-                        <a ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
-                    </li>
-                </ul>
+                <div>
+                    <ul class="nav nav-sidebar">
+                        <li ng-repeat="(key, request) in requests.data"
+                            ng-class="currentRequestIndex === request.uuid ? 'active' : ''">
+                            <a ng-click="setCurrentRequest(request)" class="select">
+                                <span class="label label-{{ getLabel(request.method) }}">{{ request.method }}</span>
+                                #{{ request.uuid.substring(0,5) }} {{ request.ip }} <br/>
+                                <small>{{ request.created_at }}</small>
+                            </a>
+                            <a ng-click="deleteRequest(request, key)" class="btn btn-danger delete">
+                                X
+                            </a>
+                        </li>
+                        <li ng-show="!requests.is_last_page">
+                            <a ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-2 sidebar"
+                 style="margin-top: 10px; height: 40px; bottom: 0px; top: auto; padding: 10px 0 0 0">
+                <div class="text-center" ng-show="hasRequests">
+                    <button
+                            class="btn btn-xs btn-danger"
+                            ng-click="deleteAllRequests(currentRequest)">Delete all requests
+                    </button>
+                </div>
             </div>
             <div id="request" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <div id="rate-limit-warning"

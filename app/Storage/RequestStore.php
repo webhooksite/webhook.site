@@ -35,4 +35,10 @@ interface RequestStore
      */
     public function delete(Token $token, Request $request);
 
+    /**
+     * @param Token $token
+     * @return Request
+     */
+    public function deleteByToken(Token $token);
+
 }

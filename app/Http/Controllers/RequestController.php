@@ -133,4 +133,17 @@ class RequestController extends Controller
             'status' => (bool)$this->requests->delete($token, $request)
         ]);
     }
+
+    /**
+     * @param $tokenId
+     * @return JsonResponse
+     */
+    public function deleteByToken($tokenId)
+    {
+        $token = $this->tokens->find($tokenId);
+
+        return new JsonResponse([
+            'status' => (bool)$this->requests->deleteByToken($token)
+        ]);
+    }
 }
