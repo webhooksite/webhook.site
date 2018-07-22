@@ -230,6 +230,14 @@
                                         <td>Host</td>
                                         <td id="req-ip">{{ currentRequest.ip }}</td>
                                     </tr>
+                                    <tr>
+                                        <td>Date</td>
+                                        <td id="req-date">{{ currentRequest.created_at }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ID</td>
+                                        <td id="req-date">{{ currentRequest.uuid }}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -349,6 +357,9 @@
                         <code>{{ protocol }}//{{ domain }}/{{ token.uuid }}/404</code>, <br/>
                         so the URL will respond with a 404 Not Found.</p>
                     <p>You can bookmark this page to go back to the request contents at any time.</p>
+                    <p>Requests and the tokens for the URL expire after
+                        <?=(new \Carbon\Carbon())->diffInDays((new \Carbon\Carbon())->addSeconds(config('app.expiry')))?>
+                        days of not being used.</p>
                     <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
                 </div>
             </div><!-- /.modal-content -->
