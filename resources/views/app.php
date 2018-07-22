@@ -149,6 +149,8 @@
                     <hr>
                     <p>Bookmark this page to go back to the requests at any time.
                         For more info, click <b>Help</b>.</p>
+                    <p>Click <b>New URL</b> to create a new url with the ability to
+                        customize status code, response body, etc.</p>
                     <p><a href="https://github.com/fredsted/webhook.site"
                           ga-on="click" ga-event-category="Nav" ga-event-action="click-github">Fork this on GitHub</a>
                     </p>
