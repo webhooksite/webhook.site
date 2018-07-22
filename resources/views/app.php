@@ -131,7 +131,8 @@
                 </div>
                 <div ng-show="!hasRequests">
                     <p><strong>Webhook Tester</strong>
-                        allows you to easily test webhooks and other types of HTTP requests.</p>
+                        allows you to easily test webhooks and other types of HTTP requests.
+                        <a href="https://simonfredsted.com/1583" target="_blank">What is a webhook?</a></p>
                     <p>Any requests sent to that URL are logged here instantly
                         &mdash; you don't even have to refresh!</p>
                     <hr>
