@@ -23,10 +23,11 @@
             EchoHostMode: "<?=config('broadcasting.echo_host_mode')?>",
             PusherToken: "<?=config('broadcasting.connections.pusher.key')?>",
             MaxRequests: <?=config('app.max_requests')?>,
+            Cluster: "<?=config('broadcasting.connections.pusher.options.cluster')?>"
         };
     </script>
     <script src="/js/bundle.js"></script>
-    
+
     <meta name="description"
           content="Easily test webhooks and HTTP requests with this handy tool that displays requests in realtime.">
 </head>
