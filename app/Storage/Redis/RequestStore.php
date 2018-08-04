@@ -5,6 +5,7 @@ namespace App\Storage\Redis;
 
 use App\Storage\Request;
 use App\Storage\Token;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Redis;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -50,30 +51,23 @@ class RequestStore implements \App\Storage\RequestStore
      */
     public function all(Token $token, $page = 0, $perPage = 50)
     {
-        $keys = array_reverse(
-            array_slice(
-                (array) $this->redis->hkeys(Request::getIdentifier($token->uuid)),
-                $page * $perPage,
-                $perPage
-            )
-        );
-
-        if (empty($keys)) {
-            return Collection::make();
-        }
-
-        /** @var Collection $result */
-        return Collection::make(
-            array_map(
-                function ($item) {
-                    return new Request(json_decode($item, true));
-                },
-                $this->redis->hmget(
-                    Request::getIdentifier($token->uuid),
-                    $keys
-                )
-            )
-        );
+        return collect(
+            $this->redis->hgetall(Request::getIdentifier($token->uuid))
+        )->map(
+            function ($request) {
+                return json_decode($request);
+            }
+        )->sortBy(
+            function ($request) {
+                return Carbon::createFromFormat(
+                    'Y-m-d H:i:s',
+                    $request->created_at
+                )->getTimestamp();
+            }
+        )->forPage(
+            $page,
+            $perPage
+        )->values();
     }
 
     /**
