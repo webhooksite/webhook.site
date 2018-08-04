@@ -53,7 +53,9 @@ class RequestStore implements \App\Storage\RequestStore
     {
         return collect(
             $this->redis->hgetall(Request::getIdentifier($token->uuid))
-        )->map(
+        )
+        ->filter()
+        ->map(
             function ($request) {
                 return json_decode($request);
             }
