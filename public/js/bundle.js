@@ -8946,16 +8946,13 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
         // Remove from view
         $scope.requests = {
             total: 0,
+            is_last_page: true,
             data: []
         };
         $scope.currentRequestIndex = 0;
         $scope.currentRequest = {};
         $scope.currentPage = 1;
         $scope.hasRequests = false;
-
-        $scope.$apply();
-
-        $scope.requests.total = 0;
     };
 
     $scope.getRequest = function (tokenId, requestId) {
@@ -8994,7 +8991,6 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
 
     $scope.appendRequest = function (request) {
         $scope.requests.data.push(request);
-        $scope.$apply();
 
         if ($scope.currentRequestIndex === 0) {
             $scope.setCurrentRequest($scope.requests.data[0]);
@@ -9007,6 +9003,7 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
         }
 
         $scope.hasRequests = true;
+        $scope.$apply();
         $.notify('Request received');
     };
 
