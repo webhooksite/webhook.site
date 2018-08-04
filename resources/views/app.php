@@ -30,7 +30,7 @@
     <meta name="description"
           content="Easily test webhooks and HTTP requests with this handy tool that displays requests in realtime.">
 </head>
-<body>
+<body ng-cloak>
 <div class="mainView" ui-view>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
