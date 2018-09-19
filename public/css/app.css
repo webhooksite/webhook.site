@@ -133,10 +133,15 @@ code {
 #requestDetails .table > tfoot > tr > td,
 #requestDetails .table > tfoot > tr > th,
 #requestDetails .table > thead > tr > td,
-#requestDetails .table > thead > tr > th {
+#requestDetails .table > thead > tr > th, #requestData .table > tbody > tr > td,
+#requestData .table > tbody > tr > th,
+#requestData .table > tfoot > tr > td,
+#requestData .table > tfoot > tr > th,
+#requestData .table > thead > tr > td,
+#requestData .table > thead > tr > th {
   padding: 3px; }
 
-#requestDetails table {
+#requestDetails table, #requestData table {
   font-size: 90%; }
 
 #noContent {

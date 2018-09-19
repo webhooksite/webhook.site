@@ -258,6 +258,38 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="row" id="requestData" ng-show="!hideDetails">
+                            <div class="col-md-6" ng-hide="!currentRequest.query">
+                                <table class="table table-borderless table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <th colspan="2">
+                                            Query strings
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="(name, value) in currentRequest.query">
+                                        <td width="25%">{{ name }}</td>
+                                        <td><code>{{ value == '' ? '(empty)' : value }}</code></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6" ng-show="currentRequest.request && currentRequest.request != currentRequest.query">
+                                <table class="table table-borderless table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <th colspan="2">
+                                            Form values
+                                        </th>
+                                    </tr>
+                                    <tr ng-repeat="(name, value) in currentRequest.request">
+                                        <td width="25%">{{ name }}</td>
+                                        <td><code>{{ value == '' ? '(empty)' : value }}</code></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="col-md-12">

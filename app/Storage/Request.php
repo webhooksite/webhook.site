@@ -36,6 +36,8 @@ class Request extends Entity
             'method' => $request->getMethod(),
             'user_agent' => $request->header('User-Agent'),
             'content' => file_get_contents('php://input'),
+            'query' => empty($request->query->all()) ? null : $request->query->all(),
+            'request' => empty($request->request->all()) ? null : $request->request->all(),
             'headers' => $request->headers->all(),
             'url' => $request->fullUrl(),
             'created_at' => Carbon::now()->toDateTimeString(),
