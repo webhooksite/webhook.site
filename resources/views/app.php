@@ -210,9 +210,9 @@
                             </div>
                         </div>
                         <div class="row" id="requestDetails" ng-show="!hideDetails">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <table class="table table-borderless table-striped">
-                                    <tbody>
+                                    <thead>
                                     <tr>
                                         <th colspan="2">
                                             Request Details
@@ -221,6 +221,8 @@
                                                 permalink</a>
                                         </th>
                                     </tr>
+                                    </thead>
+                                    <tbody>
                                     <tr>
                                         <td width="25%">URL</td>
                                         <td id="req-url">
@@ -243,48 +245,61 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <table class="table table-borderless table-striped">
-                                    <tbody>
+                                    <thead>
                                     <tr>
                                         <th colspan="2">Headers</th>
                                     </tr>
+                                    </thead>
+                                    <tbody>
                                     <tr ng-repeat="(headerName, values) in currentRequest.headers">
                                         <td width="25%">{{ headerName }}</td>
                                         <td><code ng-repeat="value in values">
-                                                {{ value == '' ? '(empty)' : value }}{{ $last ? '' : ', ' }}</code></td>
+                                                {{ value === '' ? '(empty)' : value }}{{ $last ? '' : ', ' }}</code></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="row" id="requestData" ng-show="!hideDetails">
-                            <div class="col-md-6" ng-hide="!currentRequest.query">
+                            <div class="col-md-6">
                                 <table class="table table-borderless table-striped">
-                                    <tbody>
+                                    <thead>
                                     <tr>
                                         <th colspan="2">
                                             Query strings
+
                                         </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-show="!currentRequest.query">
+                                        <td><span class="small">(empty)</span></td>
                                     </tr>
                                     <tr ng-repeat="(name, value) in currentRequest.query">
                                         <td width="25%">{{ name }}</td>
-                                        <td><code>{{ value == '' ? '(empty)' : value }}</code></td>
+                                        <td><code>{{ value === '' ? '(empty)' : value }}</code></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6" ng-show="currentRequest.request && currentRequest.request != currentRequest.query">
+                            <div class="col-md-6">
                                 <table class="table table-borderless table-striped">
-                                    <tbody>
+                                    <thead>
                                     <tr>
                                         <th colspan="2">
                                             Form values
                                         </th>
                                     </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-show="!currentRequest.request">
+                                        <td><span class="small">(empty)</span></td>
+                                    </tr>
                                     <tr ng-repeat="(name, value) in currentRequest.request">
                                         <td width="25%">{{ name }}</td>
-                                        <td><code>{{ value == '' ? '(empty)' : value }}</code></td>
+                                        <td><code>{{ value === '' ? '(empty)' : value }}</code></td>
                                     </tr>
                                     </tbody>
                                 </table>

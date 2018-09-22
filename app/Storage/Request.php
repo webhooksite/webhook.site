@@ -23,25 +23,30 @@ class Request extends Entity
     }
 
     /**
-     * @param HttpRequest $request
+     * @param HttpRequest $httpRequest
      * @return Request
      */
-    public static function createFromRequest(HttpRequest $request)
+    public static function createFromRequest(HttpRequest $httpRequest)
     {
-        return new self([
+        $request = new self([
             'uuid' => Uuid::uuid4()->toString(),
-            'token_id' => $request->tokenId,
-            'ip' => $request->ip(),
-            'hostname' => $request->getHost(),
-            'method' => $request->getMethod(),
-            'user_agent' => $request->header('User-Agent'),
+            'token_id' => $httpRequest->tokenId,
+            'ip' => $httpRequest->ip(),
+            'hostname' => $httpRequest->getHost(),
+            'method' => $httpRequest->getMethod(),
+            'user_agent' => $httpRequest->header('User-Agent'),
             'content' => file_get_contents('php://input'),
-            'query' => empty($request->query->all()) ? null : $request->query->all(),
-            'request' => empty($request->request->all()) ? null : $request->request->all(),
-            'headers' => $request->headers->all(),
-            'url' => $request->fullUrl(),
+            'query' => empty($httpRequest->query->all()) ? null : $httpRequest->query->all(),
+            'headers' => $httpRequest->headers->all(),
+            'url' => $httpRequest->fullUrl(),
             'created_at' => Carbon::now()->toDateTimeString(),
             'updated_at' => Carbon::now()->toDateTimeString(),
         ]);
+
+        if (!$httpRequest->isJson()) {
+            $request->request = empty($httpRequest->request->all()) ? null : $httpRequest->request->all();
+        }
+
+        return $request;
     }
 }
