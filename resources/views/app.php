@@ -204,7 +204,7 @@
                                     <label class="small"
                                            title="Automatically select and go to the latest incoming webhook request">
                                         <input type="checkbox" ng-model="autoNavEnable"
-                                               ga-on="click" ga-event-category="AutoNav" ga-event-action="toggle"/> Auto navigate</label> &emsp;
+                                               ga-on="click" ga-event-category="AutoNav" ga-event-action="toggle"/> Auto Navigate</label> &emsp;
 
                                     <label class="small"><input type="checkbox" ng-model="hideDetails">
                                         Hide Details</label>
