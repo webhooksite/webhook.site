@@ -241,7 +241,7 @@
                                         <td>Host</td>
                                         <td id="req-ip">
                                             {{ currentRequest.ip }}
-                                            <a class="small"
+                                            <a class="small" target="_blank"
                                                href="https://who.is/whois-ip/ip-address/{{ currentRequest.ip }}">whois</a>
                                         </td>
                                     </tr>
