@@ -142,7 +142,8 @@ code {
   padding: 3px; }
 
 #requestDetails table, #requestData table {
-  font-size: 90%; }
+  font-size: 90%;
+  margin-bottom: 10px; }
 
 #noContent {
   color: #ccc; }

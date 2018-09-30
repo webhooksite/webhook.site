@@ -8963,7 +8963,7 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
 
     $scope.getRequests = function (token, offset, page) {
         if (!page) {
-            page = 0;
+            page = 1;
         }
 
         $http.get('/token/' + token + '/requests?page=' + page).then(function (response) {
