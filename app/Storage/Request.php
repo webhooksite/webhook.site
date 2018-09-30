@@ -49,4 +49,12 @@ class Request extends Entity
 
         return $request;
     }
+
+    /**
+     * @return bool
+     */
+    public function isJson()
+    {
+        return $this->headers['content-type'][0] === 'application/json';
+    }
 }

@@ -64,7 +64,7 @@
                         Help
                     </button>
                 </div>
-                <div class="nav navbar-right navbar-form">&nbsp;
+                <div class="nav navbar-right navbar-form hidden-sm">&nbsp;
                     <div class="form-group">
                         <input id="tokenUrl" type="text" class="form-control click-select"
                                style="width: 200px;"
@@ -158,7 +158,7 @@
                 <div ng-show="hasRequests">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <a class="btn btn-xs btn-link"
                                    ng-click="setCurrentRequest(requests.data[0])"
                                    ng-class="requests.data.indexOf(currentRequest) !== 0 ? '' : 'disabled'">
@@ -176,37 +176,39 @@
                                    ng-click="setCurrentRequest(requests.data[requests.data.length-1])">
                                     Last</a>
                             </div>
-                            <div class="col-md-8" style="padding-bottom: 10px">
-                                <!-- Redirection -->
-                                <label class="small" title="Redirect incoming requests to another URL via XHR"
-                                       ng-disabled="!redirectUrl">
-                                    <input type="checkbox" ng-model="redirectEnable"
-                                           ng-disabled="!redirectUrl"
-                                           ga-on="click" ga-event-category="AutoRedirect" ga-event-action="toggle"/>
-                                    Auto redirect
-                                </label>
-                                <a href class="openModal btn btn-xs" data-modal="#redirectModal"
-                                   ga-on="click" ga-event-category="AutoRedirect"
-                                   ga-event-action="settings">Settings...</a>
-                                <a ng-click="redirect(currentRequest, redirectUrl, redirectMethod, redirectContentType)"
-                                   class="btn btn-xs" ng-class="redirectUrl ? '' : 'disabled'"
-                                   ga-on="click" ga-event-category="AutoRedirect" ga-event-action="redir-now">Redirect
-                                    Now</a>&emsp;&emsp;
+                            <div class="col-md-9" style="padding-bottom: 10px">
+                                <span class="pull-right">
+                                    <!-- Redirection -->
+                                    <label class="small" title="Redirect incoming requests to another URL via XHR"
+                                           ng-disabled="!redirectUrl">
+                                        <input type="checkbox" ng-model="redirectEnable"
+                                               ng-disabled="!redirectUrl"
+                                               ga-on="click" ga-event-category="AutoRedirect" ga-event-action="toggle"/>
+                                        Auto redirect
+                                    </label>
+                                    <a href class="openModal btn btn-xs" data-modal="#redirectModal"
+                                       ga-on="click" ga-event-category="AutoRedirect"
+                                       ga-event-action="settings">Settings...</a>
+                                    <a ng-click="redirect(currentRequest, redirectUrl, redirectMethod, redirectContentType)"
+                                       class="btn btn-xs" ng-class="redirectUrl ? '' : 'disabled'"
+                                       ga-on="click" ga-event-category="AutoRedirect" ga-event-action="redir-now">Redirect
+                                        Now</a>&emsp;&emsp;
 
-                                <!-- Auto-JSON -->
-                                <label class="small"
-                                       title="Automatically applies easy to read JSON formatting on valid requests">
-                                    <input type="checkbox" ng-model="formatJsonEnable"
-                                           ga-on="click" ga-event-category="JSONFormat" ga-event-action="toggle"/> Format JSON</label> &emsp;
+                                    <!-- Auto-JSON -->
+                                    <label class="small"
+                                           title="Automatically applies easy to read JSON formatting on valid requests">
+                                        <input type="checkbox" ng-model="formatJsonEnable"
+                                               ga-on="click" ga-event-category="JSONFormat" ga-event-action="toggle"/> Format JSON</label> &emsp;
 
-                                <!-- Auto Navigate -->
-                                <label class="small"
-                                       title="Automatically select and go to the latest incoming webhook request">
-                                    <input type="checkbox" ng-model="autoNavEnable"
-                                           ga-on="click" ga-event-category="AutoNav" ga-event-action="toggle"/> Auto navigate</label>
+                                    <!-- Auto Navigate -->
+                                    <label class="small"
+                                           title="Automatically select and go to the latest incoming webhook request">
+                                        <input type="checkbox" ng-model="autoNavEnable"
+                                               ga-on="click" ga-event-category="AutoNav" ga-event-action="toggle"/> Auto navigate</label> &emsp;
 
-                                <label class="small" style="float: right"><input type="checkbox" ng-model="hideDetails">
-                                    Hide Details</label>
+                                    <label class="small"><input type="checkbox" ng-model="hideDetails">
+                                        Hide Details</label>
+                                </span>
                             </div>
                         </div>
                         <div class="row" id="requestDetails" ng-show="!hideDetails">
@@ -216,9 +218,14 @@
                                     <tr>
                                         <th colspan="2">
                                             Request Details
-                                            <a class="pull-right small"
-                                               href="{{ protocol }}//{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}/{{ currentPage }}">
-                                                permalink</a>
+                                            <span class="pull-right">
+                                                <a class="small"
+                                                   href="{{ protocol }}//{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}/{{ currentPage }}">
+                                                    permalink</a> &ensp;
+                                                <a class="small" target="_blank"
+                                                   href="{{ protocol }}//{{ domain }}/token/{{ token.uuid }}/request/{{ currentRequest.uuid }}/raw">
+                                                raw</a>
+                                            </span>
                                         </th>
                                     </tr>
                                     </thead>
@@ -232,7 +239,11 @@
                                     </tr>
                                     <tr>
                                         <td>Host</td>
-                                        <td id="req-ip">{{ currentRequest.ip }}</td>
+                                        <td id="req-ip">
+                                            {{ currentRequest.ip }}
+                                            <a class="small"
+                                               href="https://who.is/whois-ip/ip-address/{{ currentRequest.ip }}">whois</a>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Date</td>

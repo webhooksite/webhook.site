@@ -15,6 +15,7 @@ Route::group(['middleware' => ['api']], function () {
     Route::any('{tokenId}/{any}', 'RequestController@create');
     Route::get('token/{tokenId}/requests', 'RequestController@all');
     Route::get('token/{tokenId}/request/{requestId}', 'RequestController@find');
+    Route::get('token/{tokenId}/request/{requestId}/raw', 'RequestController@raw');
     Route::delete('token/{tokenId}/request/{requestId}', 'RequestController@delete');
     Route::delete('token/{tokenId}/request', 'RequestController@deleteByToken');
 

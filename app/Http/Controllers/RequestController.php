@@ -122,6 +122,21 @@ class RequestController extends Controller
     /**
      * @param string $tokenId
      * @param string $requestId
+     * @return Response
+     */
+    public function raw($tokenId, $requestId)
+    {
+        $token = $this->tokens->find($tokenId);
+        $request = $this->requests->find($token, $requestId);
+
+        $contentType = $request->isJson() ? 'application/json' : 'text/plain';
+
+        return new Response($request->content, Response::HTTP_OK, ['content-type' => $contentType]);
+    }
+
+    /**
+     * @param string $tokenId
+     * @param string $requestId
      * @return JsonResponse
      */
     public function delete($tokenId, $requestId)
