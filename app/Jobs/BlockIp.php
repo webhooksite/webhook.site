@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use Carbon\Carbon;
+use Illuminate\Cache\Repository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
@@ -24,8 +25,9 @@ class BlockIp extends Job implements ShouldQueue
 
     /**
      * @param LoggerInterface $log
+     * @param Repository $cache
      */
-    public function handle(LoggerInterface $log)
+    public function handle(LoggerInterface $log, Repository $cache)
     {
         $process = new Process(sprintf('sudo ufw insert 1 deny from %s', $this->ip));
         $process->run();
@@ -42,5 +44,16 @@ class BlockIp extends Job implements ShouldQueue
         dispatch($job);
 
         $log->info('Dispatched UnblockIp');
+
+        $cache->add(self::getCacheKey($this->ip), 1, Carbon::now()->addMinutes(10));
+    }
+
+    /**
+     * @param $ip
+     * @return string
+     */
+    public static function getCacheKey($ip)
+    {
+        return sprintf('block:%s', $ip);
     }
 }

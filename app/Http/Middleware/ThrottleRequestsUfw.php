@@ -4,10 +4,23 @@ namespace App\Http\Middleware;
 
 use App\Jobs\BlockIp;
 use Closure;
+use Illuminate\Cache\RateLimiter;
+use Illuminate\Cache\Repository;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 
 class ThrottleRequestsUfw extends ThrottleRequests
 {
+    /**
+     * @var Repository
+     */
+    private $cache;
+
+    public function __construct(RateLimiter $limiter, Repository $cache)
+    {
+        parent::__construct($limiter);
+        $this->cache = $cache;
+    }
+
     /**
      * @param \Illuminate\Http\Request $request
      * @param Closure $next
@@ -20,7 +33,9 @@ class ThrottleRequestsUfw extends ThrottleRequests
         $key = $this->resolveRequestSignature($request);
 
         if ($this->limiter->tooManyAttempts($key, $maxAttempts, $decayMinutes)) {
-            $this->block($request->ip());
+            if (! $this->cache->has(BlockIp::getCacheKey($request->ip()))) {
+                $this->block($request->ip());
+            }
 
             return $this->buildResponse($key, $maxAttempts);
         }
