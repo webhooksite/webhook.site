@@ -2,12 +2,11 @@
 
 namespace App\Jobs;
 
-use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
 
-class BlockIp extends Job implements ShouldQueue
+class UnblockIp extends Job implements ShouldQueue
 {
     /**
      * @var string
@@ -27,16 +26,9 @@ class BlockIp extends Job implements ShouldQueue
      */
     public function handle(LoggerInterface $log)
     {
-        $process = new Process(sprintf('ufw insert 1 deny from %s', $this->ip));
+        $process = new Process(sprintf('ufw delete deny from %s', $this->ip));
         $process->run();
 
-        $log->info('Blocking ip', ['ip' => $this->ip, 'output' => $process->getOutput()]);
-
-        $job = (new UnblockIp($this->ip))
-            ->delay(Carbon::now()->addMinutes(10));
-
-        dispatch($job);
-
-        $log->info('Dispatched UnblockIp');
+        $log->info('Unblocking ip', ['ip' => $this->ip, 'output' => $process->getOutput()]);
     }
 }
