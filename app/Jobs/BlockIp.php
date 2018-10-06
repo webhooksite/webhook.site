@@ -44,8 +44,6 @@ class BlockIp extends Job implements ShouldQueue
         dispatch($job);
 
         $log->info('Dispatched UnblockIp');
-
-        $cache->add(self::getCacheKey($this->ip), 1, Carbon::now()->addMinutes(10));
     }
 
     /**
