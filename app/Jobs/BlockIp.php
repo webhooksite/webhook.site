@@ -27,7 +27,7 @@ class BlockIp extends Job implements ShouldQueue
      */
     public function handle(LoggerInterface $log)
     {
-        $process = new Process(sprintf('ufw insert 1 deny from %s', $this->ip));
+        $process = new Process(sprintf('sudo ufw insert 1 deny from %s', $this->ip));
         $process->run();
 
         $log->info('Blocking ip', [

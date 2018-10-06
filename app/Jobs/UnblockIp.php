@@ -26,7 +26,7 @@ class UnblockIp extends Job implements ShouldQueue
      */
     public function handle(LoggerInterface $log)
     {
-        $process = new Process(sprintf('ufw delete deny from %s', $this->ip));
+        $process = new Process(sprintf('sudo ufw delete deny from %s', $this->ip));
         $process->run();
 
         $log->info('Unblocking ip', [
