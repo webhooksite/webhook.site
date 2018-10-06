@@ -30,7 +30,11 @@ class BlockIp extends Job implements ShouldQueue
         $process = new Process(sprintf('ufw insert 1 deny from %s', $this->ip));
         $process->run();
 
-        $log->info('Blocking ip', ['ip' => $this->ip, 'output' => $process->getOutput()]);
+        $log->info('Blocking ip', [
+            'ip' => $this->ip,
+            'output' => $process->getOutput(),
+            'error_output' => $process->getErrorOutput(),
+        ]);
 
         $job = (new UnblockIp($this->ip))
             ->delay(Carbon::now()->addMinutes(10));

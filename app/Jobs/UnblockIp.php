@@ -29,6 +29,10 @@ class UnblockIp extends Job implements ShouldQueue
         $process = new Process(sprintf('ufw delete deny from %s', $this->ip));
         $process->run();
 
-        $log->info('Unblocking ip', ['ip' => $this->ip, 'output' => $process->getOutput()]);
+        $log->info('Unblocking ip', [
+            'ip' => $this->ip,
+            'output' => $process->getOutput(),
+            'error_output' => $process->getErrorOutput(),
+        ]);
     }
 }
