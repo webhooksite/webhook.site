@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use Carbon\Carbon;
-use Illuminate\Cache\Repository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
@@ -25,21 +24,24 @@ class BlockIp extends Job implements ShouldQueue
 
     /**
      * @param LoggerInterface $log
-     * @param Repository $cache
      */
-    public function handle(LoggerInterface $log, Repository $cache)
+    public function handle(LoggerInterface $log)
     {
-
-	$ipv6 = '';
-	if (strpos($this->ip, ':') !== false) {
-		$ipv6 = 'proto ipv6';
+        if (filter_var($this->ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
+            $command = sprintf('sudo ufw insert 1 proto ipv6 deny from %s', $this->ip);
+        } elseif (filter_var($this->ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false) {
+            $command = sprintf('sudo ufw insert 1 deny from %s', $this->ip);
+        } else {
+            $log->warning('BlockIp: Invalid IP address', ['ip' => $this->ip]);
+            return;
         }
 
-        $process = new Process(sprintf('sudo ufw insert 1 %s deny from %s', $ipv6, $this->ip));
+        $process = new Process($command);
         $process->run();
 
         $log->info('Blocking ip', [
             'ip' => $this->ip,
+            'command' => $command,
             'output' => $process->getOutput(),
             'error_output' => $process->getErrorOutput(),
         ]);
@@ -52,12 +54,4 @@ class BlockIp extends Job implements ShouldQueue
         $log->info('Dispatched UnblockIp');
     }
 
-    /**
-     * @param $ip
-     * @return string
-     */
-    public static function getCacheKey($ip)
-    {
-        return sprintf('block:%s', $ip);
-    }
 }

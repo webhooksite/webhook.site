@@ -2,26 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use App\Jobs\BlockIp;
-use Carbon\Carbon;
+use App\Events\IpThrottled;
 use Closure;
-use Illuminate\Cache\RateLimiter;
-use Illuminate\Cache\Repository;
-use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Routing\Middleware\ThrottleRequests as LaravelThrottleRequests;
 
-class ThrottleRequestsUfw extends ThrottleRequests
+class ThrottleRequests extends LaravelThrottleRequests
 {
-    /**
-     * @var Repository
-     */
-    private $cache;
-
-    public function __construct(RateLimiter $limiter, Repository $cache)
-    {
-        parent::__construct($limiter);
-        $this->cache = $cache;
-    }
-
     /**
      * @param \Illuminate\Http\Request $request
      * @param Closure $next
@@ -34,7 +20,7 @@ class ThrottleRequestsUfw extends ThrottleRequests
         $key = $this->resolveRequestSignature($request);
 
         if ($this->limiter->tooManyAttempts($key, $maxAttempts, $decayMinutes)) {
-            $this->block($request->ip());
+            broadcast(new IpThrottled($request->ip()));
             return $this->buildResponse($key, $maxAttempts);
         }
 
@@ -46,16 +32,5 @@ class ThrottleRequestsUfw extends ThrottleRequests
             $response, $maxAttempts,
             $this->calculateRemainingAttempts($key, $maxAttempts)
         );
-    }
-
-    /**
-     * @param string $ip
-     */
-    private function block($ip)
-    {
-        if (!$this->cache->has(BlockIp::getCacheKey($ip))) {
-            dispatch(new BlockIp($ip));
-            $this->cache->add(BlockIp::getCacheKey($ip), 1, Carbon::now()->addMinutes(10));
-        }
     }
 }
