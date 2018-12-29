@@ -28,7 +28,7 @@
     <script src="/js/bundle.js"></script>
     
     <meta name="description"
-          content="Easily test webhooks and HTTP requests with this handy tool that displays requests in realtime.">
+          content="Instantly test, bin and log webhooks and HTTP requests with this handy tool that shows requests to a unique URL in realtime.">
 </head>
 <body ng-cloak>
 <div class="mainView" ui-view>
