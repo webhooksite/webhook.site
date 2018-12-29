@@ -6,6 +6,7 @@ use App\Storage\Request;
 use App\Storage\Token;
 use Illuminate\Support\Facades\Redis;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 
 class TokenStore implements \App\Storage\TokenStore
 {
@@ -31,7 +32,7 @@ class TokenStore implements \App\Storage\TokenStore
         $result = $this->redis->get(Token::getIdentifier($tokenId));
 
         if (!$result) {
-            throw new NotFoundHttpException('Token not found');
+            throw new GoneHttpException('Token not found');
         }
 
         $this->redis->expire(Token::getIdentifier($tokenId), config('app.expiry'));
