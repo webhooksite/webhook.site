@@ -139,7 +139,7 @@ angular
 
             // Remove from view
             $scope.requests.data.splice(requestIndex, 1);
-            $scope.requests.total = $scope.requests.data.length;
+            $scope.requests.total -= 1;
         });
 
         $scope.deleteAllRequests = (function (request) {

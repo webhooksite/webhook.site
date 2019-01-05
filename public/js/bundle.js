@@ -8938,6 +8938,7 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
 
         // Remove from view
         $scope.requests.data.splice(requestIndex, 1);
+        $scope.requests.total -= 1;
     };
 
     $scope.deleteAllRequests = function (request) {

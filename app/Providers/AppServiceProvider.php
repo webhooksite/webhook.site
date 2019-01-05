@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Requests\Request;
-use App\Requests\RequestObserver;
 use App\Storage;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,11 +14,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Request::observe(RequestObserver::class);
-
-        //DB::listen(function ($query) {
-        //    dump([$query->sql, $query->bindings, $query->time]);
-        //});
     }
 
     /**
