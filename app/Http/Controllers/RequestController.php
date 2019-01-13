@@ -60,9 +60,13 @@ class RequestController extends Controller
 
         broadcast(new RequestCreated($token, $request));
 
+        $responseStatus = preg_match('/[1-5][0-9][0-9]/', $httpRequest->segment(2))
+            ? $httpRequest->segment(2)
+            : $token->default_status;
+
         return new Response(
             $token->default_content,
-            $httpRequest->statusCode ?? $token->default_status,
+            $responseStatus,
             [
                 'Content-Type' => $token->default_content_type,
                 'X-Request-Id' => $request->uuid,
