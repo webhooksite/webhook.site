@@ -86,6 +86,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar" style="bottom: 40px">
+                <span class="connectionStatus" ng-class="{'online': echoStatus == true}"
+                      title="WebSocket connection status: {{ echoStatus == true ? 'OK' : 'Offline' }}"></span>
                 <p class="sidebar-header">Requests ({{ requests.total || 0 }})</p>
                 <p ng-show="!hasRequests" class="small" style="padding-top: 20px">
                     <img src="assets/images/loader.gif"/>

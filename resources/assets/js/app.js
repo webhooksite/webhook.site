@@ -86,6 +86,7 @@ angular
         $scope.protocol = window.location.protocol;
         $scope.domain = window.location.hostname;
         $scope.appConfig = window.AppConfig;
+        $scope.echoStatus = false;
 
         // Load settings
         $scope.formatJsonEnable = $scope.getSetting('formatJsonEnable', false);
@@ -224,6 +225,18 @@ angular
                     $scope.requests.total = data.total;
                 });
         });
+
+        $scope.checkEcho = (function () {
+            const status = !!window.Echo.socketId();
+
+            if (status !== $scope.echoStatus) {
+                $scope.echoStatus = status;
+                $scope.$apply();
+            }
+
+            setTimeout($scope.checkEcho, 200);
+        });
+        $scope.checkEcho();
 
         $scope.getToken = (function(tokenId, offset, page) {
             if (!tokenId) {
