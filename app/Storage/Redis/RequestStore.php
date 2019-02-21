@@ -65,7 +65,8 @@ class RequestStore implements \App\Storage\RequestStore
                     'Y-m-d H:i:s',
                     $request->created_at
                 )->getTimestamp();
-            }
+            },
+            SORT_DESC
         )->forPage(
             $page,
             $perPage

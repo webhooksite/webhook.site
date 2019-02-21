@@ -96,6 +96,9 @@
 
                 <div>
                     <ul class="nav nav-sidebar">
+                        <li ng-show="hasRequests && currentPage > 1 && requests.total > requests.data.length && requests.current_page != 1">
+                            <a ng-click="getPreviousPage(token.uuid)" class="prevent-default">Previous Page</a>
+                        </li>
                         <li ng-repeat="(key, request) in requests.data"
                             ng-class="{'active': currentRequestIndex === request.uuid, 'unread': unread.indexOf(request.uuid) !== -1}">
                             <a ng-click="setCurrentRequest(request)" class="select">
@@ -108,7 +111,7 @@
                             </a>
                         </li>
                         <li ng-show="hasRequests && !requests.is_last_page">
-                            <a ng-click="getNextPage(token.uuid)" class="prevent-default">Load more</a>
+                            <a ng-click="getNextPage(token.uuid)" class="prevent-default">Next page</a>
                         </li>
                     </ul>
                 </div>
