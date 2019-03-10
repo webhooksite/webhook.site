@@ -10,8 +10,6 @@ Built by Simon Fredsted ([@fredsted](https://twitter.com/fredsted)).
 
 The app was built with Laravel for the API and Angular.js for the frontend SPA.
 
-Thanks to [da-n](https://github.com/da-n) for creating the Docker image.
-
 ## Donate
 
 * Patreon: https://www.patreon.com/webhooktester
@@ -31,13 +29,10 @@ Version 1.1 switched to using Redis for storage. If you want to use SQLite, you 
 
 ### Docker
 
-The provided Docker Compose file sets up a complete environment that runs the Webhook.site image and all dependencies (Redis, Laravel Echo Server, etc.). 
+The provided Docker Compose file sets up a complete environment that runs the Webhook.site image and all dependencies (Redis, Laravel Echo Server, etc.). Note that if running this in production, you should probably run a Redis server that persists data to disk. The Docker image is also not tuned for large amount of traffic.
 
-Note that if running this in production, you should probably run a Redis server that persists data to disk. The Docker image is also not tuned for large amount of traffic.
-
-To run: `docker-composer up`
-
-The app is then available on [http://127.0.0.1:8084](http://127.0.0.1:8084).
+1. Run `docker-compose up`
+2. The app is available on [http://127.0.0.1:8084](http://127.0.0.1:8084).
 
 ### Web Server
 
