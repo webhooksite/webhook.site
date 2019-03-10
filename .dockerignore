@@ -1,0 +1,6 @@
+database/*sqlite
+vendor/
+node_modules/
+bootstrap/cache/*
+public/css/
+public/js/

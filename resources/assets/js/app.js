@@ -84,7 +84,7 @@ angular
         $scope.currentPage = 1;
         $scope.hasRequests = false;
         $scope.protocol = window.location.protocol;
-        $scope.domain = window.location.hostname;
+        $scope.domain = window.location.host;
         $scope.appConfig = window.AppConfig;
         $scope.echoStatus = false;
 

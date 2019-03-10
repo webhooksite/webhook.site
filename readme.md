@@ -29,6 +29,16 @@ Version 1.1 switched to using Redis for storage. If you want to use SQLite, you 
 
 ## Installation
 
+### Docker
+
+The provided Docker Compose file sets up a complete environment that runs the Webhook.site image and all dependencies (Redis, Laravel Echo Server, etc.). 
+
+Note that if running this in production, you should probably run a Redis server that persists data to disk. The Docker image is also not tuned for large amount of traffic.
+
+To run: `docker-composer up`
+
+The app is then available on [http://127.0.0.1:8084](http://127.0.0.1:8084).
+
 ### Web Server
 
 1. Run the following commands:
@@ -36,10 +46,6 @@ Version 1.1 switched to using Redis for storage. If you want to use SQLite, you 
    2. `cp .env.example .env` - adjust settings as needed
    3. `php artisan key:generate`
 2. Setup virtual host pointing to the /public folder. DigitalOcean has a guide on [how to configure nginx](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-laravel-application-with-nginx-on-ubuntu-16-04#step-5-—-configuring-nginx).
-
-### Docker
-
-A Dockerfile is available at hub.docker.com: https://hub.docker.com/r/dahyphenn/webhook.site/. 
 
 ### Push functionality
 

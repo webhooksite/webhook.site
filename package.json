@@ -11,6 +11,7 @@
     "pusher-js": "^4.2.2"
   },
   "scripts": {
-    "echo": "laravel-echo-server start"
+    "echo": "laravel-echo-server start",
+    "gulp": "./node_modules/.bin/gulp --production"
   }
 }
