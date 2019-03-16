@@ -14,5 +14,6 @@ require("laravel-elixir-webpack");
 
 elixir(function(mix) {
     mix.sass('app.scss');
+    mix.browserify(['libs.js'], 'public/js/libs.js');
     mix.browserify(['echo.js', 'app.js']);
 });

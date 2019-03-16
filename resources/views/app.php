@@ -4,16 +4,8 @@
     <title>Webhook Tester</title>
 
     <!-- Libraries -->
-    <link href="assets/css/libs/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <script src="assets/scripts/libs/jquery-2.2.2.min.js"></script>
-    <script src="assets/scripts/libs/angular.min.js"></script>
-    <script src="assets/scripts/libs/angular-ui-router.js"></script>
-    <script src="assets/scripts/libs/bootstrap.min.js"
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-            crossorigin="anonymous" async defer></script>
-    <script src="assets/scripts/libs/clipboard.min.js"></script>
-    <script src="assets/scripts/libs/bootstrap-notify.min.js"></script>
+    <script src="/js/libs.js"></script>
+    <link href="assets/css/libs/bootstrap.min.css" rel="stylesheet">
 
     <!-- App -->
     <link href="css/app.css" rel="stylesheet">

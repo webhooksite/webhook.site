@@ -299,6 +299,11 @@ angular
                         $scope.token = null;
                         $.notify('Requests not found - invalid ID, creating new URL', { delay: 5000 });
                         $scope.getToken();
+                        if (response.status === 404 || response.status === 410) {
+                            $scope.token = null;
+                            $scope.getToken();
+                            $.notify('<b>URL not found</b><br>Invalid ID, created new URL', {delay: 10000});
+                        }
                     });
             }
         });
