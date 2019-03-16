@@ -2,13 +2,7 @@
 <html ng-app="app" ng-controller="AppController">
 <head>
     <title>Webhook Tester</title>
-
-    <!-- Libraries -->
-    <script src="/js/libs.js"></script>
-    <link href="assets/css/libs/bootstrap.min.css" rel="stylesheet">
-
-    <!-- App -->
-    <link href="css/app.css" rel="stylesheet">
+    
     <script>
         AppConfig = {
             Broadcaster: "<?=config('broadcasting.default') == 'redis' ? 'socket.io' : 'pusher' ?>",
@@ -17,8 +11,12 @@
             MaxRequests: <?=config('app.max_requests')?>,
         };
     </script>
-    <script src="/js/bundle.js"></script>
-    
+
+    <link href="css/app.css" rel="stylesheet">
+    <script src="js/libs.js"></script>
+    <script src="js/bundle.js"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
     <meta name="description"
           content="Instantly test, bin and log webhooks and HTTP requests with this handy tool that shows requests to a unique URL in realtime.">
 </head>
@@ -144,12 +142,12 @@
                             <span class="glyphicon glyphicon-new-window"></span> Open in new tab</a>
                     </p>
                     <hr>
-                    <p>Bookmark this page to go back to the requests at any time.
-                        For more info, click <b>Help</b>.</p>
-                    <p>Click <b>New URL</b> to create a new url with the ability to
+                    <p>Bookmark this page to go back to the requests at any time.</p>
+                    <p></p>Click <b>New URL</b> to create a new url with the ability to
                         customize status code, response body, etc.</p>
-                    <p><a href="https://github.com/fredsted/webhook.site"
-                          ga-on="click" ga-event-category="Nav" ga-event-action="click-github">Fork this on GitHub</a>
+                    <p>
+                        <a class="github-button" href="https://github.com/fredsted/webhook.site" data-icon="octicon-star" data-show-count="true" aria-label="Star fredsted/webhook.site on GitHub">Star</a>
+                        <a href="https://github.com/fredsted/webhook.site"
                     </p>
                 </div>
                 <div ng-show="hasRequests">
