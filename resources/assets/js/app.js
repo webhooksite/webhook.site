@@ -131,6 +131,18 @@ angular
             $scope.saveSettings();
         });
 
+        $scope.toggleTutorial = (function () {
+            if ($scope.hideTutorial === true) {
+                $scope.hideTutorial = false;
+            } else {
+                $scope.hideTutorial = true;
+            }
+        });
+
+        /*
+         * Unread Count
+         */
+
         // Automatically update unread count in title tag
         $scope.$watchCollection('unread', function (newVal, oldVal) {
             if (newVal === oldVal) {
@@ -138,14 +150,6 @@ angular
             }
 
             $scope.updateUnreadCount();
-        });
-
-        $scope.toggleTutorial = (function () {
-            if ($scope.hideTutorial === true) {
-                $scope.hideTutorial = false;
-            } else {
-                $scope.hideTutorial = true;
-            }
         });
 
         $scope.updateUnreadCount = (function () {
@@ -160,6 +164,7 @@ angular
                 JSON.stringify($scope.unread)
             );
         });
+
         $scope.markAsRead = (function(requestId) {
             if ($scope.unread.indexOf(requestId) !== -1) {
                 $scope.unread.splice($scope.unread.indexOf(requestId), 1);
@@ -332,6 +337,24 @@ angular
                 .then(function(response) {
                     $state.go('token', {id: response.data.uuid});
                     $.notify('New URL created');
+                });
+        });
+
+        $scope.editToken = (function(tokenId) {
+            var formData = {};
+
+            $('#editTokenForm')
+                .serializeArray()
+                .map(function(value) {
+                    if (value.value !== '') {
+                        formData[value.name] = value.value;
+                    }
+                });
+
+            $http.put('token/' + tokenId, formData)
+                .then(function(response) {
+                    $scope.token = response.data;
+                    $.notify('URL updated!');
                 });
         });
 

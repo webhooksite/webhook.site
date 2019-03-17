@@ -28,9 +28,9 @@ class Token extends Entity
             'ip' => $request->ip(),
             'user_agent' => $request->header('User-Agent'),
             'default_content' => $request->get('default_content', ''),
-            'default_status' => $request->get('default_status', 200),
+            'default_status' => (int)$request->get('default_status', 200),
             'default_content_type' => $request->get('default_content_type', 'text/plain'),
-            'timeout' => $request->get('timeout', null),
+            'timeout' => (int)$request->get('timeout', null),
             'created_at' => Carbon::now()->toDateTimeString(),
             'updated_at' => Carbon::now()->toDateTimeString(),
         ]);

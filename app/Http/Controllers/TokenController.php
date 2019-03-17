@@ -59,4 +59,23 @@ class TokenController extends Controller
             'status' => (bool)$this->tokens->delete($token)
         ]);
     }
+
+    /**
+     * @param CreateTokenRequest $request
+     * @param string $tokenId
+     * @return JsonResponse
+     */
+    public function update(CreateTokenRequest $request, string $tokenId) : JsonResponse
+    {
+        $token = $this->tokens->find($tokenId);
+
+        $token->default_content = $request->get('default_content', '');
+        $token->default_status = (int)$request->get('default_status', 200);
+        $token->default_content_type = $request->get('default_content_type', 'text/plain');
+        $token->timeout = (int)$request->get('timeout', null);
+
+        $this->tokens->store($token);
+
+        return new JsonResponse($token);
+    }
 }

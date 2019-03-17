@@ -48,13 +48,12 @@
                        style="margin-top: 7px"
                        class="btn btn-xs btn-link">
                         @fredsted</a>
-                    <button style="margin-top: 7px"
-                            class="openModal btn btn-xs btn-link"
-                            data-modal="#helpModal">
-                        Help
-                    </button>
                 </div>
                 <div class="nav navbar-right navbar-form hidden-sm">&nbsp;
+                    <button type="button" class="btn btn-link openModal" data-modal="#editUrlModal"
+                            ga-on="click" ga-event-category="Request" ga-event-action="click-newurl">
+                    <span class="glyphicon glyphicon-edit"></span> Edit
+                    </button> &nbsp;
                     <div class="form-group">
                         <input id="tokenUrl" type="text" class="form-control click-select"
                                style="width: 200px;"
@@ -64,10 +63,11 @@
                             ga-on="click" ga-event-category="URLCopy" ga-event-action="copy-nav">
                         <span class="glyphicon glyphicon-copy"></span> Copy
                     </button> &nbsp;
-                    <button type="button" class="btn btn-primary openModal" data-modal="#newUrlModal">
-                        <span class="glyphicon glyphicon-plus-sign"
-                              ga-on="click" ga-event-category="Request" ga-event-action="click-newurl"></span> New URL
+                    <button type="button" class="btn btn-primary openModal" data-modal="#newUrlModal"
+                            ga-on="click" ga-event-category="Request" ga-event-action="click-editurl">
+                        <span class="glyphicon glyphicon-plus"></span> New
                     </button>
+
                 </div>
             </div>
         </div>
@@ -150,7 +150,9 @@
                     <p></p>Click <b>New URL</b> to create a new url with the ability to
                         customize status code, response body, etc.</p>
                     <p>
-                        <a class="github-button" href="https://github.com/fredsted/webhook.site" data-icon="octicon-star" data-show-count="true" aria-label="Star fredsted/webhook.site on GitHub">Star</a>
+                        <a class="github-button" href="https://github.com/fredsted/webhook.site"
+                           data-icon="octicon-star" data-show-count="true"
+                           aria-label="Star fredsted/webhook.site on GitHub">Star on GitHub</a>
                         <a href="https://github.com/fredsted/webhook.site"
                     </p>
                 </div>
@@ -394,32 +396,73 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="helpModal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="editUrlModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">What is Webhook Tester?</h4>
+                    <h4 class="modal-title">Edit URL</h4>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Webhook Tester</strong>
-                        allows you to easily test webhooks and other types of HTTP requests.</p>
-                    <p>Here's your unique URL:</p>
-                    <p>
-                        <code>{{ protocol }}//{{ domain }}/{{ token.uuid }}</code>
-                        <a href="{{ protocol }}//{{ domain }}/{{ token.uuid }}" target="_blank">(try it!)</a>
-                    </p>
-                    <p>Any requests sent to that URL are instantly logged here - you don't even have to refresh.</p>
-                    <p>
-                        Append a status code to the url, e.g.: <br/>
-                        <code>{{ protocol }}//{{ domain }}/{{ token.uuid }}/404</code>, <br/>
-                        so the URL will respond with a 404 Not Found.</p>
-                    <p>You can bookmark this page to go back to the request contents at any time.</p>
-                    <p>Requests and the tokens for the URL expire after
-                        <?=(new \Carbon\Carbon())->diffInDays((new \Carbon\Carbon())->addSeconds(config('app.expiry')))?>
-                        days of not being used.</p>
-                    <p><a href="https://github.com/fredsted/webhook.site">Fork this on GitHub</a></p>
+                    <div id="rate-limit-warning"
+                         class="alert alert-warning"
+                         ng-show="token === null">
+                        <p>This URL could not be found. It might have been automatically deleted.<br/>
+                            Please create a new URL.</p>
+                    </div>
+                    <form class="form-horizontal" id="editTokenForm">
+                        <fieldset>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="default_status">Default status code</label>
+                                <div class="col-md-4">
+                                    <input id="default_status" name="default_status" type="text" placeholder="200"
+                                           class="form-control input-md" ng-model="token.default_status">
+
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="default_content_type">Content Type</label>
+                                <div class="col-md-4">
+                                    <input id="default_content_type" name="default_content_type" type="text"
+                                           placeholder="text/plain" class="form-control input-md"
+                                           ng-model="token.default_content_type">
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="timeout">Timeout before response</label>
+                                <div class="col-md-4">
+                                    <input id="timeout" name="timeout" type="number" max="10" min="0" placeholder="0"
+                                           value="0" class="form-control input-md"
+                                           ng-model="token.timeout">
+                                </div>
+                            </div>
+
+                            <!-- Textarea -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="default_content">Response body</label>
+                                <div class="col-md-7">
+                                    <textarea class="form-control" id="default_content" name="default_content"
+                                              rows="5" ng-model="token.default_content"></textarea>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            ng-click="editToken(token.uuid)"
+                            ga-on="click" ga-event-category="Request" ga-event-action="create">
+                        Edit
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -431,7 +474,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Configure URL</h4>
+                    <h4 class="modal-title">Create New URL</h4>
                 </div>
                 <div class="modal-body">
                     <div id="rate-limit-warning"
@@ -488,7 +531,6 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="getCustomToken()"
                             ga-on="click" ga-event-category="Request" ga-event-action="create">
                         Create

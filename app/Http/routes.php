@@ -24,4 +24,5 @@ $router->group(['middleware' => ['api']], function () use ($router) {
     $router->get('token/{tokenId}', 'TokenController@find');
     $router->post('token', 'TokenController@create');
     $router->delete('token/{tokenId}', 'TokenController@delete');
+    $router->put('token/{tokenId}', 'TokenController@update');
 });
