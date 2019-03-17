@@ -139,6 +139,28 @@ body {
   margin-top: 0;
 }
 
+// Tutorial
+
+div#tutorial {
+  background-color: $sideBarBackground;
+  padding: 10px 10px 5px;
+  border: 1px solid darken($sideBarBackground, 10);
+  border-radius: $panel-border-radius;
+  margin-bottom: 20px;
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  hr {
+    border-top-color: darken($sideBarBackground, 10);
+  }
+
+  code {
+    background: darken($sideBarBackground, 7);
+    font-size: 120%;
+  }
+}
 
 /*
  * Placeholder dashboard ideas

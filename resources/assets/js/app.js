@@ -45,7 +45,8 @@ angular
             'redirectMethod',
             'token',
             'formatJsonEnable',
-            'autoNavEnable'
+            'autoNavEnable',
+            'hideTutorial',
         ];
 
         $scope.saveSettings = (function () {
@@ -96,6 +97,7 @@ angular
         $scope.redirectUrl = $scope.getSetting('redirectUrl', null);
         $scope.redirectContentType = $scope.getSetting('redirectContentType', 'text/plain');
         $scope.unread = $scope.getSetting('unread', []);
+        $scope.hideTutorial = $scope.getSetting('hideTutorial', false);
 
         // Initialize Clipboard copy button
         new Clipboard('.copyTokenUrl');
@@ -136,6 +138,14 @@ angular
             }
 
             $scope.updateUnreadCount();
+        });
+
+        $scope.toggleTutorial = (function () {
+            if ($scope.hideTutorial === true) {
+                $scope.hideTutorial = false;
+            } else {
+                $scope.hideTutorial = true;
+            }
         });
 
         $scope.updateUnreadCount = (function () {

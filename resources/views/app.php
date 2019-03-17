@@ -124,8 +124,11 @@
                     <p>New requests sent to this URL will return HTTP status code 410 Gone and
                         won't be logged. Please create a new URL to continue.</p>
                 </div>
-                <div ng-show="!hasRequests">
-                    <p><strong>Webhook Tester</strong>
+                <div id="tutorial" ng-show="!hasRequests || !hideTutorial">
+                    <button type="button" class="close" data-dismiss="tutorial" aria-label="Close"
+                            ng-click="toggleTutorial()">
+                        <span aria-hidden="true">&times;</span></button>
+                    <p><strong>Webhook.site</strong>
                         allows you to easily test webhooks and other types of HTTP requests.
                         <a href="https://simonfredsted.com/1583" target="_blank">What is a webhook?</a></p>
                     <p>Any requests sent to that URL are logged here instantly
@@ -135,7 +138,8 @@
                     <p>
                         <code>{{ protocol }}//{{ domain }}/{{ token.uuid }}</code>
                         <a class="btn btn-xs btn-link copyTokenUrl" data-clipboard-target="#tokenUrl"
-                           ga-on="click" ga-event-category="URLCopy" ga-event-action="copy-welcome">Copy</a>
+                           ga-on="click" ga-event-category="URLCopy" ga-event-action="copy-welcome">
+                            <span class="glyphicon glyphicon-copy"></span> Copy to clipboard</a>
                         <a class="btn btn-xs btn-link"
                            href="{{ protocol }}//{{ domain }}/{{ token.uuid }}"
                            target="_blank">
