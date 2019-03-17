@@ -152,6 +152,11 @@ angular
             $scope.updateUnreadCount();
         });
 
+        $scope.resetUnread = (function () {
+            $scope.unread = [];
+            $scope.updateUnreadCount();
+        });
+
         $scope.updateUnreadCount = (function () {
             if ($scope.unread.length > 0) {
                 document.title = '('+ $scope.unread.length +') Webhook.site';
@@ -209,7 +214,7 @@ angular
             $scope.currentRequest = {};
             $scope.currentPage = 1;
             $scope.hasRequests = false;
-            $scope.unread = [];
+            $scope.resetUnread();
         });
 
         $scope.getRequest = (function (tokenId, requestId) {
@@ -301,6 +306,7 @@ angular
                     .then(function(response) {
                         $state.go('token', {id: response.data.uuid});
                     });
+                $scope.resetUnread();
             } else {
                 $http.get('token/' + tokenId)
                     .then(function(response) {
@@ -327,15 +333,16 @@ angular
             var formData = {};
             $('#createTokenForm')
                 .serializeArray()
-                .map(function(value) {
+                .map(function (value) {
                     if (value.value != '') {
                         formData[value.name] = value.value;
                     }
                 });
 
             $http.post('token', formData)
-                .then(function(response) {
+                .then(function (response) {
                     $state.go('token', {id: response.data.uuid});
+                    $scope.resetUnread();
                     $.notify('New URL created');
                 });
         });
