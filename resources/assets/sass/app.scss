@@ -114,20 +114,6 @@ body {
   color: #999;
 }
 
-.connectionStatus {
-  margin-top: 3px;
-  height: 8px;
-  width: 8px;
-  border-radius: 50%;
-  background-color: #dc2c0f;
-  display: inline-block;
-  float: right;
-}
-
-.connectionStatus.online {
-  background-color: #3cbe17;
-}
-
 /*
  * Main content
  */
