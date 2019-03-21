@@ -9004,7 +9004,7 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
      */
 
     // Array of scope variables to automatically save
-    var settings = ['redirectEnable', 'redirectUrl', 'redirectContentType', 'redirectMethod', 'token', 'formatJsonEnable', 'autoNavEnable'];
+    var settings = ['redirectEnable', 'redirectUrl', 'redirectContentType', 'redirectMethod', 'token', 'formatJsonEnable', 'autoNavEnable', 'hideTutorial'];
 
     $scope.saveSettings = function () {
         for (var setting in settings) {
@@ -9039,9 +9039,8 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
     $scope.currentPage = 1;
     $scope.hasRequests = false;
     $scope.protocol = window.location.protocol;
-    $scope.domain = window.location.hostname;
+    $scope.domain = window.location.host;
     $scope.appConfig = window.AppConfig;
-    $scope.echoStatus = false;
 
     // Load settings
     $scope.formatJsonEnable = $scope.getSetting('formatJsonEnable', false);
@@ -9050,6 +9049,8 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
     $scope.redirectMethod = $scope.getSetting('redirectMethod', '');
     $scope.redirectUrl = $scope.getSetting('redirectUrl', null);
     $scope.redirectContentType = $scope.getSetting('redirectContentType', 'text/plain');
+    $scope.unread = $scope.getSetting('unread', []);
+    $scope.hideTutorial = $scope.getSetting('hideTutorial', false);
 
     // Initialize Clipboard copy button
     new Clipboard('.copyTokenUrl');
@@ -9075,7 +9076,57 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
     });
 
     // Automatically save settings
-    $scope.$watch($scope.saveSettings);
+    $scope.$watchGroup(settings, function (newVal, oldVal) {
+        if (newVal === oldVal) {
+            return;
+        }
+
+        $scope.saveSettings();
+    });
+
+    $scope.toggleTutorial = function () {
+        if ($scope.hideTutorial === true) {
+            $scope.hideTutorial = false;
+        } else {
+            $scope.hideTutorial = true;
+        }
+    };
+
+    /*
+     * Unread Count
+     */
+
+    // Automatically update unread count in title tag
+    $scope.$watchCollection('unread', function (newVal, oldVal) {
+        if (newVal === oldVal) {
+            return;
+        }
+
+        $scope.updateUnreadCount();
+    });
+
+    $scope.resetUnread = function () {
+        $scope.unread = [];
+        $scope.updateUnreadCount();
+    };
+
+    $scope.updateUnreadCount = function () {
+        if ($scope.unread.length > 0) {
+            document.title = '(' + $scope.unread.length + ') Webhook.site';
+        } else {
+            document.title = 'Webhook.site';
+        }
+
+        window.localStorage.setItem('unread', JSON.stringify($scope.unread));
+    };
+
+    $scope.markAsRead = function (requestId) {
+        if ($scope.unread.indexOf(requestId) !== -1) {
+            $scope.unread.splice($scope.unread.indexOf(requestId), 1);
+        }
+    };
+
+    $scope.updateUnreadCount();
 
     /**
      * Controller actions
@@ -9084,6 +9135,7 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
     $scope.setCurrentRequest = function (request) {
         $scope.currentRequestIndex = request.uuid;
         $scope.currentRequest = request;
+        $scope.markAsRead(request.uuid);
 
         // Change the state url so it may be copied from address bar
         // and linked somewhere else
@@ -9096,6 +9148,7 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
         // Remove from view
         $scope.requests.data.splice(requestIndex, 1);
         $scope.requests.total -= 1;
+        $scope.markAsRead(request.uuid);
     };
 
     $scope.deleteAllRequests = function (request) {
@@ -9111,6 +9164,7 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
         $scope.currentRequest = {};
         $scope.currentPage = 1;
         $scope.hasRequests = false;
+        $scope.resetUnread();
     };
 
     $scope.getRequest = function (tokenId, requestId) {
@@ -9149,12 +9203,15 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
 
     $scope.appendRequest = function (request) {
         $scope.requests.data.push(request);
+        $scope.unread.push(request.uuid);
 
         if ($scope.currentRequestIndex === 0) {
             $scope.setCurrentRequest($scope.requests.data[0]);
         }
         if ($scope.autoNavEnable) {
-            $scope.setCurrentRequest($scope.requests.data[$scope.requests.data.length - 1]);
+            if (!('hidden' in document) || !document.hidden) {
+                $scope.setCurrentRequest($scope.requests.data[$scope.requests.data.length - 1]);
+            }
         }
         if ($scope.redirectEnable) {
             $scope.redirect(request, $scope.redirectUrl, $scope.redirectMethod, $scope.redirectContentType);
@@ -9178,32 +9235,29 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
         });
     };
 
-    $scope.checkEcho = function () {
-        var status = !!window.Echo.socketId();
-
-        if (status !== $scope.echoStatus) {
-            $scope.echoStatus = status;
-            $scope.$apply();
-        }
-
-        setTimeout($scope.checkEcho, 200);
-    };
-    $scope.checkEcho();
-
     $scope.getToken = function (tokenId, offset, page) {
         if (!tokenId) {
             $http.post('token').then(function (response) {
                 $state.go('token', { id: response.data.uuid });
             });
+            $scope.resetUnread();
         } else {
             $http.get('token/' + tokenId).then(function (response) {
                 $scope.token = response.data;
                 $scope.getRequests(response.data.uuid, offset, page);
                 $scope.pushSubscribe(tokenId);
+                if (page) {
+                    $scope.currentPage = page;
+                }
             }, function (response) {
                 $scope.token = null;
                 $.notify('Requests not found - invalid ID, creating new URL', { delay: 5000 });
                 $scope.getToken();
+                if (response.status === 404 || response.status === 410) {
+                    $scope.token = null;
+                    $scope.getToken();
+                    $.notify('<b>URL not found</b><br>Invalid ID, created new URL', { delay: 10000 });
+                }
             });
         }
     };
@@ -9218,7 +9272,48 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
 
         $http.post('token', formData).then(function (response) {
             $state.go('token', { id: response.data.uuid });
+            $scope.resetUnread();
             $.notify('New URL created');
+        }, function (response) {
+            if (response.status === 422) {
+                var errors = [];
+                for (var error in response.data) {
+                    if (response.data.hasOwnProperty(error)) {
+                        errors.push(response.data[error]);
+                    }
+                }
+                $.notify('Error creating token:<br>' + errors.join(', '), { delay: 10000 });
+                return;
+            }
+
+            $.notify('Error creating token (' + response.status + ')');
+        });
+    };
+
+    $scope.editToken = function (tokenId) {
+        var formData = {};
+
+        $('#editTokenForm').serializeArray().map(function (value) {
+            if (value.value !== '') {
+                formData[value.name] = value.value;
+            }
+        });
+
+        $http.put('token/' + tokenId, formData).then(function (response) {
+            $scope.token = response.data;
+            $.notify('URL updated!');
+        });
+    };
+
+    $scope.getPreviousPage = function (token) {
+        $http({
+            url: '/token/' + token + '/requests',
+            params: { page: $scope.requests.current_page - 1 }
+        }).success(function (data, status, headers, config) {
+            // We use is_last_page to keep track of whether we should load more pages.
+            $scope.requests.is_last_page = data.is_last_page;
+            $scope.requests.current_page = data.current_page;
+            $scope.requests.data = data.data.concat($scope.requests.data);
         });
     };
 
@@ -9230,6 +9325,7 @@ angular.module("app", ['ui.router']).config(['$stateProvider', '$urlRouterProvid
             // We use is_last_page to keep track of whether we should load more pages.
             $scope.requests.is_last_page = data.is_last_page;
             $scope.requests.current_page = data.current_page;
+            $scope.currentPage = data.current_page;
             $scope.requests.data = $scope.requests.data.concat(data.data);
         });
     };
