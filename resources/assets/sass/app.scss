@@ -1,6 +1,14 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 /*
+ * Variables
+ */
+
+$sideBarBackground: #f5f5f5;
+$sideBarActive: #428bca;
+$warning: #d9534f;
+
+/*
  * Base structure
  */
 
@@ -17,6 +25,15 @@ body {
 .sub-header {
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
+}
+
+.break {
+  overflow: hidden;
+  word-break: break-all;
+}
+
+.strong {
+  font-weight: bold;
 }
 
 /*
@@ -65,7 +82,7 @@ body {
 .nav-sidebar > .active > a:hover,
 .nav-sidebar > .active > a:focus {
   color: #fff;
-  background-color: #428bca;
+  background-color: $sideBarActive;
 }
 
 .nav-sidebar .delete {
@@ -80,9 +97,14 @@ body {
   font-size: 10px;
 }
 
+.nav-sidebar .unread {
+  font-weight: bold;
+  background-color: darken($sideBarBackground, 5%);
+}
+
 .select:hover + .delete, .delete:hover {
   display: block;
-  background: #d9534f !important;
+  background: $warning !important;
 }
 
 .sidebar-header {

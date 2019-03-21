@@ -95,6 +95,7 @@ angular
         $scope.redirectMethod = $scope.getSetting('redirectMethod', '');
         $scope.redirectUrl = $scope.getSetting('redirectUrl', null);
         $scope.redirectContentType = $scope.getSetting('redirectContentType', 'text/plain');
+        $scope.unread = $scope.getSetting('unread', []);
 
         // Initialize Clipboard copy button
         new Clipboard('.copyTokenUrl');
@@ -120,7 +121,42 @@ angular
         });
 
         // Automatically save settings
-        $scope.$watch($scope.saveSettings);
+        $scope.$watchGroup(settings, function (newVal, oldVal) {
+            if (newVal === oldVal) {
+                return;
+            }
+
+            $scope.saveSettings();
+        });
+
+        // Automatically update unread count in title tag
+        $scope.$watchCollection('unread', function (newVal, oldVal) {
+            if (newVal === oldVal) {
+                return;
+            }
+
+            $scope.updateUnreadCount();
+        });
+
+        $scope.updateUnreadCount = (function () {
+            if ($scope.unread.length > 0) {
+                document.title = '('+ $scope.unread.length +') Webhook.site';
+            } else {
+                document.title = 'Webhook.site';
+            }
+
+            window.localStorage.setItem(
+                'unread',
+                JSON.stringify($scope.unread)
+            );
+        });
+        $scope.markAsRead = (function(requestId) {
+            if ($scope.unread.indexOf(requestId) !== -1) {
+                $scope.unread.splice($scope.unread.indexOf(requestId), 1);
+            }
+        });
+
+        $scope.updateUnreadCount();
 
         /**
          * Controller actions
@@ -129,6 +165,7 @@ angular
         $scope.setCurrentRequest = (function(request) {
             $scope.currentRequestIndex = request.uuid;
             $scope.currentRequest = request;
+            $scope.markAsRead(request.uuid);
 
             // Change the state url so it may be copied from address bar
             // and linked somewhere else
@@ -141,6 +178,7 @@ angular
             // Remove from view
             $scope.requests.data.splice(requestIndex, 1);
             $scope.requests.total -= 1;
+            $scope.markAsRead(request.uuid);
         });
 
         $scope.deleteAllRequests = (function (request) {
@@ -156,6 +194,7 @@ angular
             $scope.currentRequest = {};
             $scope.currentPage = 1;
             $scope.hasRequests = false;
+            $scope.unread = [];
         });
 
         $scope.getRequest = (function (tokenId, requestId) {
@@ -196,12 +235,15 @@ angular
 
         $scope.appendRequest = (function (request) {
             $scope.requests.data.push(request);
+            $scope.unread.push(request.uuid);
 
             if ($scope.currentRequestIndex === 0) {
                 $scope.setCurrentRequest($scope.requests.data[0]);
             }
             if ($scope.autoNavEnable) {
-                $scope.setCurrentRequest($scope.requests.data[$scope.requests.data.length - 1]);
+                if (!('hidden' in document) || !document.hidden) {
+                    $scope.setCurrentRequest($scope.requests.data[$scope.requests.data.length - 1]);
+                }
             }
             if ($scope.redirectEnable) {
                 $scope.redirect(request, $scope.redirectUrl, $scope.redirectMethod, $scope.redirectContentType);

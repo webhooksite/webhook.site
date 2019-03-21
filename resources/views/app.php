@@ -97,7 +97,7 @@
                 <div>
                     <ul class="nav nav-sidebar">
                         <li ng-repeat="(key, request) in requests.data"
-                            ng-class="currentRequestIndex === request.uuid ? 'active' : ''">
+                            ng-class="{'active': currentRequestIndex === request.uuid, 'unread': unread.indexOf(request.uuid) !== -1}">
                             <a ng-click="setCurrentRequest(request)" class="select">
                                 <span class="label label-{{ getLabel(request.method) }}">{{ request.method }}</span>
                                 #{{ request.uuid.substring(0,5) }} {{ request.ip }} <br/>
