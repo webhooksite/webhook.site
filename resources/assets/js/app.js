@@ -344,6 +344,19 @@ angular
                     $state.go('token', {id: response.data.uuid});
                     $scope.resetUnread();
                     $.notify('New URL created');
+                }, function (response) {
+                    if (response.status === 422) {
+                        let errors = [];
+                        for (let error in response.data) {
+                            if (response.data.hasOwnProperty(error)) {
+                                errors.push(response.data[error]);
+                            }
+                        }
+                        $.notify('Error creating token:<br>' + errors.join(', '), {delay: 10000});
+                        return;
+                    }
+
+                    $.notify('Error creating token (' + response.status + ')');
                 });
         });
 
