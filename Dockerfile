@@ -4,8 +4,8 @@ WORKDIR /app
 COPY package.json /app
 RUN npm install
 
-COPY gulpfile.js /app
 COPY resources /app/resources
+COPY gulpfile.js /app
 RUN npm run gulp
 
 # Stage 2: Composer, nginx and fpm
@@ -15,8 +15,6 @@ WORKDIR /var/www/html
 COPY /nginx.conf /etc/nginx/conf.d
 
 USER www-data
-
-RUN touch /var/www/html/database/database.sqlite
 
 ADD --chown=www-data:www-data /composer.json /var/www/html
 ADD --chown=www-data:www-data /composer.lock /var/www/html
@@ -32,6 +30,8 @@ ADD --chown=www-data:www-data /public /var/www/html/public
 ADD --chown=www-data:www-data /resources /var/www/html/resources
 ADD --chown=www-data:www-data /storage /var/www/html/storage
 ADD --chown=www-data:www-data /artisan /var/www/html
+
+RUN touch /var/www/html/database/database.sqlite
 
 RUN php artisan optimize
 RUN php artisan migrate
