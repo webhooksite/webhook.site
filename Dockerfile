@@ -1,5 +1,5 @@
 # Stage 1: Install node dependencies and run gulp
-FROM node:7.1 as npm
+FROM node:8 as npm
 WORKDIR /app
 COPY resources /app/resources
 COPY package.json /app
