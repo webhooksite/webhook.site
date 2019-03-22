@@ -188,7 +188,7 @@
                                     <a href class="openModal btn btn-xs" data-modal="#redirectModal"
                                        ga-on="click" ga-event-category="AutoRedirect"
                                        ga-event-action="settings">Settings...</a>
-                                    <a ng-click="redirect(currentRequest, redirectUrl, redirectMethod, redirectContentType)"
+                                    <a ng-click="redirect(currentRequest, redirectUrl, redirectMethod, redirectContentType, redirectHeaders)"
                                        class="btn btn-xs" ng-class="redirectUrl ? '' : 'disabled'"
                                        ga-on="click" ga-event-category="AutoRedirect" ga-event-action="redir-now">Redirect
                                         Now</a>&emsp;&emsp;
@@ -349,6 +349,8 @@
                                         requests to another URL via XHR. The content will be redirected, and you can
                                         choose
                                         a static method to use.</p>
+                                    <p>Headers to be passed along can be provided as a comma-separated list. Be sure
+                                        to ensure these headers are allowed in any security settings (Cross-Domain)</p>
                                     <p>Since XHR is used, there might be issues with Cross-Domain Requests.</p>
                                 </div>
                             </div>
@@ -366,6 +368,15 @@
                                 <label class="col-md-4 control-label" for="redirectContentType">Content Type</label>
                                 <div class="col-md-7">
                                     <input id="redirectContentType" ng-model="redirectContentType"
+                                           class="form-control input-md">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="redirectHeaders">Redirect Headers</label>
+                                <div class="col-md-7">
+                                    <input id="redirectHeaders" ng-model="redirectHeaders"
+                                           placeholder="e.g. x-token,referer"
                                            class="form-control input-md">
                                 </div>
                             </div>
