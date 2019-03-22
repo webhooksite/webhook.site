@@ -42,6 +42,7 @@ angular
             'redirectEnable',
             'redirectUrl',
             'redirectContentType',
+            'redirectHeaders',
             'redirectMethod',
             'token',
             'formatJsonEnable',
@@ -95,6 +96,7 @@ angular
         $scope.redirectMethod = $scope.getSetting('redirectMethod', '');
         $scope.redirectUrl = $scope.getSetting('redirectUrl', null);
         $scope.redirectContentType = $scope.getSetting('redirectContentType', 'text/plain');
+        $scope.redirectHeaders = $scope.getSetting('redirectHeaders', null);
         $scope.unread = $scope.getSetting('unread', []);
         $scope.hideTutorial = $scope.getSetting('hideTutorial', false);
 
@@ -265,7 +267,7 @@ angular
                 }
             }
             if ($scope.redirectEnable) {
-                $scope.redirect(request, $scope.redirectUrl, $scope.redirectMethod, $scope.redirectContentType);
+                $scope.redirect(request, $scope.redirectUrl, $scope.redirectMethod, $scope.redirectContentType, $scope.redirectHeaders);
             }
 
             $scope.hasRequests = true;
@@ -396,8 +398,9 @@ angular
             return parser;
         })
 
-        $scope.redirect = (function (request, url, method, contentType) {
+        $scope.redirect = (function (request, url, method, contentType, headers) {
             let parser = $scope.parseUrl(request.url);
+            let headersList = [];
             let path = parser.pathname.match('\/[A-Za-z0-9-]+(/.*)');
             if (path === null) {
                 path = '';
@@ -405,15 +408,28 @@ angular
                 path = path[1];
             }
 
+            if (headers !== null) {
+                headersList = headers.split(",").filter(val => val !== "")
+            }
+
+            let headersDict = {
+                'Content-Type': (!contentType ? 'text/plain' : contentType)
+            }
+
+            headersList.forEach(header => {
+                if (header in request.headers) {
+                    headersDict[header] = request.headers[header];
+                }
+            });
+
+
             var redirectUrl = url + path + parser.search;
 
             $http({
                 'method': (!method ? request.method : method),
                 'url': redirectUrl,
                 'data': request.content,
-                'headers': {
-                    'Content-Type': (!contentType ? 'text/plain' : contentType)
-                }
+                'headers': headersDict
             }).then(
                 function ok(response) {
                     $.notify('Redirected request to ' + redirectUrl + '<br>Status: ' + response.statusText);
@@ -430,7 +446,7 @@ angular
             );
         });
 
-        $scope.getLabel = function(method) {
+        $scope.getLabel = function (method) {
             switch (method) {
                 case 'POST':
                     return 'info';
@@ -479,14 +495,14 @@ angular
         // Initialize app. Check whether we need to load a token.
         if ($state.current.name) {
             if ($scope.getSetting('token') && !$stateParams.id) {
-                $state.go('token', {id: $scope.getSetting('token').uuid});
+                $state.go('token', { id: $scope.getSetting('token').uuid });
             } else {
                 $scope.getToken($stateParams.id, $stateParams.offset, $stateParams.page);
             }
         }
     }])
     .run(['$rootScope', '$state', '$stateParams',
-        function($rootScope, $state, $stateParams) {
+        function ($rootScope, $state, $stateParams) {
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
         }]
