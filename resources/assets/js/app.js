@@ -1,6 +1,7 @@
 angular
     .module("app", [
-        'ui.router'
+        'ui.router',
+        'hljs'
     ])
     .config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider',
         function ($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider) {
@@ -185,7 +186,12 @@ angular
 
         $scope.setCurrentRequest = (function (request) {
             $scope.currentRequestIndex = request.uuid;
-            $scope.currentRequest = request;
+            $scope.currentRequest = JSON.parse(JSON.stringify(request));
+
+            if ($scope.formatJsonEnable) {
+                $scope.currentRequest.content = $scope.formatContentJson(request.content)
+            }
+
             $scope.markAsRead(request.uuid);
 
             // Change the state url so it may be copied from address bar

@@ -321,9 +321,11 @@
                                 <p id="noContent" ng-show="hasRequests && currentRequest.content == ''">
                                     (no body content)</p>
 
-                                <pre id="req-content"
+                                <div id="req-content"
                                      ng-show="hasRequests && currentRequest.content != ''"
-                                     ng-bind="formatJsonEnable ? formatContentJson(currentRequest.content) : currentRequest.content"></pre>
+                                     hljs 
+                                     hljs-source="currentRequest.content">
+                                </div>
                             </div>
                         </div>
                     </div>

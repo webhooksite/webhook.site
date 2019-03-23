@@ -1,4 +1,5 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/highlight.js/styles/github";
 
 /*
  * Variables
@@ -215,6 +216,12 @@ code {
 
 #noContent {
   color: #ccc;
+}
+
+#req-content {
+  pre {
+    padding: 0;
+  }
 }
 
   /*
