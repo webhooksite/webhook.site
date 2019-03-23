@@ -38,3 +38,5 @@ RUN php artisan optimize && php artisan migrate
 ADD --chown=www-data:www-data /resources /var/www/html/resources
 COPY --chown=www-data:www-data --from=npm /app/public/css /var/www/html/public/css
 COPY --chown=www-data:www-data --from=npm /app/public/js /var/www/html/public/js
+
+USER root
