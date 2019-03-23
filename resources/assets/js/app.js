@@ -1,3 +1,5 @@
+var prettyData = require('pretty-data').pd;
+
 angular
     .module("app", [
         'ui.router',
@@ -189,7 +191,14 @@ angular
             $scope.currentRequest = JSON.parse(JSON.stringify(request));
 
             if ($scope.formatJsonEnable) {
-                $scope.currentRequest.content = $scope.formatContentJson(request.content)
+                var hloutput = hljs.highlightAuto(request.content);
+
+                if (hloutput.language === "json") {
+                    $scope.currentRequest.content = $scope.formatContentJson(request.content)
+                }
+                if (hloutput.language === "xml") {
+                    $scope.currentRequest.content = prettyData.xml(request.content);
+                }
             }
 
             $scope.markAsRead(request.uuid);

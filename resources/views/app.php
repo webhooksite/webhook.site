@@ -195,9 +195,9 @@
 
                                     <!-- Auto-JSON -->
                                     <label class="small"
-                                           title="Automatically applies easy to read JSON formatting on valid requests">
+                                           title="Automatically applies easy to read JSON and XML formatting on valid requests">
                                         <input type="checkbox" ng-model="formatJsonEnable"
-                                               ga-on="click" ga-event-category="JSONFormat" ga-event-action="toggle"/> Format JSON</label> &emsp;
+                                               ga-on="click" ga-event-category="JSONFormat" ga-event-action="toggle"/> Format JSON/XML</label> &emsp;
 
                                     <!-- Auto Navigate -->
                                     <label class="small"
