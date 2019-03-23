@@ -1,6 +1,9 @@
+var prettyData = require('pretty-data').pd;
+
 angular
     .module("app", [
-        'ui.router'
+        'ui.router',
+        'hljs'
     ])
     .config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider',
         function ($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider) {
@@ -185,7 +188,19 @@ angular
 
         $scope.setCurrentRequest = (function (request) {
             $scope.currentRequestIndex = request.uuid;
-            $scope.currentRequest = request;
+            $scope.currentRequest = JSON.parse(JSON.stringify(request));
+
+            if ($scope.formatJsonEnable) {
+                var hloutput = hljs.highlightAuto(request.content);
+
+                if (hloutput.language === "json") {
+                    $scope.currentRequest.content = $scope.formatContentJson(request.content)
+                }
+                if (hloutput.language === "xml") {
+                    $scope.currentRequest.content = prettyData.xml(request.content);
+                }
+            }
+
             $scope.markAsRead(request.uuid);
 
             // Change the state url so it may be copied from address bar
