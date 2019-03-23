@@ -3,12 +3,12 @@ angular
         'ui.router'
     ])
     .config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider',
-        function($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider) {
+        function ($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider) {
             var GUID_REGEXP = /^[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}$/i;
             $urlMatcherFactoryProvider.type('guid', {
                 encode: angular.identity,
                 decode: angular.identity,
-                is: function(item) {
+                is: function (item) {
                     return GUID_REGEXP.test(item);
                 }
             });
@@ -29,10 +29,10 @@ angular
                     url: "/{id:guid}",
                     controller: 'AppController'
                 })
-            ;
+                ;
         }
     ])
-    .controller("AppController", ['$scope', '$http', '$stateParams', '$state', '$timeout', function($scope, $http, $stateParams, $state, $timeout) {
+    .controller("AppController", ['$scope', '$http', '$stateParams', '$state', '$timeout', function ($scope, $http, $stateParams, $state, $timeout) {
         /**
          * Settings handling
          */
@@ -62,8 +62,8 @@ angular
         $scope.getSetting = (function (name, defaultValue) {
             var value = window.localStorage.getItem(name);
 
-            if (!value || typeof(value) === 'undefined' || value === 'undefined') {
-                if (typeof(defaultValue) === 'undefined') {
+            if (!value || typeof (value) === 'undefined' || value === 'undefined') {
+                if (typeof (defaultValue) === 'undefined') {
                     return null;
                 }
                 return defaultValue;
@@ -160,7 +160,7 @@ angular
 
         $scope.updateUnreadCount = (function () {
             if ($scope.unread.length > 0) {
-                document.title = '('+ $scope.unread.length +') Webhook.site';
+                document.title = '(' + $scope.unread.length + ') Webhook.site';
             } else {
                 document.title = 'Webhook.site';
             }
@@ -171,7 +171,7 @@ angular
             );
         });
 
-        $scope.markAsRead = (function(requestId) {
+        $scope.markAsRead = (function (requestId) {
             if ($scope.unread.indexOf(requestId) !== -1) {
                 $scope.unread.splice($scope.unread.indexOf(requestId), 1);
             }
@@ -183,14 +183,14 @@ angular
          * Controller actions
          */
 
-        $scope.setCurrentRequest = (function(request) {
+        $scope.setCurrentRequest = (function (request) {
             $scope.currentRequestIndex = request.uuid;
             $scope.currentRequest = request;
             $scope.markAsRead(request.uuid);
 
             // Change the state url so it may be copied from address bar
             // and linked somewhere else
-            $state.go('request', {id: $scope.token.uuid, offset: request.uuid, page: $scope.requests.current_page}, {notify: false});
+            $state.go('request', { id: $scope.token.uuid, offset: request.uuid, page: $scope.requests.current_page }, { notify: false });
         });
 
         $scope.deleteRequest = (function (request, requestIndex) {
@@ -225,13 +225,13 @@ angular
                 });
         });
 
-        $scope.getRequests = (function(token, offset, page) {
+        $scope.getRequests = (function (token, offset, page) {
             if (!page) {
                 page = 1;
             }
 
             $http.get('/token/' + token + '/requests?page=' + page)
-                .then(function(response) {
+                .then(function (response) {
                     $scope.requests = response.data;
 
                     if (response.data.data.length > 0) {
@@ -249,7 +249,7 @@ angular
                     } else {
                         $scope.hasRequests = false;
                     }
-                }, function(response) {
+                }, function (response) {
                     $.notify('Requests not found - invalid ID');
                 });
         });
@@ -289,36 +289,36 @@ angular
                 });
         });
 
-        $scope.getToken = (function(tokenId, offset, page) {
+        $scope.getToken = (function (tokenId, offset, page) {
             if (!tokenId) {
                 $http.post('token')
-                    .then(function(response) {
-                        $state.go('token', {id: response.data.uuid});
+                    .then(function (response) {
+                        $state.go('token', { id: response.data.uuid });
                     });
                 $scope.resetUnread();
             } else {
                 $http.get('token/' + tokenId)
-                    .then(function(response) {
+                    .then(function (response) {
                         $scope.token = response.data;
                         $scope.getRequests(response.data.uuid, offset, page);
                         $scope.pushSubscribe(tokenId);
                         if (page) {
                             $scope.currentPage = page;
                         }
-                    }, function(response) {
+                    }, function (response) {
                         $scope.token = null;
                         $.notify('Requests not found - invalid ID, creating new URL', { delay: 5000 });
                         $scope.getToken();
                         if (response.status === 404 || response.status === 410) {
                             $scope.token = null;
                             $scope.getToken();
-                            $.notify('<b>URL not found</b><br>Invalid ID, created new URL', {delay: 10000});
+                            $.notify('<b>URL not found</b><br>Invalid ID, created new URL', { delay: 10000 });
                         }
                     });
             }
         });
 
-        $scope.getCustomToken = (function() {
+        $scope.getCustomToken = (function () {
             var formData = {};
             $('#createTokenForm')
                 .serializeArray()
@@ -330,7 +330,7 @@ angular
 
             $http.post('token', formData)
                 .then(function (response) {
-                    $state.go('token', {id: response.data.uuid});
+                    $state.go('token', { id: response.data.uuid });
                     $scope.resetUnread();
                     $.notify('New URL created');
                 }, function (response) {
@@ -341,7 +341,7 @@ angular
                                 errors.push(response.data[error]);
                             }
                         }
-                        $.notify('Error creating token:<br>' + errors.join(', '), {delay: 10000});
+                        $.notify('Error creating token:<br>' + errors.join(', '), { delay: 10000 });
                         return;
                     }
 
@@ -349,29 +349,29 @@ angular
                 });
         });
 
-        $scope.editToken = (function(tokenId) {
+        $scope.editToken = (function (tokenId) {
             var formData = {};
 
             $('#editTokenForm')
                 .serializeArray()
-                .map(function(value) {
+                .map(function (value) {
                     if (value.value !== '') {
                         formData[value.name] = value.value;
                     }
                 });
 
             $http.put('token/' + tokenId, formData)
-                .then(function(response) {
+                .then(function (response) {
                     $scope.token = response.data;
                     $.notify('URL updated!');
                 });
         });
 
-        $scope.getPreviousPage = (function(token) {
+        $scope.getPreviousPage = (function (token) {
             $http({
                 url: '/token/' + token + '/requests',
-                params: {page: $scope.requests.current_page - 1}
-            }).success(function(data, status, headers, config) {
+                params: { page: $scope.requests.current_page - 1 }
+            }).success(function (data, status, headers, config) {
                 // We use is_last_page to keep track of whether we should load more pages.
                 $scope.requests.is_last_page = data.is_last_page;
                 $scope.requests.current_page = data.current_page;
@@ -379,11 +379,11 @@ angular
             });
         });
 
-        $scope.getNextPage = (function(token) {
+        $scope.getNextPage = (function (token) {
             $http({
                 url: '/token/' + token + '/requests',
-                params: {page: $scope.requests.current_page + 1}
-            }).success(function(data, status, headers, config) {
+                params: { page: $scope.requests.current_page + 1 }
+            }).success(function (data, status, headers, config) {
                 // We use is_last_page to keep track of whether we should load more pages.
                 $scope.requests.is_last_page = data.is_last_page;
                 $scope.requests.current_page = data.current_page;
