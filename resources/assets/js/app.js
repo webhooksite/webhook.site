@@ -188,18 +188,7 @@ angular
 
         $scope.setCurrentRequest = (function (request) {
             $scope.currentRequestIndex = request.uuid;
-            $scope.currentRequest = JSON.parse(JSON.stringify(request));
-
-            if ($scope.formatJsonEnable) {
-                var hloutput = hljs.highlightAuto(request.content);
-
-                if (hloutput.language === "json") {
-                    $scope.currentRequest.content = $scope.formatContentJson(request.content)
-                }
-                if (hloutput.language === "xml") {
-                    $scope.currentRequest.content = prettyData.xml(request.content);
-                }
-            }
+            $scope.currentRequest = request;
 
             $scope.markAsRead(request.uuid);
 
@@ -505,6 +494,19 @@ angular
                 return content;
             }
             return json;
+        };
+
+        $scope.formatContent = function (content) {
+            let hloutput = hljs.highlightAuto(content);
+
+            if (hloutput.language === "json") {
+                content = $scope.formatContentJson(content)
+            }
+            if (hloutput.language === "xml") {
+                content = prettyData.xml(content);
+            }
+
+            return content;
         };
 
         // Initialize app. Check whether we need to load a token.

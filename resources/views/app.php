@@ -324,7 +324,7 @@
                                 <div id="req-content"
                                      ng-show="hasRequests && currentRequest.content != ''"
                                      hljs 
-                                     hljs-source="currentRequest.content">
+                                     hljs-source="formatJsonEnable ? formatContent(currentRequest.content) : currentRequest.content">
                                 </div>
                             </div>
                         </div>
