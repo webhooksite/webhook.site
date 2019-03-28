@@ -19,7 +19,7 @@ interface RequestStore
      * @param int $perPage
      * @return Collection
      */
-    public function all(Token $token, $page = 0, $perPage = 50);
+    public function all(Token $token, $page = 1, $perPage = 50);
 
     /**
      * @param Token $token

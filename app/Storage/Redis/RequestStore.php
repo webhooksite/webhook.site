@@ -49,7 +49,7 @@ class RequestStore implements \App\Storage\RequestStore
      * @param int $perPage
      * @return Collection|static
      */
-    public function all(Token $token, $page = 0, $perPage = 50)
+    public function all(Token $token, $page = 1, $perPage = 50)
     {
         return collect(
             $this->redis->hgetall(Request::getIdentifier($token->uuid))

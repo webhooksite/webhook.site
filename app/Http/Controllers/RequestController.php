@@ -94,7 +94,7 @@ class RequestController extends Controller
     public function all(HttpRequest $httpRequest, $tokenId)
     {
         $token = $this->tokens->find($tokenId);
-        $page = (int)$httpRequest->get('page', 0);
+        $page = (int)$httpRequest->get('page', 1);
         $perPage = (int)$httpRequest->get('per_page', 50);
         $requests = $this->requests->all($token, $page, $perPage);
         $total = $this->tokens->countRequests($token);
@@ -104,9 +104,9 @@ class RequestController extends Controller
             'total' => $total,
             'per_page' => $perPage,
             'current_page' => $page,
-            'is_last_page' => ($requests->count() + ($page * $perPage)) >= $total,
-            'from' => $page * $perPage + 1,
-            'to' => $requests->count() + ($page * $perPage),
+            'is_last_page' => ($requests->count() + (($page - 1) * $perPage)) >= $total,
+            'from' => (($page - 1) * $perPage) + 1,
+            'to' => min($total, $requests->count() + (($page - 1) * $perPage)),
         ]);
     }
 

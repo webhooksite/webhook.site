@@ -384,15 +384,14 @@ angular
         });
 
         $scope.getNextPage = (function (token) {
-            $http({
-                url: '/token/' + token + '/requests',
+            $http.get('/token/' + token + '/requests', {
                 params: { page: $scope.requests.current_page + 1 }
-            }).success(function (data, status, headers, config) {
+            }).then(function (response) {
                 // We use is_last_page to keep track of whether we should load more pages.
-                $scope.requests.is_last_page = data.is_last_page;
-                $scope.requests.current_page = data.current_page;
-                $scope.currentPage = data.current_page;
-                $scope.requests.data = $scope.requests.data.concat(data.data);
+                $scope.requests.is_last_page = response.data.is_last_page;
+                $scope.requests.current_page = response.data.current_page;
+                $scope.currentPage = response.data.current_page;
+                $scope.requests.data = $scope.requests.data.concat(response.data.data);
             });
         });
 
