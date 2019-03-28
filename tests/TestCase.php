@@ -22,4 +22,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         return $app;
     }
+
+    protected function faker() : Faker\Generator
+    {
+        return \Faker\Factory::create();
+    }
 }

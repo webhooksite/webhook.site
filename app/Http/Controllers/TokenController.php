@@ -6,6 +6,7 @@ use App\Http\Requests\CreateTokenRequest;
 use App\Storage\Token;
 use App\Storage\TokenStore;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class TokenController extends Controller
 {
@@ -33,7 +34,7 @@ class TokenController extends Controller
 
         $this->tokens->store($token);
 
-        return new JsonResponse($token);
+        return new JsonResponse($token, Response::HTTP_CREATED);
     }
 
     /**
@@ -57,7 +58,7 @@ class TokenController extends Controller
 
         return new JsonResponse([
             'status' => (bool)$this->tokens->delete($token)
-        ]);
+        ], Response::HTTP_NO_CONTENT);
     }
 
     /**
