@@ -1,9 +1,11 @@
 version: '3'
 services:
   webhook:
-    build:
-      dockerfile: Dockerfile
-      context: ./
+    image: "fredsted/webhook.site"
+    # Enable build for development:
+    # build:
+    #   dockerfile: Dockerfile
+    #   context: ./
     command: php artisan queue:work --daemon --tries=3 --timeout=10
     ports:
       - "8084:80"
