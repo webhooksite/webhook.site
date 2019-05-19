@@ -394,6 +394,16 @@ angular
             });
         });
 
+        $scope.goToNextRequest = (function () {
+            $scope.setCurrentRequest(
+                $scope.requests.data[$scope.requests.data.indexOf($scope.currentRequest) + 1]
+            );
+
+            if ($scope.requests.data.indexOf($scope.currentRequest) === $scope.requests.data.length - 1) {
+                $scope.getNextPage($scope.token.uuid);
+            }
+        });
+
         $scope.parseUrl = (function (url) {
             var parser = document.createElement('a');
             parser.href = url;

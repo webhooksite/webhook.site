@@ -168,7 +168,7 @@
                                     &leftarrow; Previous</a>
                                 <a class="btn btn-xs btn-link"
                                    ng-class="requests.data.indexOf(currentRequest) !== requests.data.length-1 ? '' : 'disabled'"
-                                   ng-click="setCurrentRequest(requests.data[requests.data.indexOf(currentRequest) + 1])">
+                                   ng-click="goToNextRequest()">
                                     Next &rightarrow;</a>
                                 <a class="btn btn-xs btn-link"
                                    ng-class="requests.data.indexOf(currentRequest) !== requests.data.length-1 ? '' : 'disabled'"
