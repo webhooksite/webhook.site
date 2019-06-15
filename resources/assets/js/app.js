@@ -408,7 +408,7 @@ angular
             var parser = document.createElement('a');
             parser.href = url;
             return parser;
-        })
+        });
 
         $scope.redirect = (function (request, url, method, contentType, headers) {
             let parser = $scope.parseUrl(request.url);
