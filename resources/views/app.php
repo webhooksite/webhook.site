@@ -92,7 +92,7 @@
                             <a ng-click="setCurrentRequest(request)" class="select">
                                 <span class="label label-{{ getLabel(request.method) }}">{{ request.method }}</span>
                                 #{{ request.uuid.substring(0,5) }} {{ request.ip }} <br/>
-                                <small>{{ request.created_at }}</small>
+                                <small>{{ localDate(request.created_at) }}</small>
                             </a>
                             <a ng-click="deleteRequest(request, key)" class="btn btn-danger delete">
                                 X
@@ -246,7 +246,7 @@
                                     </tr>
                                     <tr>
                                         <td>Date</td>
-                                        <td id="req-date">{{ currentRequest.created_at }}</td>
+                                        <td id="req-date" title="{{ currentRequest.created_at }} UTC">{{ localDate(currentRequest.created_at) }} ({{ relativeDate(currentRequest.created_at) }})</td>
                                     </tr>
                                     <tr>
                                         <td>ID</td>

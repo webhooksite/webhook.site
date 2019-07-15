@@ -1,4 +1,5 @@
-var prettyData = require('pretty-data').pd;
+let prettyData = require('pretty-data').pd;
+let moment = require('moment');
 
 angular
     .module("app", [
@@ -516,6 +517,14 @@ angular
 
             return content;
         };
+
+        $scope.localDate = (function (dateTimeString) {
+            return moment.utc(dateTimeString).local().format('lll');
+        });
+
+        $scope.relativeDate = (function (dateTimeString) {
+            return moment.utc(dateTimeString).fromNow();
+        });
 
         // Initialize app. Check whether we need to load a token.
         if ($state.current.name) {
