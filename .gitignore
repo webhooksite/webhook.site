@@ -6,3 +6,4 @@ Homestead.json
 .env
 .idea/workspace.xml
 laravel-echo-server.json
+laravel-echo-server.lock
