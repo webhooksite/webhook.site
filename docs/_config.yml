@@ -1,1 +1,12 @@
-theme: jekyll-theme-dinky
+title: ⚓️ Webhook.site
+email: webhook.site@webhook.site
+description: ""
+baseurl: ""
+url: ""
+twitter_username: fredsted
+github_username:  fredsted
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed

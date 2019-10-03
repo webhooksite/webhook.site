@@ -1,16 +1,21 @@
-# Webhook.site API
+---
+title: API
+order: 10
+---
 
 The API doesn't require documentation and is relatively easy to use. At its core, Webhook.site takes your data (HTTP requests) and shows it back to you, and also letting you execute various actions based on the contents.
 
-## Tokens
+## 1 Tokens
 
-### **POST** `/token`
+### 1.1 Create token
+
+**POST** `/token`
 
 A token is a container for requests. You can create as many as you want. They expire after about a week, deleting all requests, too.
 
 #### Request
 
-```
+```json
 {
   "default_status": 200,
   "default_content": "Hello world!",
@@ -23,7 +28,7 @@ A token is a container for requests. You can create as many as you want. They ex
 
 `200 OK`
 
-```
+```json
 {
   "redirect": false,
   "alias": null,
@@ -41,7 +46,9 @@ A token is a container for requests. You can create as many as you want. They ex
 }
 ```
 
-### **PUT** `/token/:id`
+### 1.2 Update token
+
+**PUT** `/token/:id`
 
 *Request*
 
@@ -51,7 +58,9 @@ A token is a container for requests. You can create as many as you want. They ex
 
 *See **POST** `/token`*
 
-### **PUT** `/token/:id/password`
+### 1.3 Set password [P]
+
+**PUT** `/token/:id/password`
 
 *[Premium]* Sets a password to view the requests of a token.
 
@@ -63,7 +72,9 @@ A token is a container for requests. You can create as many as you want. They ex
 
 *See **POST** `/token`*
 
-### **PUT** `/token/:id/alias`
+### 1.4 Set alias [P]
+
+**PUT** `/token/:id/alias`
 
 *[Premium]* Sets the alias for the token. (Can be used when creating requests.)
 
@@ -75,23 +86,29 @@ A token is a container for requests. You can create as many as you want. They ex
 
 *See **POST** `/token`*
 
-### **GET** `/token/:id`
+### 1.5 Get token
+
+**GET** `/token/:id`
 
 *Response*
 
 *See **POST** `/token`*
 
-### **DELETE** `/token/:id`
+### 1.6 Delete token
+
+**DELETE** `/token/:id`
 
 *Response*
 
 `200 No Content`
 
-## Requests
+## 2 Requests
 
-### ***(any method)*** `/:tokenId`
-### ***(any method)*** `/:tokenId/:statusCode`
-### ***(any method)*** `/:tokenId/(anything)`
+### 2.1 Create request
+
+* ***(any method)*** `/:tokenId`
+* ***(any method)*** `/:tokenId/:statusCode`
+* ***(any method)*** `/:tokenId/(anything)`
 
 This request will be stored as a *request*.
 
@@ -107,7 +124,9 @@ Instead of `tokenId`, an alias can also be supplied.
 
 *(The default response of the Token.)*
 
-### **GET** `/token/:id/requests`
+### 2.2 Get requests
+
+**GET** `/token/:id/requests`
 
 Lists all request sent to a token. 
 
@@ -115,7 +134,7 @@ Takes `?password=` parameter.
 
 *Response*
 
-```
+```json
 {
   "data": [
     {
@@ -151,11 +170,13 @@ Takes `?password=` parameter.
 }
 ```
 
-### **GET** `/token/:id/request/:id`
+### 2.3 Get single request
+
+**GET** `/token/:id/request/:id`
 
 *Response*
 
-```
+```json
 {
   "uuid": "a2a6a4ae-4130-4063-953a-84fa29d81d43",
   "token_id": "a94a7294-c4aa-4074-ab77-c4cf86fd53b1",
@@ -181,11 +202,15 @@ Takes `?password=` parameter.
 }
 ```
 
-### **GET** `/token/:id/request/:id/raw`
+### 2.4 Get raw request content
+
+**GET** `/token/:id/request/:id/raw`
 
 Outputs the request as a response (body, content-type.)
 
-### **DELETE** `/token/:tokenId/request/(:id)`
+### 2.5 Delete request
+
+**DELETE** `/token/:tokenId/request/(:id)`
 
 Deletes a request. 
 
