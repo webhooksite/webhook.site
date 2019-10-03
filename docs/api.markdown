@@ -3,7 +3,9 @@ title: API
 order: 10
 ---
 
-The API doesn't require documentation and is relatively easy to use. At its core, Webhook.site takes your data (HTTP requests) and shows it back to you, and also letting you execute various actions based on the contents.
+The API doesn't require authentication and is relatively easy to use. 
+
+At its core, Webhook.site takes your data (HTTP requests) and shows it back to you, and also letting you execute various actions based on the contents.
 
 ## 1 Tokens
 
@@ -52,11 +54,11 @@ A token is a container for requests. You can create as many as you want. They ex
 
 *Request*
 
-*See **POST** `/token`*
+[*See **POST** `/token`*](#11-create-token)
 
 *Response*
 
-*See **POST** `/token`*
+[*See **POST** `/token`*](#11-create-token)
 
 ### 1.3 Set password [P]
 
@@ -66,11 +68,13 @@ A token is a container for requests. You can create as many as you want. They ex
 
 *Request*
 
-*See **POST** `/token`*
+```json
+{"password": "hunter2"}
+```
 
 *Response*
 
-*See **POST** `/token`*
+[*See **POST** `/token`*](#11-create-token)
 
 ### 1.4 Set alias [P]
 
@@ -80,11 +84,13 @@ A token is a container for requests. You can create as many as you want. They ex
 
 *Request*
 
-*See **POST** `/token`*
+```json
+{"alias": "my-webhook"}
+```
 
 *Response*
 
-*See **POST** `/token`*
+[*See **POST** `/token`*](#11-create-token)
 
 ### 1.5 Get token
 
@@ -92,7 +98,7 @@ A token is a container for requests. You can create as many as you want. They ex
 
 *Response*
 
-*See **POST** `/token`*
+[*See **POST** `/token`*](#11-create-token)
 
 ### 1.6 Delete token
 
@@ -106,9 +112,9 @@ A token is a container for requests. You can create as many as you want. They ex
 
 ### 2.1 Create request
 
-* ***(any method)*** `/:tokenId`
-* ***(any method)*** `/:tokenId/:statusCode`
-* ***(any method)*** `/:tokenId/(anything)`
+***(any method)*** `/:tokenId` <br>
+***(any method)*** `/:tokenId/:statusCode` <br>
+***(any method)*** `/:tokenId/(anything)`
 
 This request will be stored as a *request*.
 
@@ -206,7 +212,7 @@ Takes `?password=` parameter.
 
 **GET** `/token/:id/request/:id/raw`
 
-Outputs the request as a response (body, content-type.)
+Returns the request as a response (body, content-type.)
 
 ### 2.5 Delete request
 
