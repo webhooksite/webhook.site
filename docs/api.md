@@ -193,38 +193,4 @@ If no ID, all requests related to the token will be deleted.
 
 *Response*
 
-```
-{
-  "data": [
-    {
-      "uuid": "a2a6a4ae-4130-4063-953a-84fa29d81d43",
-      "token_id": "a94a7294-c4aa-4074-ab77-c4cf86fd53b1",
-      "ip": "127.0.0.1",
-      "hostname": "webhook.site",
-      "method": "POST",
-      "user_agent": "Paw\/3.1.8 (Macintosh; OS X\/10.14.6) GCDHTTPRequest",
-      "content": "{"first_name\":\"Arch\",\"last_name\":\"Weber\"}",
-      "query": {
-        "action": "create"
-      },
-      "headers": {
-        "content-length": [
-          "271"
-        ],
-        "user-agent": [
-          "Paw\/3.1.8 (Macintosh; OS X\/10.14.6) GCDHTTPRequest"
-        ]
-      },
-      "url": "https:\/\/webhook.site\/a94a7294-c4aa-4074-ab77-c4cf86fd53b1\/201?",
-      "created_at": "2019-10-03 19:06:35",
-      "updated_at": "2019-10-03 19:06:35"
-    }
-  ],
-  "total": 1,
-  "per_page": 50,
-  "current_page": 1,
-  "is_last_page": true,
-  "from": 1,
-  "to": 1
-}
-```
+`204 No content`
