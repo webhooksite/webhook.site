@@ -1,0 +1,52 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  #annotations:
+  labels:
+    app: webhook
+  name: webhook
+  namespace: webhook
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: webhook
+    spec:
+      containers:
+      - args:
+        - php
+        - artisan
+        - queue:work
+        - --daemon
+        - --tries=3
+        - --timeout=10
+        env:
+        - name: APP_DEBUG
+          value: "true"
+        - name: APP_ENV
+          value: dev
+        - name: APP_LOG
+          value: errorlog
+        - name: APP_URL
+          value: http://localhost:8084
+        - name: BROADCAST_DRIVER
+          value: redis
+        - name: CACHE_DRIVER
+          value: redis
+        - name: DB_CONNECTION
+          value: sqlite
+        - name: ECHO_HOST_MODE
+          value: path
+        - name: QUEUE_DRIVER
+          value: redis
+        - name: REDIS_HOST
+          value: redis:6379
+        image: fredsted/webhook.site
+        name: webhook
+        ports:
+        - containerPort: 80
+        resources: {}
+      restartPolicy: Always
+status: {}

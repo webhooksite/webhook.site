@@ -1,0 +1,47 @@
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: laravel-echo-server
+  namespace: webhook
+  labels:
+    app: laravel-echo-server
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy: {}
+  template:
+    metadata:
+        labels:
+          app: laravel-echo-server
+    spec:
+      containers:
+      - image: mintopia/laravel-echo-server
+        name: laravel-echo-server
+        ports:
+        - protocol: TCP
+          containerPort: 6001
+        resources: {}
+        env:
+          - name: ECHO_ALLOW_CORS
+            value: "true"
+          - name: ECHO_ALLOW_HEADERS
+            value: '*'
+          - name: ECHO_ALLOW_METHODS
+            value: '*'
+          - name: ECHO_ALLOW_ORIGIN
+            value: '*'
+          - name: ECHO_PROTOCOL
+            value: http
+          - name: ECHO_REDIS_HOST
+            value: redis
+          - name: ECHO_REDIS_PORT
+            value: "6379"
+          - name: LARAVEL_ECHO_SERVER_AUTH_HOST
+            value: https://webhook
+          - name: LARAVEL_ECHO_SERVER_HOST
+            value: 0.0.0.0
+          - name: LARAVEL_ECHO_SERVER_PORT
+            value: "6001"
+      restartPolicy: Always
+status: {}
