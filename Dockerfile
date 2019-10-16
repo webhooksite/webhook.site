@@ -10,7 +10,7 @@ COPY gulpfile.js /app
 RUN npm run gulp
 
 # Stage 2: Composer, nginx and fpm
-FROM bkuhl/fpm-nginx:fpm-7_nginx-1
+FROM bkuhl/fpm-nginx:7.3
 WORKDIR /var/www/html
 
 COPY /nginx.conf /etc/nginx/conf.d
@@ -20,7 +20,8 @@ USER www-data
 ADD --chown=www-data:www-data /composer.json /var/www/html
 ADD --chown=www-data:www-data /composer.lock /var/www/html
 
-RUN composer install --no-interaction --no-autoloader --no-dev --prefer-dist --no-scripts \
+RUN composer global require hirak/prestissimo \
+    && composer install --no-interaction --no-autoloader --no-dev --prefer-dist --no-scripts \
     && rm -rf /home/www-data/.composer/cache
 
 ADD --chown=www-data:www-data /storage /var/www/html/storage
