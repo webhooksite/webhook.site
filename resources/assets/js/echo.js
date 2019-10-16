@@ -1,7 +1,5 @@
 import Echo from 'laravel-echo'
 
-window.io = require('socket.io-client');
-
 let echoConfig = {
     broadcaster: AppConfig.Broadcaster,
     key: AppConfig.PusherToken === '' ? null : AppConfig.PusherToken,

@@ -2,6 +2,7 @@
 FROM node:8 as npm
 WORKDIR /app
 COPY package.json /app
+COPY package-lock.json /app
 RUN npm install
 
 COPY resources /app/resources
@@ -25,7 +26,6 @@ RUN composer install --no-interaction --no-autoloader --no-dev --prefer-dist --n
 ADD --chown=www-data:www-data /storage /var/www/html/storage
 ADD --chown=www-data:www-data /bootstrap /var/www/html/bootstrap
 ADD --chown=www-data:www-data /public /var/www/html/public
-
 ADD --chown=www-data:www-data /artisan /var/www/html
 ADD --chown=www-data:www-data /database /var/www/html/database
 ADD --chown=www-data:www-data /config /var/www/html/config
