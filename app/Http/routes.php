@@ -25,4 +25,5 @@ $router->group(['middleware' => ['api']], function () use ($router) {
     $router->post('token', 'TokenController@create');
     $router->delete('token/{tokenId}', 'TokenController@delete');
     $router->put('token/{tokenId}', 'TokenController@update');
+    $router->put('token/{tokenId}/cors/toggle', 'TokenController@toggleCors');
 });

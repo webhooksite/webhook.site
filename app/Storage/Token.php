@@ -31,6 +31,7 @@ class Token extends Entity
             'default_status' => (int)$request->get('default_status', 200),
             'default_content_type' => $request->get('default_content_type', 'text/plain'),
             'timeout' => (int)$request->get('timeout', null),
+            'cors' => false,
             'created_at' => Carbon::now()->toDateTimeString(),
             'updated_at' => Carbon::now()->toDateTimeString(),
         ]);

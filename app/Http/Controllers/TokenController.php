@@ -79,4 +79,17 @@ class TokenController extends Controller
 
         return new JsonResponse($token);
     }
+
+    public function toggleCors(string $tokenId): JsonResponse
+    {
+        $token = $this->tokens->find($tokenId);
+
+        $token->cors = isset($token->cors) ? !$token->cors : true;
+
+        $this->tokens->store($token);
+
+        logger()->info("[CORS] $tokenId toggle");
+
+        return new JsonResponse(['enabled' => $token->cors]);
+    }
 }

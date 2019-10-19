@@ -64,7 +64,7 @@ class RequestController extends Controller
             ? $httpRequest->segment(2)
             : $token->default_status;
 
-        return new Response(
+        $response = new Response(
             $token->default_content,
             $responseStatus,
             [
@@ -73,6 +73,12 @@ class RequestController extends Controller
                 'X-Token-Id' => $token->uuid,
             ]
         );
+
+        if ($token->cors) {
+            $response->withHeaders($this::corsHeaders());
+        }
+
+        return $response;
     }
 
     /**

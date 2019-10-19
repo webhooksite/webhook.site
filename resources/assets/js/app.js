@@ -371,6 +371,25 @@ angular
                 });
         });
 
+        $scope.toggleCors = (function (token) {
+            $http.put('token/' + token.uuid + '/cors/toggle')
+                .then(function (response) {
+                    if (response.status === 200) {
+                        $scope.token.actions = response.data.enabled;
+                        $scope.token.actions
+                            ? $.notify('CORS enabled.')
+                            : $.notify('CORS disabled.');
+
+                    } else {
+                        $.notify('Could not toggle CORS: ' + response.data.error.message);
+                    }
+                }).catch(function (response) {
+                    $.notify('Could not toggle CORS: ' + response.data.error.message);
+                });
+        });
+
+        // Pagination
+
         $scope.getPreviousPage = (function (token) {
             $http({
                 url: '/token/' + token + '/requests',
@@ -506,6 +525,10 @@ angular
         };
 
         $scope.formatContent = function (content) {
+            if (!content) {
+                return '';
+            }
+            
             let hloutput = hljs.highlightAuto(content);
 
             if (hloutput.language === "json") {

@@ -14,6 +14,7 @@ require("laravel-elixir-webpack");
 
 elixir(function(mix) {
     mix.copy('node_modules/bootstrap-sass/assets/fonts/bootstrap', 'public/fonts/bootstrap');
+    mix.copy('node_modules/socket.io-client/dist/socket.io.js*', 'public/js');
     mix.sass('app.scss');
     mix.browserify(['libs.js'], 'public/js/libs.js');
     mix.browserify(['echo.js', 'app.js']);

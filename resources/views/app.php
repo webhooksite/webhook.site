@@ -13,6 +13,7 @@
     </script>
 
     <link href="css/app.css" rel="stylesheet">
+    <script src="js/socket.io.js"></script>
     <script src="js/libs.js"></script>
     <script src="js/bundle.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -192,6 +193,15 @@
                                        class="btn btn-xs" ng-class="redirectUrl ? '' : 'disabled'"
                                        ga-on="click" ga-event-category="AutoRedirect" ga-event-action="redir-now">Redirect
                                         Now</a>&emsp;&emsp;
+
+                                    <!-- CORS -->
+                                    <label class="small" title="Enable automatic CORS headers">
+                                        <input type="checkbox" ng-model="token.cors"
+                                               ga-on="click" ga-event-category="CustomActions" ga-event-action="toggleEnable"
+                                               ng-change="toggleCors(token)"
+                                        />
+                                        Enable CORS <sup class="muted">BETA</sup> &emsp;
+                                    </label>
 
                                     <!-- Auto-JSON -->
                                     <label class="small"
