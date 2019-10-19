@@ -228,12 +228,25 @@
                                         <th colspan="2">
                                             Request Details
                                             <span class="pull-right">
-                                                <a class="small"
+                                                <a class="btn btn-link btn-xxs"
                                                    href="{{ protocol }}//{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}/{{ currentPage }}">
-                                                    permalink</a> &ensp;
-                                                <a class="small" target="_blank"
+                                                    Permalink</a>
+                                                <a class="btn btn-link btn-xxs" target="_blank"
                                                    href="{{ protocol }}//{{ domain }}/token/{{ token.uuid }}/request/{{ currentRequest.uuid }}/raw">
-                                                raw</a>
+                                                    Raw content</a>
+                                                <div class="btn-group btn-group-xxs form-inline dropdown">
+                                                    <button type="button" class="btn btn-link"
+                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                            ng-click="getBaseVariables(currentRequest)">
+                                                        Copy As <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu scrollable-menu">
+                                                        <li ng-repeat="type in convertTypes">
+                                                            <a ng-click="copyRequestAs(currentRequest, type)">
+                                                                {{ type }}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </span>
                                         </th>
                                     </tr>

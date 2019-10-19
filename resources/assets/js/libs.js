@@ -5,6 +5,7 @@ require('angular');
 require('angular-ui-router');
 window.Clipboard = require('clipboard');
 window.JSONbig = require('json-bigint');
+window.copyToClipboard = require('copy-to-clipboard');
 
 window.hljs = require('highlight.js/lib/highlight');
 var javascript = require('highlight.js/lib/languages/javascript');

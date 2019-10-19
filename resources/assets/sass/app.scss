@@ -37,6 +37,37 @@ body {
   font-weight: bold;
 }
 
+.muted {
+  opacity: 0.5;
+}
+
+.monospace {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+abbr[title] {
+  text-decoration: none;
+  border-bottom: 1px dotted #CCC;
+}
+
+.debug {
+  background-color: hotpink;
+  border: 1px solid limegreen;
+}
+
+.required {
+  color: #bc1233;
+}
+
+// Buttons
+
+.btn-xxs, .btn-group-xxs > .btn {
+  padding: 1px 4px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1.3;
+  border-radius: 3px; }
+
 /*
  * Top navigation
  * Hide default border to remove 1px line.
