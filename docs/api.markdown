@@ -106,7 +106,7 @@ A token is a container for requests. You can create as many as you want. They ex
 
 *Response*
 
-`200 No Content`
+`204 No Content`
 
 ## 2 Requests
 
