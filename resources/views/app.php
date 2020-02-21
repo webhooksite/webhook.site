@@ -33,23 +33,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/" ui-sref="home()">&#x2693;&#xFE0F; Webhook Tester</a>
+                <a class="navbar-brand" href="/" ui-sref="home()">
+                  <img class="m-2" src="/assets/logo_green-d384da187aa86dde276fc56a64ca6104acda4a70c6e7fad208e1add55bdce43a.svg" width="40" height="40">
+                </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <div class="nav navbar-left navbar-form">
-                    <a href="https://github.com/fredsted/webhook.site" target="_blank"
-                       style="margin-top: 7px"
-                       class="btn btn-xs btn-link">
-                        Github Page</a>
-                    <a href="https://github.com/fredsted/webhook.site#donate" target="_blank"
-                       style="margin-top: 7px"
-                       class="btn btn-xs btn-link">
-                        Donate</a>
-                    <a href="https://twitter.com/fredsted" target="_blank"
-                       style="margin-top: 7px"
-                       class="btn btn-xs btn-link">
-                        @fredsted</a>
-                </div>
                 <div class="nav navbar-right navbar-form hidden-sm">&nbsp;
                     <button type="button" class="btn btn-link openModal" data-modal="#editUrlModal"
                             ga-on="click" ga-event-category="Request" ga-event-action="click-newurl">
@@ -58,7 +46,7 @@
                     <div class="form-group">
                         <input id="tokenUrl" type="text" class="form-control click-select"
                                style="width: 200px;"
-                               value="{{ protocol }}//{{ domain }}/{{ token.uuid }}">
+                               value="<?=config('app.url')?>/{{ token.uuid }}">
                     </div>
                     <button class="btn btn-success copyTokenUrl" data-clipboard-target="#tokenUrl"
                             ga-on="click" ga-event-category="URLCopy" ga-event-action="copy-nav">
@@ -135,12 +123,12 @@
                     <hr>
                     <p>Here's your unique URL that was created just now:</p>
                     <p>
-                        <code>{{ protocol }}//{{ domain }}/{{ token.uuid }}</code>
+                        <code><?=config('app.url')?>/{{ token.uuid }}</code>
                         <a class="btn btn-xs btn-link copyTokenUrl" data-clipboard-target="#tokenUrl"
                            ga-on="click" ga-event-category="URLCopy" ga-event-action="copy-welcome">
                             <span class="glyphicon glyphicon-copy"></span> Copy to clipboard</a>
                         <a class="btn btn-xs btn-link"
-                           href="{{ protocol }}//{{ domain }}/{{ token.uuid }}"
+                           href="<?=config('app.url')?>/{{ token.uuid }}"
                            target="_blank">
                             <span class="glyphicon glyphicon-new-window"></span> Open in new tab</a>
                     </p>
@@ -229,10 +217,10 @@
                                             Request Details
                                             <span class="pull-right">
                                                 <a class="btn btn-link btn-xxs"
-                                                   href="{{ protocol }}//{{ domain }}/#/{{ token.uuid }}/{{ currentRequestIndex }}/{{ currentPage }}">
+                                                   href="<?=config('app.url')?>/#/{{ token.uuid }}/{{ currentRequestIndex }}/{{ currentPage }}">
                                                     Permalink</a>
                                                 <a class="btn btn-link btn-xxs" target="_blank"
-                                                   href="{{ protocol }}//{{ domain }}/token/{{ token.uuid }}/request/{{ currentRequest.uuid }}/raw">
+                                                   href="<?=config('app.url')?>/token/{{ token.uuid }}/request/{{ currentRequest.uuid }}/raw">
                                                     Raw content</a>
                                                 <div class="btn-group btn-group-xxs form-inline dropdown">
                                                     <button type="button" class="btn btn-link"

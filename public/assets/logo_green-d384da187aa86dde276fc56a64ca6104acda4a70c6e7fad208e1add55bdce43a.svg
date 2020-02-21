@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="398px" height="398px" viewBox="0 0 398 398" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Logo</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Overview" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Logo" transform="translate(-51.000000, -51.000000)">
+            <g transform="translate(51.000000, 51.000000)">
+                <g>
+                    <circle id="Oval-Copy-3" fill="#56DB8D" cx="199" cy="199" r="199"></circle>
+                    <path d="M199,163.604861 L154.686028,101.488611 C150.369441,95.4379191 143.394969,91.8461538 135.962352,91.8461538 L68.8846154,91.8461538 L146.207282,199 L68.8846154,306.153846 L134.376619,306.153846 C141.801398,306.153846 148.769518,302.569608 153.087388,296.529463 L199,232.303618 L174.47005,197.989115 L199,163.604861 Z" id="Fill-1" fill="#FFFFFF"></path>
+                    <path d="M329.115385,91.8461538 L262.037648,91.8461538 C254.605031,91.8461538 247.630559,95.4379191 243.313972,101.488611 L199,163.604861 L223.52995,197.989115 L199,232.303618 L244.912612,296.529463 C249.230482,302.569608 256.198602,306.153846 263.623381,306.153846 L329.115385,306.153846 L251.792718,199 L329.115385,91.8461538 Z" id="Fill-2" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

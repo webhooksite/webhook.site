@@ -5,9 +5,30 @@
  * Variables
  */
 
-$sideBarBackground: #f5f5f5;
+$sideBarBackground: #f8f9fa;
 $sideBarActive: #428bca;
 $warning: #d9534f;
+
+/*
+ * START Xapix overrides
+ */
+
+body, .navbar, .sidebar { background-color: #f8f9fa!important; }
+.sidebar { border-right: none!important; }
+div#request > div {
+  background-color: white!important;
+  padding: 30px!important;
+  border-radius: 15px!important;
+  border: 1px solid #dae0e5;
+  overflow: hidden;
+}
+.nav-sidebar > li > a.select {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+/*
+ * END Xapix overrides
+ */
 
 /*
  * Base structure

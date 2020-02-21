@@ -1,7 +1,7 @@
 version: '3'
 services:
   webhook:
-    image: "fredsted/webhook.site"
+    image: "xapixio/webhook.site:develop"
     # Enable build for development:
     # build:
     #   dockerfile: Dockerfile
