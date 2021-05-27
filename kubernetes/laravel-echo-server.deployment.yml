@@ -1,5 +1,4 @@
-
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: laravel-echo-server
@@ -10,6 +9,9 @@ spec:
   replicas: 1
   revisionHistoryLimit: 10
   strategy: {}
+  selector:
+    matchLabels:
+        app: laravel-echo-server
   template:
     metadata:
         labels:
