@@ -35,7 +35,7 @@ spec:
             value: '*'
           - name: ECHO_PROTOCOL
             value: http
-          - name: ECHO_REDIS_HOST
+          - name: ECHO_REDIS_HOSTNAME
             value: redis
           - name: ECHO_REDIS_PORT
             value: "6379"
