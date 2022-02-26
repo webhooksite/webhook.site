@@ -1,0 +1,262 @@
+<?php
+
+$data = json_decode(file_get_contents('php://input'), true); 
+
+$number   = $data["from"];
+$message  = $data["message"];
+
+@$wa_no = $number;
+@$wa_text0 = $message;
+@$wa_text = strtoupper($message);
+if ($wa_no . $wa_text == '') { exit ; } 
+ 
+switch($wa_text) {
+	
+case 'MENU':
+$msg = 'Pilih menu dibawah ini';
+$button = 'PENARIKAN,MEMBER AKTIF,CS INVESTASI,STATUS MEMBER';
+sendMessageButton($wa_no, $msg, $button);
+break;
+
+case 'PRODUK':
+$msg = 'Pilih Kategori';
+$button = 'IPHONE,IPAD,MACBOOK';
+sendMessageButton($wa_no, $msg, $button);
+break;
+
+case 'IPHONE':
+$msg = 'Pilih iPhone';
+$button = 'IPHONE 12 PRO,IPHONE 12,IPHONE SE';
+sendMessageButton($wa_no, $msg, $button);
+break;
+
+case 'IPAD':
+$msg = 'Pilih iPad';
+$button = 'IPAD PRO 5,IPAD PRO 4,IPAD PRO 3';
+sendMessageButton($wa_no, $msg, $button);
+break;
+
+case 'MACBOOK':
+$msg = 'Pilih Macbook';
+$button = 'MACBOOK PRO M1,MACBOOK AIR M1,MACBOOK PRO';
+sendMessageButton($wa_no, $msg, $button);
+break;
+
+case 'HADITS':
+$msg = 'Pilih Perawi';
+$button = 'BUKHARI,MUSLIM,TIRMIDZI';
+sendMessageButton($wa_no, $msg, $button);
+break;
+
+case 'BUKHARI':
+    $acak = rand(1,6638);
+    $file = file_get_contents("https://api.hadith.sutanlab.id/books/bukhari/".$acak);
+    $json = json_decode($file, true);
+    $hadits = $json['data']['contents']['id'];
+    $nomor = $json['data']['contents']['number'];
+    $dari = $json['data']['available'];
+    $riwayat = $json['data']['name'];
+    $msg = 'Hadits nomor '.$nomor.' dari '.$dari.' 
+    
+'.$hadits.'
+
+'.$riwayat.'';
+sendMessage($wa_no, $msg);
+break;	
+
+case 'MUSLIM':
+    $acak = rand(1,4930);
+    $file = file_get_contents("https://api.hadith.sutanlab.id/books/muslim/".$acak);
+    $json = json_decode($file, true);
+    $hadits = $json['data']['contents']['id'];
+    $nomor = $json['data']['contents']['number'];
+    $dari = $json['data']['available'];
+    $riwayat = $json['data']['name'];
+    $msg = 'Hadits nomor '.$nomor.' dari '.$dari.' 
+    
+'.$hadits.'
+
+'.$riwayat.'';
+sendMessage($wa_no, $msg);
+break;	
+
+case 'TIRMIDZI':
+    $acak = rand(1,3625);
+    $file = file_get_contents("https://api.hadith.sutanlab.id/books/tirmidzi/".$acak);
+    $json = json_decode($file, true);
+     $hadits = $json['data']['contents']['id'];
+    $nomor = $json['data']['contents']['number'];
+    $dari = $json['data']['available'];
+    $riwayat = $json['data']['name'];
+    $msg = 'Hadits nomor '.$nomor.' dari '.$dari.' 
+    
+'.$hadits.'
+
+'.$riwayat.'';
+sendMessage($wa_no, $msg);
+break;	
+
+case 'ID':
+sendMessage($wa_no, "Your ID = $wa_no");
+break;
+
+case 'MACBOOK PRO M1':
+    $msg = 'MACBOOK PRO M1 Harga Rp. 20.999.000';
+    $file = "https://cdn.eraspace.com/pub/media/catalog/product/m/a/macbook_pro_m1_space_gray_1_2.jpg";
+sendMessageImage($wa_no, $msg, $file);
+break;
+
+
+case 'SHOLAT':
+  $kode = 65 ;
+    $content = file_get_contents("http://jadwalsholat.pkpu.or.id/monthly.php?id=". $kode);
+    $pecah = explode( '<tr class="table_highlight" align="center">' ,$content) ;
+    $pecah2 = explode( '</tr>' ,$pecah[1] ) ;
+    
+    $fix = $pecah2[0] ;
+    $fix =  str_replace('</td>' , '', $fix ) ; 
+    $fix =  str_replace('</b>' , '', $fix ) ; 
+    $pecah3 = explode( '<td>' , $fix ) ;
+    
+    //--------------------------------------------------
+    @$pecah4 = explode( '<td colspan="7" align="center">' ,$content) ;
+    @$pecah5 = explode( '</small>' , $pecah4[1]) ;
+    @$fix2 = $pecah5[0];
+    $fix2 =  str_replace('<b>' , '', $fix2 ) ; 
+    $fix2 =  str_replace('</b>' , '', $fix2 ) ; 
+    $fix2 =  str_replace('<br>' , '', $fix2 ) ;  
+    $fix2 =  str_replace('<small>' , '', $fix2 ) ;  
+     
+    //-------------------------------------------------- 
+$hasil = "*JADWAL SHOLAT DEMAK* 
+Tanggal $pecah3[1] ". trim($fix2) . "
+- Subuh : $pecah3[2]
+- Dzuhur : $pecah3[3]
+- Ashar : $pecah3[4]
+- Maghrib : $pecah3[5]
+- Isya : $pecah3[6]
+" ;
+    
+    $hasil =  str_replace('<b>' , '', $hasil ) ;    
+    $hasil =  str_replace('(' , '<br>(', $hasil ) ;    
+    $msg = $hasil ;
+    $msg = str_replace('<br>', '%0A', $msg );
+//echo 	$msg ;
+	sendMessage($wa_no, $msg);
+    break; 
+	
+
+case 'QURAN':
+ 
+ $surat = rand(1,114);
+ 
+ $file1 = file_get_contents("https://api.quran.sutanlab.id/surah/".$surat);
+ $getsurat = json_decode($file1, true);
+ 
+ $nosurat = $getsurat['data']['numberOfVerses'];
+ $namasurat = $getsurat['data']['name']['transliteration']['id'];
+ 
+ $ayat = rand(1,$nosurat);
+ 
+ $file = file_get_contents("https://api.quran.sutanlab.id/surah/".$surat."/". $ayat);
+ $json = json_decode($file, true);
+
+$a = $json['data']['text']['arab'];
+$i = $json['data']['translation']['id'];
+
+    $msg = 'Surat '.$namasurat.' ayat '.$ayat.' 
+    
+'.$a.'
+
+'.$i.'';
+
+   sendMessage($wa_no, $msg );
+   break;
+	
+}
+ 
+ 
+
+
+function sendMessageButton($wa_no, $wa_text, $button) {
+	$url = 'https://app.whacenter.com/api/sendButton';
+
+$ch = curl_init($url);
+
+$data = array(
+    'device_id' => 'xxx',
+    'number' => $wa_no,
+    'message' => $wa_text,
+    'button' => $button,
+   
+);
+$payload = $data;
+curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$result = curl_exec($ch);
+curl_close($ch);
+//echo $result;
+}
+
+function sendMessage($wa_no, $wa_text) {
+
+$url = 'https://app.whacenter.com/api/send';
+
+$ch = curl_init($url);
+
+$nohp= $wa_no;
+$pesan= $wa_text;
+
+$data = array(
+    'device_id' => 'xxx',
+    'number' => $nohp,
+    'message' => $pesan,
+    //'file' => 'https://urlgamba-file',
+   
+);
+$payload = $data;
+curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$result = curl_exec($ch);
+curl_close($ch);
+//echo $result;
+}
+
+function sendMessageImage($wa_no, $wa_text, $file) {
+
+$url = 'https://app.whacenter.com/api/send';
+
+$ch = curl_init($url);
+
+$nohp= $wa_no;
+$pesan= $wa_text;
+
+$data = array(
+    'device_id' => 'xxx',
+    'number' => $nohp,
+    'message' => $pesan,
+    'file' => $file,
+   
+);
+$payload = $data;
+curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$result = curl_exec($ch);
+curl_close($ch);
+//echo $result;
+}
+ 
+?>
+
+
+<!-- Start of ChatBot (www.chatbot.com) code -->
+<script type="text/javascript">
+    window.__be = window.__be || {};
+    window.__be.id = "6214e496bd978b0007a93185";
+    (function() {
+        var be = document.createElement('script'); be.type = 'text/javascript'; be.async = true;
+        be.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.chatbot.com/widget/plugin.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(be, s);
+    })();
+</script>
+<!-- End of ChatBot code -->
