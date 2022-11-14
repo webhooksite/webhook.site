@@ -20,6 +20,8 @@ services:
       - CACHE_DRIVER=redis
       - QUEUE_DRIVER=redis
       - ECHO_HOST_MODE=path
+    depends_on:
+      - redis
 
   redis:
     image: "redis:alpine"
