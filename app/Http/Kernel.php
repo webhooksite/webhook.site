@@ -35,11 +35,9 @@ class Kernel extends HttpKernel
             StartSession::class,
             ShareErrorsFromSession::class,
             Middleware\VerifyCsrfToken::class,
-            'throttle:30,1',
         ],
 
         'api' => [
-            'throttle:30,1',
         ],
     ];
 
