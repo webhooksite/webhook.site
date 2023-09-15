@@ -18,7 +18,7 @@ spec:
           app: laravel-echo-server
     spec:
       containers:
-      - image: mintopia/laravel-echo-server
+      - image: webhooksite/laravel-echo-server
         name: laravel-echo-server
         ports:
         - protocol: TCP
