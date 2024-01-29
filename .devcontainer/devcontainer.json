@@ -1,0 +1,55 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+  }
+}"ghcr.io/elanhasson/devcontainer-features/dotnet-aspire-daily:1": {} "ghcr.io/elanhasson/devcontainer-features/dotnet-aspire-daily:1": {}whcli exec \
+  --token=1e25c1cb-e4d4-4399-a267-cd2cf1a6c864 \
+  --api-key=ef6ef2f8-3e48-4f77-a54c-3891dc11c05c \ 
+  --command='ping $request.ip$'
+NODE_TLS_REJECT_UNAUTHORIZED="0"
+whcli forward \
+  --token=1e25c1cb-e4d4-4399-a267-cd2cf1a6c864 \
+  --api-key=ef6ef2f8-3e48-4f77-a54c-3891dc11c05c \ 
+  --target=https://example.com
+    --token         WH_TOKEN
+    --api-key       WH_API_KEY
+    --target        WH_TARGET
+    --command       WH_COMMAND
+'Hello World'.echo()
+
+echo('Hello World')
+They can even be chained, for example:
+
+
+'Hello World'.hash('md5').echo() 
+Furthermore, functions that begin in a type can be referenced without it, for example, when calling the format function with the first argument being a string, the language infers that actually the string_format function should be used.
+
+
+echo(string_format('hello %s', 'world')) // hello world
+
+'hello %s'.format('world').echo() // hello world
+Read more about functions in the reference.
+
+Custom functions¶
+Define your own functions like this:
+
+
+function sub(a, b) {
+    return a - b;
+}
+Read more about functions in the reference.
+
+Debugging and output¶
+echo(...string string)¶
+Adds string to script debug output.
+
+dd(...any value)¶
+Stops Custom Action execution and adds value to script debug output.
+
+dump(...any value)¶
+Adds value as a decoded string to script debug output.
+
+Types¶
+type(any value) : string¶
+Returns the type name of a value, e.g. "string".'Hello World'.echo()
+round(1.39, 1) // -> 1.4
