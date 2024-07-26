@@ -19,8 +19,11 @@ services:
       - CACHE_DRIVER=redis
       - QUEUE_DRIVER=redis
       - ECHO_HOST_MODE=path
+      - LARAVEL_ECHO_SERVER_HOST=http://laravel-echo-server:6001
     depends_on:
       - redis
+    volumes:
+      - ./nginx-template-variables:/etc/nginx/templates/10-variables.conf.template:ro
 
   redis:
     image: "redis:alpine"
