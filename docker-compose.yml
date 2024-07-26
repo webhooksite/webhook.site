@@ -23,8 +23,6 @@ services:
       - LARAVEL_ECHO_SERVER_HOST=http://laravel-echo-server:6001
     depends_on:
       - redis
-    volumes:
-      - ./nginx-template-variables:/etc/nginx/templates/10-variables.conf.template:ro
 
   redis:
     container_name: "webhook-redis"
