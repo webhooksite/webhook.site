@@ -1,0 +1,3 @@
+map $host $laravel_echo_server_host {
+  default "$LARAVEL_ECHO_SERVER_HOST";
+}
