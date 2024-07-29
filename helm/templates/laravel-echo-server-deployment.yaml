@@ -41,4 +41,4 @@ spec:
           ports:
             - protocol: TCP
               containerPort: 6001
-      # restartPolicy: Always
+      restartPolicy: Always
