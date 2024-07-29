@@ -9,7 +9,7 @@ spec:
     port: 8084
     targetPort: 80
   selector:
-    app: webhook
+    app: webhook-site
 ---
 apiVersion: v1
 kind: Service

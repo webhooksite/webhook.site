@@ -46,6 +46,6 @@ spec:
               value: redis:6379
           image: webhooksite/webhook.site
           ports:
-            - containerPort: 8084
+            - containerPort: 80
               protocol: TCP
       restartPolicy: Always
