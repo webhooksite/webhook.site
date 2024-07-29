@@ -1,1 +1,1 @@
-This chart was created by Kompose
+This chart was created by Edrich
