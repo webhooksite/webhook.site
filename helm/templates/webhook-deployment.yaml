@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: webhook-site
+  name: webhook-site
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhook-site
+  template:
+    metadata:
+      labels:
+        app: webhook-site
+    spec:
+      containers:
+        - name: webhook-site
+          args:
+            - php
+            - artisan
+            - queue:work
+            - --daemon
+            - --tries=3
+            - --timeout=10
+          env:
+            - name: APP_DEBUG
+              value: "true"
+            - name: APP_ENV
+              value: dev
+            - name: APP_LOG
+              value: errorlog
+            - name: APP_URL
+              value: http://127.0.0.1:8084
+            - name: BROADCAST_DRIVER
+              value: redis
+            - name: CACHE_DRIVER
+              value: redis
+            - name: DB_CONNECTION
+              value: sqlite
+            - name: ECHO_HOST_MODE
+              value: path
+            - name: QUEUE_DRIVER
+              value: redis
+            - name: REDIS_HOST
+              value: redis:6379
+          image: webhooksite/webhook.site
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always

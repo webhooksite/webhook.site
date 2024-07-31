@@ -1,0 +1,8 @@
+name: webhook-site
+description: A generated Helm Chart for webhook.site
+version: 0.0.1
+apiVersion: v2
+keywords:
+  - webhook-site
+sources:
+home:
