@@ -1,5 +1,6 @@
 services:
   webhook:
+    container_name: "webhook-site"
     image: "webhooksite/webhook.site"
     # Enable build for development:
     # build:
@@ -23,9 +24,11 @@ services:
       - redis
 
   redis:
+    container_name: "webhook-redis"
     image: "redis:alpine"
 
   laravel-echo-server:
+    container_name: "laravel-echo-server"
     image: "webhooksite/laravel-echo-server"
     environment:
       - LARAVEL_ECHO_SERVER_AUTH_HOST=http://webhook
