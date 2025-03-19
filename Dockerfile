@@ -21,7 +21,7 @@ FROM bkuhl/fpm-nginx:7.3
 WORKDIR /var/www/html
 
 # Contains laravel echo server proxy configuration
-COPY /nginx.conf.template /etc/nginx
+COPY /nginx.conf /etc/nginx/conf.d
 
 USER www-data
 
@@ -48,8 +48,5 @@ RUN composer dump-autoload --optimize --no-dev \
 ADD --chown=www-data:www-data /resources /var/www/html/resources
 COPY --chown=www-data:www-data --from=npm /app/public/css /var/www/html/public/css
 COPY --chown=www-data:www-data --from=npm /app/public/js /var/www/html/public/js
-
-COPY docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
 
 USER root
