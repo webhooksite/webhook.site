@@ -17,9 +17,10 @@ interface RequestStore
      * @param Token $token
      * @param int $page
      * @param int $perPage
+     * @param string $sorting
      * @return Collection
      */
-    public function all(Token $token, $page = 1, $perPage = 50);
+    public function all(Token $token, $page = 1, $perPage = 50, $sorting = "oldest");
 
     /**
      * @param Token $token
