@@ -78,6 +78,7 @@ class RequestControllerTest extends TestCase
             $this->call('GET', $tokenId);
         }
 
+        // Test newest
         $requests = $this->json('GET', "token/$tokenId/requests?sorting=newest");
 
         $requests->assertJson([
@@ -90,12 +91,27 @@ class RequestControllerTest extends TestCase
         ]);
 
         $data = $requests->json()['data'];
-
-        // assert that the first request is the newest
         $timestamps = array_column($data, 'created_at');
-        $sortedTimestamps = $timestamps;
-        rsort($sortedTimestamps);
+        $sortedDescTimestamps = $timestamps;
+        rsort($sortedDescTimestamps);
+        $this->assertSame($sortedDescTimestamps, $timestamps, "The 'created_at' field is not sorted in descending order.");
 
-        $this->assertSame($sortedTimestamps, $timestamps, "The 'created_at' field is not sorted in descending order.");
+        // Test oldest
+        $requests = $this->json('GET', "token/$tokenId/requests?sorting=oldest");
+
+        $requests->assertJson([
+            'total' => $number,
+            'per_page' => 50,
+            'current_page' => 1,
+            'is_last_page' => false,
+            'from' => 1,
+            'to' => 50,
+        ]);
+
+        $data = $requests->json()['data'];
+        $timestamps = array_column($data, 'created_at');
+        $sortedAscTimestamps = $timestamps;
+        sort($sortedAscTimestamps);
+        $this->assertSame($sortedAscTimestamps, $timestamps,'The "created_at" field is not sorted in ascending order.');
     }
 }
