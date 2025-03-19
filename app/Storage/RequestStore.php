@@ -20,7 +20,7 @@ interface RequestStore
      * @param string $sorting
      * @return Collection
      */
-    public function all(Token $token, $page = 1, $perPage = 50, $sorting = "oldest");
+    public function all(Token $token, $page = 1, $perPage = 50, $sorting = 'oldest');
 
     /**
      * @param Token $token

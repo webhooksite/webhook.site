@@ -50,7 +50,7 @@ class RequestStore implements \App\Storage\RequestStore
      * @param string $sort
      * @return Collection|static
      */
-    public function all(Token $token, $page = 1, $perPage = 50, $sorting = "oldest")
+    public function all(Token $token, $page = 1, $perPage = 50, $sorting = 'oldest')
     {
         $requests = collect(
             $this->redis->hgetall(Request::getIdentifier($token->uuid))
@@ -62,7 +62,7 @@ class RequestStore implements \App\Storage\RequestStore
             }
         );
         
-        if ($sorting === "newest") {
+        if ($sorting === 'newest') {
             $requests = $requests->sortByDesc(
                 function ($request) {
                     return Carbon::createFromFormat(
