@@ -65,4 +65,37 @@ class RequestControllerTest extends TestCase
             'to' => 175,
         ]);
     }
+
+    public function testSorting() {
+        // Prevent throttling
+        $this->withoutMiddleware();
+
+        $number = 175;
+
+        $tokenId = $this->json('POST', 'token')->json()['uuid'];
+
+        for ($i = 0; $i < $number; $i++) {
+            $this->call('GET', $tokenId);
+        }
+
+        $requests = $this->json('GET', "token/$tokenId/requests?sorting=newest");
+
+        $requests->assertJson([
+            'total' => $number,
+            'per_page' => 50,
+            'current_page' => 1,
+            'is_last_page' => false,
+            'from' => 1,
+            'to' => 50,
+        ]);
+
+        $data = $requests->json()['data'];
+
+        // assert that the first request is the newest
+        $timestamps = array_column($data, 'created_at');
+        $sortedTimestamps = $timestamps;
+        rsort($sortedTimestamps);
+
+        $this->assertSame($sortedTimestamps, $timestamps, "The 'created_at' field is not sorted in descending order.");
+    }
 }
