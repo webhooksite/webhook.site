@@ -62,27 +62,15 @@ class RequestStore implements \App\Storage\RequestStore
             }
         );
         
-        if ($sorting === 'newest') {
-            $requests = $requests->sortByDesc(
-                function ($request) {
-                    return Carbon::createFromFormat(
-                        'Y-m-d H:i:s',
-                        $request->created_at
-                    )->getTimestamp();
-                },
-                SORT_DESC
-            );
-        } else {
-            $requests = $requests->sortBy(
-                function ($request) {
-                    return Carbon::createFromFormat(
-                        'Y-m-d H:i:s',
-                        $request->created_at
-                    )->getTimestamp();
-                },
-                SORT_DESC
-            );
-        }
+        $requests = $requests->sortBy(
+            function ($request) {
+                return Carbon::createFromFormat(
+                    'Y-m-d H:i:s',
+                    $request->created_at
+                )->getTimestamp();
+            },
+            $sorting === 'newest' ? SORT_DESC : SORT_ASC
+        );
         
         return $requests->forPage(
             $page,
