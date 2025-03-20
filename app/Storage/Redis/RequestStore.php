@@ -69,7 +69,8 @@ class RequestStore implements \App\Storage\RequestStore
                     $request->created_at
                 )->getTimestamp();
             },
-            $sorting === 'newest' ? SORT_DESC : SORT_ASC
+            SORT_REGULAR,
+            $sorting === 'newest'
         );
         
         return $requests->forPage(
