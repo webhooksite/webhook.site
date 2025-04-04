@@ -100,9 +100,10 @@ class RequestController extends Controller
     public function all(HttpRequest $httpRequest, $tokenId)
     {
         $token = $this->tokens->find($tokenId);
+        $sorting = $httpRequest->get('sorting', 'oldest');
         $page = (int)$httpRequest->get('page', 1);
         $perPage = (int)$httpRequest->get('per_page', 50);
-        $requests = $this->requests->all($token, $page, $perPage);
+        $requests = $this->requests->all($token, $page, $perPage, $sorting);
         $total = $this->tokens->countRequests($token);
 
         return new JsonResponse([

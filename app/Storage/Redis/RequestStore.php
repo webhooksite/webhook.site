@@ -47,11 +47,12 @@ class RequestStore implements \App\Storage\RequestStore
      * @param Token $token
      * @param int $page
      * @param int $perPage
+     * @param string $sort
      * @return Collection|static
      */
-    public function all(Token $token, $page = 1, $perPage = 50)
+    public function all(Token $token, $page = 1, $perPage = 50, $sorting = 'oldest')
     {
-        return collect(
+        $requests = collect(
             $this->redis->hgetall(Request::getIdentifier($token->uuid))
         )
         ->filter()
@@ -59,15 +60,20 @@ class RequestStore implements \App\Storage\RequestStore
             function ($request) {
                 return json_decode($request);
             }
-        )->sortBy(
+        );
+        
+        $requests = $requests->sortBy(
             function ($request) {
                 return Carbon::createFromFormat(
                     'Y-m-d H:i:s',
                     $request->created_at
                 )->getTimestamp();
             },
-            SORT_DESC
-        )->forPage(
+            SORT_REGULAR,
+            $sorting === 'newest'
+        );
+        
+        return $requests->forPage(
             $page,
             $perPage
         )->values();
