@@ -30,6 +30,10 @@ services:
   laravel-echo-server:
     container_name: "laravel-echo-server"
     image: "webhooksite/laravel-echo-server"
+    command:
+      - laravel-echo-server
+      - start
+      - --force
     environment:
       - LARAVEL_ECHO_SERVER_AUTH_HOST=http://webhook
       - LARAVEL_ECHO_SERVER_HOST=0.0.0.0
