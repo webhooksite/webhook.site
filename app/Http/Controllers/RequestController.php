@@ -172,4 +172,31 @@ class RequestController extends Controller
             'status' => (bool)$this->requests->deleteByToken($token)
         ]);
     }
+
+    /**
+     * Get the latest request associated with a token.
+     *
+     * @param HttpRequest $httpRequest
+     * @param string $tokenId
+     * @return JsonResponse
+     *
+     * @throws NotFoundHttpException
+     */
+    public function latest(HttpRequest $httpRequest, string $tokenId): JsonResponse
+    {
+        $token = $this->tokens->find($tokenId);
+
+        $requests = $this->requests->all(
+            $token,
+            1,
+            1,
+            'newest'
+        );
+
+        if (empty($requests)) {
+            throw new NotFoundHttpException('Request not found');
+        }
+
+        return new JsonResponse($requests[0]);
+    }
 }
