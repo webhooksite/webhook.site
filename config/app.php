@@ -8,12 +8,14 @@ return [
     |--------------------------------------------------------------------------
     */
     
-    // How many requests each URL will log before returning a 410 Gone, and the user
-    // will have to create a new URL.
+    // Max requests per URL, set to for unlimited
     'max_requests' => env('WEBHOOK_MAX_REQUESTS', 500),
 
-    // Requests and tokens will expire in 7 days (default)
+    // Expiry interval for URLs, default 7 days
     'expiry' => env('WEBHOOK_EXPIRY', 604800),
+
+    // Google analytics ID for frontend
+    'google_analytics_id' => env('WEBHOOK_GAID', 'UA-5230636-9'),
 
     /*
     |--------------------------------------------------------------------------
@@ -139,26 +141,26 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        Illuminate\Auth\AuthServiceProvider::class,
+        // Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
         Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
-        Illuminate\Cookie\CookieServiceProvider::class,
-        Illuminate\Database\DatabaseServiceProvider::class,
-        Illuminate\Encryption\EncryptionServiceProvider::class,
-        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        // Illuminate\Cookie\CookieServiceProvider::class,
+        // Illuminate\Database\DatabaseServiceProvider::class,
+        // Illuminate\Encryption\EncryptionServiceProvider::class,
+        // Illuminate\Filesystem\FilesystemServiceProvider::class,
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
-        Illuminate\Hashing\HashServiceProvider::class,
-        Illuminate\Mail\MailServiceProvider::class,
-        Illuminate\Pagination\PaginationServiceProvider::class,
-        Illuminate\Pipeline\PipelineServiceProvider::class,
+        // Illuminate\Hashing\HashServiceProvider::class,
+        // Illuminate\Mail\MailServiceProvider::class,
+        // Illuminate\Pagination\PaginationServiceProvider::class,
+        // Illuminate\Pipeline\PipelineServiceProvider::class,
         Illuminate\Queue\QueueServiceProvider::class,
         Illuminate\Redis\RedisServiceProvider::class,
-        Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
-        Illuminate\Session\SessionServiceProvider::class,
-        Illuminate\Translation\TranslationServiceProvider::class,
-        Illuminate\Validation\ValidationServiceProvider::class,
+        // Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
+        // Illuminate\Session\SessionServiceProvider::class,
+        // Illuminate\Translation\TranslationServiceProvider::class,
+        // Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
         /*

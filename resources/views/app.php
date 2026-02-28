@@ -5,10 +5,11 @@
     
     <script>
         AppConfig = {
-            Broadcaster: "<?=config('broadcasting.default') == 'redis' ? 'socket.io' : 'pusher' ?>",
-            EchoHostMode: "<?=config('broadcasting.echo_host_mode')?>",
-            PusherToken: "<?=config('broadcasting.connections.pusher.key')?>",
-            MaxRequests: <?=config('app.max_requests')?>,
+            Broadcaster: '<?=config('broadcasting.default') == 'redis' ? 'socket.io' : 'pusher' ?>',
+            EchoHostMode: '<?=config('broadcasting.echo_host_mode')?>',
+            PusherToken: '<?=config('broadcasting.connections.pusher.key')?>',
+            MaxRequests: '<?=config('app.max_requests')?>',
+            GAID: '<?=config('app.google_analytics_id')?>',
         };
     </script>
 
@@ -575,13 +576,15 @@
     </div><!-- /.modal -->
 
     <script>
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', 'UA-5230636-9', 'auto');
-        ga('require', 'eventTracker');
-        ga('require', 'outboundLinkTracker');
-        ga('require', 'urlChangeTracker');
-        ga('require', 'pageVisibilityTracker');
-        ga('send', 'pageview');
+        if (AppConfig.GAID !== null) {
+            window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+            ga('create', AppConfig.GAID, 'auto');
+            ga('require', 'eventTracker');
+            ga('require', 'outboundLinkTracker');
+            ga('require', 'urlChangeTracker');
+            ga('require', 'pageVisibilityTracker');
+            ga('send', 'pageview');
+        }
     </script>
     <script async src="https://www.google-analytics.com/analytics.js"></script>
     <script async src="/assets/scripts/libs/autotrack.js"></script>
