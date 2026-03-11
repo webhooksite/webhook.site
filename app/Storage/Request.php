@@ -39,8 +39,8 @@ class Request extends Entity
             'query' => empty($httpRequest->query->all()) ? null : $httpRequest->query->all(),
             'headers' => $httpRequest->headers->all(),
             'url' => $httpRequest->fullUrl(),
-            'created_at' => Carbon::now()->toDateTimeString(),
-            'updated_at' => Carbon::now()->toDateTimeString(),
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s.v'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s.v'),
         ]);
 
         if (!$httpRequest->isJson()) {
