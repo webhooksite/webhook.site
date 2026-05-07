@@ -16,6 +16,7 @@ $router->group(['middleware' => ['api']], function () use ($router) {
     $router->any('{tokenId}/{any}', 'RequestController@create');
     $router->get('token/{tokenId}/requests', 'RequestController@all');
     $router->get('token/{tokenId}/request/{requestId}', 'RequestController@find');
+    $router->get('token/{tokenId}/request/latest', 'RequestController@latest');
     $router->get('token/{tokenId}/request/{requestId}/raw', 'RequestController@raw');
     $router->delete('token/{tokenId}/request/{requestId}', 'RequestController@delete');
     $router->delete('token/{tokenId}/request', 'RequestController@deleteByToken');
