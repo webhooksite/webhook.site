@@ -1,0 +1,8 @@
+site_name: 'TDB'
+
+plugins:
+  - techdocs-core
+
+nav:
+  - Home: index.md
+  - Security: security.md
