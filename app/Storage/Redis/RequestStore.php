@@ -65,7 +65,7 @@ class RequestStore implements \App\Storage\RequestStore
         $requests = $requests->sortBy(
             function ($request) {
                 return Carbon::createFromFormat(
-                    'Y-m-d H:i:s',
+                    'Y-m-d H:i:s.v',
                     $request->created_at
                 )->getTimestamp();
             },
