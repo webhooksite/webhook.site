@@ -11,7 +11,7 @@
         "pusher/pusher-php-server": "^2.6",
         "doctrine/dbal": "^2.5",
         "predis/predis": "^1.1",
-        "sentry/sentry": "^1.8",
+        "sentry/sentry": "^1.11",
         "sentry/sentry-laravel": "^0.8.0"
     },
     "require-dev": {

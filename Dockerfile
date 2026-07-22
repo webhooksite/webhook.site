@@ -17,7 +17,7 @@ RUN npm run gulp
 # Stage 2: Composer, nginx and fpm
 ##############################################
 
-FROM bkuhl/fpm-nginx:7.3
+FROM bkuhl/fpm-nginx:7.4
 WORKDIR /var/www/html
 
 # Contains laravel echo server proxy configuration
