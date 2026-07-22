@@ -2,7 +2,7 @@
 # Stage 1: Install node dependencies and run gulp
 ##############################################
 
-FROM node:11 as npm
+FROM node:11 AS npm
 WORKDIR /app
 
 COPY package.json /app
