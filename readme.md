@@ -14,7 +14,7 @@ With [Webhook.site](https://webhook.site), you instantly get a unique, random UR
 * Building contact forms that send emails
 * Instantly build APIs without needing infrastructure
 
-Built by Simon Fredsted ([@fredsted](https://x.com/fredsted).
+Built by Simon Fredsted ([@fredsted](https://x.com/fredsted)).
 
 ## Open Source
 
