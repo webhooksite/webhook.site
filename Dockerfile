@@ -18,6 +18,16 @@ RUN npm run gulp
 ##############################################
 
 FROM bkuhl/fpm-nginx:7.4
+
+# The base image installs the amd64 s6 overlay on both platforms. Replace it
+# with the matching ARM64 release, keeping the base's s6 version and services.
+RUN if [ "$(apk --print-arch)" = "aarch64" ]; then \
+        curl -fsSL https://github.com/just-containers/s6-overlay/releases/download/v2.1.0.2/s6-overlay-aarch64.tar.gz -o /tmp/s6-overlay-aarch64.tar.gz \
+        && echo "6783da208a23141e09cf9e02e923c4f01555b83d5cb33bf32d226b4b1edbaf7c  /tmp/s6-overlay-aarch64.tar.gz" | sha256sum -c - \
+        && tar -xzf /tmp/s6-overlay-aarch64.tar.gz -C / \
+        && rm /tmp/s6-overlay-aarch64.tar.gz; \
+    fi
+
 WORKDIR /var/www/html
 
 # Contains laravel echo server proxy configuration
