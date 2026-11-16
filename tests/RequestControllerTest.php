@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Response;
+
 class RequestControllerTest extends TestCase
 {
     public function testPagination()
@@ -113,5 +115,71 @@ class RequestControllerTest extends TestCase
         $sortedAscTimestamps = $timestamps;
         sort($sortedAscTimestamps);
         $this->assertSame($sortedAscTimestamps, $timestamps,'The "created_at" field is not sorted in ascending order.');
+    }
+
+    public function testLatestRequestReturnsCapturedRequest()
+    {
+        $this->withoutMiddleware();
+
+        $tokenId = $this->json('POST', 'token')->json()['uuid'];
+        $created = $this->call('POST', $tokenId);
+        $requestId = $created->headers->get('X-Request-Id');
+
+        $response = $this->json('GET', "token/{$tokenId}/request/latest");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'uuid' => $requestId,
+            'method' => 'POST',
+        ]);
+    }
+
+    public function testLatestRequestNotFoundReturns404Json()
+    {
+        $this->withoutMiddleware();
+
+        $tokenId = $this->json('POST', 'token')->json()['uuid'];
+
+        // Same request as the reported curl: no Accept / Content-Type header.
+        $response = $this->call('GET', "token/{$tokenId}/request/latest");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertHeader('content-type', 'application/json');
+        $response->assertJson([
+            'success' => false,
+            'error' => [
+                'message' => 'Request not found',
+            ],
+        ]);
+    }
+
+    public function testRawContentWithoutContentTypeReturnsPlainText()
+    {
+        $this->withoutMiddleware();
+
+        $tokenId = $this->json('POST', 'token')->json()['uuid'];
+
+        $created = $this->call('GET', $tokenId);
+        $requestId = $created->headers->get('X-Request-Id');
+
+        $response = $this->call('GET', "token/{$tokenId}/request/{$requestId}/raw");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertStringStartsWith('text/plain', $response->headers->get('content-type'));
+    }
+
+    public function testRawContentWithJsonContentTypeReturnsJson()
+    {
+        $this->withoutMiddleware();
+
+        $tokenId = $this->json('POST', 'token')->json()['uuid'];
+
+        $created = $this->json('POST', $tokenId, ['hello' => 'world']);
+        $requestId = $created->headers->get('X-Request-Id');
+
+        $response = $this->call('GET', "token/{$tokenId}/request/{$requestId}/raw");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertHeader('content-type', 'application/json');
     }
 }
