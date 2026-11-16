@@ -179,8 +179,6 @@ class RequestController extends Controller
      * @param HttpRequest $httpRequest
      * @param string $tokenId
      * @return JsonResponse
-     *
-     * @throws NotFoundHttpException
      */
     public function latest(HttpRequest $httpRequest, string $tokenId): JsonResponse
     {
@@ -193,10 +191,15 @@ class RequestController extends Controller
             'newest'
         );
 
-        if (empty($requests)) {
-            throw new NotFoundHttpException('Request not found');
+        if ($requests->isEmpty()) {
+            return new JsonResponse([
+                'success' => false,
+                'error' => [
+                    'message' => 'Request not found',
+                ],
+            ], Response::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse($requests[0]);
+        return new JsonResponse($requests->first());
     }
 }

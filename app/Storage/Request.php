@@ -55,6 +55,10 @@ class Request extends Entity
      */
     public function isJson()
     {
+        if (!isset($this->headers['content-type'][0])) {
+            return false;
+        }
+
         return $this->headers['content-type'][0] === 'application/json';
     }
 }
